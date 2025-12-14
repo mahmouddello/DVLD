@@ -95,7 +95,6 @@
             // 
             // pbImage
             // 
-            this.pbImage.Image = global::DVLD.PresentationLayer.Properties.Resources.defaultMale;
             this.pbImage.Location = new System.Drawing.Point(883, 163);
             this.pbImage.Name = "pbImage";
             this.pbImage.Size = new System.Drawing.Size(199, 188);

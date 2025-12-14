@@ -39,6 +39,8 @@ namespace DVLD.PresentationLayer.People
             ctrl.lblEmail.Text = person.Email;
             ctrl.lblPhone.Text = person.Phone;
             ctrl.lblDateOfBirth.Text = person.DateOfBirth.ToString("dd/mm/yyyy");
+            ctrl.lblAddress.Text = person.Address;
+            ctrl.lblCountry.Text = person.Nationality;
 
 
             if (!string.IsNullOrEmpty(person.ImagePath) && File.Exists(person.ImagePath))
@@ -47,10 +49,10 @@ namespace DVLD.PresentationLayer.People
                 switch (person.Gender)
                 {
                     case "Male":
-                        ctrl.pbImage.Image = Resources.defaultMale;
+                        ctrl.pbImage.Image = Resources.driverMale;
                         break;
                     case "Female":
-                        ctrl.pbImage.Image = Resources.peopleGroup;
+                        ctrl.pbImage.Image = Resources.driverFemale;
                         break;
                 }
         }
