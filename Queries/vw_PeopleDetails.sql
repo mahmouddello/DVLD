@@ -1,5 +1,8 @@
 USE DVLD;
 
+PRINT 'Creating People Master View'
+GO
+
 CREATE VIEW vw_PeopleDetails AS
        SELECT
        p.PersonID,
@@ -21,3 +24,4 @@ CREATE VIEW vw_PeopleDetails AS
        FROM People p
        INNER JOIN Countries c
        ON c.CountryID = p.NationalityCountryID;
+GO
