@@ -65,5 +65,11 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DVLD.EntityLayer\DVLD.EntityLayer.csproj">
+      <Project>{57820856-75a5-4df6-8deb-21c6079c6a70}</Project>
+      <Name>DVLD.EntityLayer</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -26,5 +26,12 @@ namespace DVLD.PresentationLayer.People
         {
             this.Dispose();
         }
+
+        private void showDetailsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int currentRowPersonID = (int)dgvAllPeople.CurrentRow.Cells[0].Value;
+            frmPersonDetails form = new frmPersonDetails(currentRowPersonID);
+            form.ShowDialog();
+        }
     }
 }

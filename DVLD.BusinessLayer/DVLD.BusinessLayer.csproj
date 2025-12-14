@@ -49,6 +49,10 @@
       <Project>{63a0968e-68c5-420f-b422-847ee788d644}</Project>
       <Name>DVLD.DataAccessLayer</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DVLD.EntityLayer\DVLD.EntityLayer.csproj">
+      <Project>{57820856-75a5-4df6-8deb-21c6079c6a70}</Project>
+      <Name>DVLD.EntityLayer</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
