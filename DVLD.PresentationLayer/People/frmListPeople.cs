@@ -16,7 +16,7 @@ namespace DVLD.PresentationLayer.People
 
         private void _LoadData()
         {
-            _peopleDataTable = PersonBusiness.GetAllPeople();
+            _peopleDataTable = PersonBusiness.GetPeople();
         }
 
         private void _RefreshPeopleList()

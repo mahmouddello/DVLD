@@ -25,7 +25,7 @@ namespace DVLD.PresentationLayer.People
 
         private void _LoadPersonData()
         {
-            person = PersonBusiness.GetPersonByID(_personID);
+            person = PersonBusiness.Find(_personID);
 
             if (person == null)
                 return;
@@ -40,7 +40,7 @@ namespace DVLD.PresentationLayer.People
             ctrl.lblPhone.Text = person.Phone;
             ctrl.lblDateOfBirth.Text = person.DateOfBirth.ToString("dd/mm/yyyy");
             ctrl.lblAddress.Text = person.Address;
-            ctrl.lblCountry.Text = person.Nationality;
+            ctrl.lblCountry.Text = person.Nationality.Name;
 
 
             if (!string.IsNullOrEmpty(person.ImagePath) && File.Exists(person.ImagePath))

@@ -7,14 +7,14 @@ namespace DVLD.BusinessLayer
 {
     public class PersonBusiness
     {
-        public static DataTable GetAllPeople()
+        public static DataTable GetPeople()
         {
             return PersonDataAccess.GetAllPeople();
         }
 
-        public static Person GetPersonByID(int id)
+        public static Person Find(int personID)
         {
-            return PersonDataAccess.GetPersonByID(id);
+            return PersonDataAccess.GetPersonByID(personID);
         }
     }
 }

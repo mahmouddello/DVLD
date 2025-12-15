@@ -1,7 +1,7 @@
-﻿using DVLD.EntityLayer;
-using System;
+﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using DVLD.EntityLayer;
 
 namespace DVLD.DataAccessLayer
 {
@@ -53,8 +53,13 @@ namespace DVLD.DataAccessLayer
                     person.Address = (string)reader["Address"];
                     person.Phone = (string)reader["Phone"];
                     person.Email = reader["Email"] != DBNull.Value ? (string)reader["Email"] : string.Empty;
-                    person.Nationality = (string)reader["Nationality"];
                     person.ImagePath = reader["ImagePath"] != DBNull.Value ? (string)reader["ImagePath"] : string.Empty;
+
+                    // Country Data (Init)
+                    person.Nationality = new Country(
+                        countryId: (int)reader["CountryID"],
+                        countryName: (string)reader["Nationality"]
+                    );
                 }
             }
 

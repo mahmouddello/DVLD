@@ -12,7 +12,6 @@ namespace DVLD.EntityLayer
 
     public class Person
     {
-
         public int ID { get; set; } = -1;
         public string NationalNo { get; set; } = string.Empty;
         public string FirstName { get; set; } = string.Empty;
@@ -24,7 +23,7 @@ namespace DVLD.EntityLayer
         public string Address { get; set; } = string.Empty;
         public string Phone { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
-        public string Nationality { get; set; } = string.Empty;
+        public Country Nationality { get; set; }
         public string ImagePath { get; set; } = string.Empty;
         public string FullName
         {
@@ -51,7 +50,7 @@ namespace DVLD.EntityLayer
             string address,
             string phone,
             string email,
-            string nationality,
+            Country nationality,
             string imagePath
         )
         {

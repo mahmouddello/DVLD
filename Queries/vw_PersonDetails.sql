@@ -14,6 +14,7 @@ SELECT
 	p.DateOfBirth, 
 	p.Gender,
 	c.CountryName AS Nationality,
+	c.CountryID,
 	p.Phone,
 	p.Email,
 	p.Address,
