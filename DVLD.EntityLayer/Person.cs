@@ -2,9 +2,16 @@
 
 namespace DVLD.EntityLayer
 {
+
+    public enum enGender : byte
+    {
+        Male = 0,
+        Female = 1,
+        Unknown = 2
+    }
+
     public class Person
     {
-        public enum GenderType { Unknown = -1, Male = 0, Female = 1 }
 
         public int ID { get; set; } = -1;
         public string NationalNo { get; set; } = string.Empty;
@@ -13,7 +20,7 @@ namespace DVLD.EntityLayer
         public string ThirdName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
         public DateTime DateOfBirth { get; set; } = DateTime.MinValue;
-        public string Gender { get; set; } = string.Empty;
+        public enGender Gender { get; set; } = enGender.Unknown;
         public string Address { get; set; } = string.Empty;
         public string Phone { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
@@ -40,7 +47,7 @@ namespace DVLD.EntityLayer
             string thirdName, 
             string lastName,
             DateTime dateOfBirth,
-            string gender,
+            enGender gender,
             string address,
             string phone,
             string email,

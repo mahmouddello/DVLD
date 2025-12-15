@@ -49,7 +49,7 @@ namespace DVLD.DataAccessLayer
                     person.ThirdName = reader["ThirdName"] != DBNull.Value ? (string)reader["ThirdName"] : string.Empty;
                     person.LastName = (string)reader["LastName"];
                     person.DateOfBirth = (DateTime)reader["DateOfBirth"];
-                    person.Gender = (string)reader["Gender"];
+                    person.Gender = (enGender)(byte)reader["Gender"];
                     person.Address = (string)reader["Address"];
                     person.Phone = (string)reader["Phone"];
                     person.Email = reader["Email"] != DBNull.Value ? (string)reader["Email"] : string.Empty;

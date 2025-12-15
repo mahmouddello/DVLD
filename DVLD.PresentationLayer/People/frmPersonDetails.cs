@@ -35,7 +35,7 @@ namespace DVLD.PresentationLayer.People
             ctrl.lblPersonID.Text = person.ID.ToString();
             ctrl.lblName.Text = person.FullName;
             ctrl.lblNationalNo.Text = person.NationalNo;
-            ctrl.lblGender.Text = person.Gender;
+            ctrl.lblGender.Text = person.Gender.ToString();
             ctrl.lblEmail.Text = person.Email;
             ctrl.lblPhone.Text = person.Phone;
             ctrl.lblDateOfBirth.Text = person.DateOfBirth.ToString("dd/mm/yyyy");
@@ -48,10 +48,10 @@ namespace DVLD.PresentationLayer.People
             else
                 switch (person.Gender)
                 {
-                    case "Male":
+                    case enGender.Male:
                         ctrl.pbImage.Image = Resources.driverMale;
                         break;
-                    case "Female":
+                    case enGender.Female:
                         ctrl.pbImage.Image = Resources.driverFemale;
                         break;
                 }
