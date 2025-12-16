@@ -45,5 +45,25 @@ namespace DVLD.DataAccessLayer
 
             return dt.Rows.Count > 0 ? dt.Rows[0] : null;
         }
+
+        public static DataRow GetCountryByName(string countryName)
+        {
+            DataTable dt = new DataTable();
+            string query = @"SELECT * FROM Countries WHERE CountryName = @CountryName";
+
+            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@CountryName", countryName);
+                connection.Open();
+
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    dt.Load(reader);
+                }
+            }
+
+            return dt.Rows.Count > 0 ? dt.Rows[0] : null;
+        }
     }
 }

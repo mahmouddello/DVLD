@@ -26,5 +26,20 @@ namespace DVLD.BusinessLayer
                 Name = (string)row["CountryName"]
             };
         }
+
+        public static Country FindByName(string countryName)
+        {
+            DataRow row = CountryDataAccess.GetCountryByName(countryName);
+
+            if (row == null)
+                return null;
+
+            return new Country
+            {
+                ID = (int)row["CountryID"],
+                Name = (string)row["CountryName"]
+            };
+        }
+
     }
 }
