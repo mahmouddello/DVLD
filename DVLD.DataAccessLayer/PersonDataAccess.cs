@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
-using DVLD.EntityLayer;
 
 namespace DVLD.DataAccessLayer
 {
@@ -26,11 +25,11 @@ namespace DVLD.DataAccessLayer
             return dt;
         }
 
-        public static Person GetPersonByID(int PersonID)
+        public static DataRow GetPersonByID(int PersonID)
         {
+            DataTable dt = new DataTable();
             string query = @"SELECT * FROM vw_PersonDetails WHERE PersonID = @PersonID";
 
-            Person person = new Person();
             using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
             using (SqlCommand command = new SqlCommand(query, connection))
             {
@@ -39,31 +38,11 @@ namespace DVLD.DataAccessLayer
 
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
-                    if (!reader.Read())
-                        return null;
-
-                    person.ID = (int)reader["PersonID"];
-                    person.NationalNo = (string)reader["NationalNo"];
-                    person.FirstName = (string)reader["FirstName"];
-                    person.SecondName = (string)reader["SecondName"];
-                    person.ThirdName = reader["ThirdName"] != DBNull.Value ? (string)reader["ThirdName"] : string.Empty;
-                    person.LastName = (string)reader["LastName"];
-                    person.DateOfBirth = (DateTime)reader["DateOfBirth"];
-                    person.Gender = (enGender)(byte)reader["Gender"];
-                    person.Address = (string)reader["Address"];
-                    person.Phone = (string)reader["Phone"];
-                    person.Email = reader["Email"] != DBNull.Value ? (string)reader["Email"] : string.Empty;
-                    person.ImagePath = reader["ImagePath"] != DBNull.Value ? (string)reader["ImagePath"] : string.Empty;
-
-                    // Country Data (Init)
-                    person.Nationality = new Country(
-                        countryId: (int)reader["CountryID"],
-                        countryName: (string)reader["Nationality"]
-                    );
+                    dt.Load(reader);
                 }
             }
 
-            return person;
+            return dt.Rows.Count > 0 ? dt.Rows[0] : null;
         }
     }
 }

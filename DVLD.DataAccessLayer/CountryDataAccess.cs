@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using DVLD.EntityLayer;
 
 namespace DVLD.DataAccessLayer
 {
@@ -27,10 +26,10 @@ namespace DVLD.DataAccessLayer
             return dt;
         }
 
-        public static Country GetCountryByID(int countryID)
+        public static DataRow GetCountryByID(int countryID)
         {
+            DataTable dt = new DataTable();
             string query = @"SELECT * FROM Countries WHERE CountryID = @CountryID";
-            Country country;
 
             using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
             using (SqlCommand command = new SqlCommand(query, connection))
@@ -40,16 +39,11 @@ namespace DVLD.DataAccessLayer
 
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
-                    if (!reader.Read())
-                        return null;
-
-                    country = new Country();
-                    country.ID = (int)reader["CountryID"];
-                    country.Name = (string)reader["Name"];
+                    dt.Load(reader);
                 }
             }
 
-            return country;
+            return dt.Rows.Count > 0 ? dt.Rows[0] : null;
         }
     }
 }
