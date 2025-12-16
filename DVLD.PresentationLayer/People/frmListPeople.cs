@@ -159,5 +159,24 @@ namespace DVLD.PresentationLayer.People
                 _RefreshPeopleList();
             }
         }
+
+        private void editToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int currentRowPersonID = (int)dgvAllPeople.CurrentRow.Cells[0].Value;
+            frmAddUpdatePerson frm = new frmAddUpdatePerson(currentRowPersonID);
+            frm.ShowDialog();
+
+            _LoadData(); 
+            _RefreshPeopleList();
+        }
+
+        private void btnAddNewPerson_Click(object sender, EventArgs e)
+        {
+            frmAddUpdatePerson frm = new frmAddUpdatePerson(-1);
+            frm.ShowDialog();
+
+            _LoadData();
+            _RefreshPeopleList();
+        }
     }
 }

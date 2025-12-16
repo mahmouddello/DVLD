@@ -22,6 +22,7 @@ namespace DVLD.BusinessLayer
             return new Person
             {
                 ID = (int)row["PersonID"],
+                NationalNo = (string)row["NationalNo"],
                 FirstName = (string)row["FirstName"],
                 SecondName = (string)row["SecondName"],
                 ThirdName = row["ThirdName"] != DBNull.Value ? (string)row["ThirdName"] : string.Empty,
@@ -37,6 +38,27 @@ namespace DVLD.BusinessLayer
                     Name = (string)row["Nationality"]
                 }
             };
+        }
+
+        public static bool Save(ref Person person)
+        {
+            if (person.ID == -1)
+            {
+                // Add new
+                person.ID = PersonDataAccess.InsertNewPerson(
+                    person.NationalNo, person.FirstName, person.SecondName,
+                    person.ThirdName, person.LastName, person.DateOfBirth,
+                    (byte)person.Gender, person.Address, person.Phone,
+                    person.Email, person.Nationality.ID, person.ImagePath
+                );
+
+                return person.ID != -1;  // Success if ID was assigned
+            }
+
+            return PersonDataAccess.UpdatePerson(person.ID, person.NationalNo, person.FirstName, person.SecondName,
+                    person.ThirdName, person.LastName, person.DateOfBirth,
+                    (byte)person.Gender, person.Address, person.Phone,
+                    person.Email, person.Nationality.ID, person.ImagePath);
         }
     }
 }
