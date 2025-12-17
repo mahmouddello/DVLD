@@ -5,6 +5,21 @@ using DVLD.BusinessLayer;
 
 namespace DVLD.PresentationLayer.People
 {
+    enum enFilterTypes : byte
+    {
+        None,
+        PersonID,
+        NationalNo,
+        FirstName,
+        SecondName,
+        ThirdName,
+        LastName,
+        Gender,
+        Nationality,
+        Phone,
+        Email
+    }
+
     public partial class frmListPeople : Form
     {
         DataTable _peopleDataTable;
@@ -52,15 +67,15 @@ namespace DVLD.PresentationLayer.People
             cbGender.Visible = false;
             txtFilterQuery.Clear();
 
-            string selectedFilter = cbFilterBy.SelectedItem.ToString();
+            enFilterTypes filterType = (enFilterTypes)cbFilterBy.SelectedIndex;
 
-            switch (selectedFilter)
+            switch (filterType)
             {
-                case "None":
+                case enFilterTypes.None:
                     _RefreshPeopleList();
                     break;
 
-                case "Gender":
+                case enFilterTypes.Gender:
                     cbGender.Visible = true;
                     cbGender.SelectedIndex = 0;
                     break;
@@ -82,7 +97,7 @@ namespace DVLD.PresentationLayer.People
 
         private void _ApplyFilter()
         {
-            string selectedFilter = cbFilterBy.SelectedItem.ToString();
+            enFilterTypes filterType = (enFilterTypes)cbFilterBy.SelectedIndex;
             string filterValue = txtFilterQuery.Text.Trim();
 
             // If filter value is empty, show all records
@@ -96,20 +111,20 @@ namespace DVLD.PresentationLayer.People
 
             try
             {
-                if (selectedFilter == "PersonID")
+                if (filterType == enFilterTypes.PersonID)
                 {
                     if (!int.TryParse(filterValue, out int numericValue))
                     {
-                        dgvAllPeople.DataSource = _peopleDataTable.Clone(); // Empty Table
-                        lblRecordsCount.Text = $"Records: #{dgvAllPeople.Rows.Count}";
+                        dgvAllPeople.DataSource = _peopleDataTable.Clone();
+                        lblRecordsCount.Text = "Records: #0";
+                        return;
                     }
 
-                    // Parse succsessfull, numeric value is entered
-                    dv.RowFilter = $"{selectedFilter} = {numericValue}";
+                    dv.RowFilter = $"PersonID = {numericValue}";
                 }
                 else
                     // For string columns: use LIKE with quotes
-                    dv.RowFilter = $"{selectedFilter} LIKE '{filterValue}%'";
+                    dv.RowFilter = $"{filterType.ToString()} LIKE '%{filterValue}%'";
 
                 dgvAllPeople.DataSource = dv;
             }
@@ -226,6 +241,36 @@ namespace DVLD.PresentationLayer.People
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Warning
                     );
+            }
+        }
+
+        private void txtFilterQuery_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // The pressed key is : space, delete, backspace, ...etc. skips the checks.
+            if (char.IsControl(e.KeyChar)) return;
+
+            enFilterTypes filterType = (enFilterTypes)cbFilterBy.SelectedIndex;
+
+            switch (filterType)
+            {
+                // Numeric Fields: Only numbers allowed
+                case enFilterTypes.PersonID:
+                case enFilterTypes.Phone:
+                    if (!char.IsDigit(e.KeyChar)) { System.Media.SystemSounds.Beep.Play(); e.Handled = true; }
+                    break;
+
+                // String Only Fields : Only letters allowed
+                case enFilterTypes.FirstName:
+                case enFilterTypes.SecondName:
+                case enFilterTypes.ThirdName:
+                case enFilterTypes.LastName:
+                case enFilterTypes.Nationality:
+                    if (!char.IsLetter(e.KeyChar)) { System.Media.SystemSounds.Beep.Play(); e.Handled = true; }
+                    break;
+
+                // String + Numeric Mix Fields (National No, Email): Don't do checks;
+                default:
+                    break;
             }
         }
     }
