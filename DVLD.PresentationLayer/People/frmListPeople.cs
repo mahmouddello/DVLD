@@ -178,5 +178,55 @@ namespace DVLD.PresentationLayer.People
             _LoadData();
             _RefreshPeopleList();
         }
+
+        private void sendEmailToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show
+            (
+                "This feature will be implemented in the future",
+                "Stub",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Warning
+            );
+        }
+
+        private void sendSMSToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show
+            (
+                "This feature will be implemented in the future",
+                "Stub",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Warning
+            );
+        }
+
+        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int currentRowPersonID = (int)dgvAllPeople.CurrentRow.Cells[0].Value;
+
+            if (MessageBox.Show
+            (
+                "Are you sure you want to delete this person? This action can't be undone!",
+                $"Delete Person ID = {currentRowPersonID}",
+                MessageBoxButtons.OKCancel,
+                MessageBoxIcon.Warning
+            ) == DialogResult.OK)
+            {
+                if (PersonBusiness.Delete(currentRowPersonID))
+                {
+                    MessageBox.Show("Deleted Successfully!");
+                    _LoadData();
+                    _RefreshPeopleList();
+                }
+                else
+                    MessageBox.Show(
+                        "Delete operation failed because of referential integrity error!",
+                        "Operation Failed",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning
+                    );
+            }
+        }
     }
 }

@@ -40,6 +40,11 @@ namespace DVLD.BusinessLayer
             };
         }
 
+        public static bool Delete(int personID)
+        {
+            return PersonDataAccess.DeletePersonByID(personID);
+        }
+
         public static bool Save(ref Person person)
         {
             if (person.ID == -1)

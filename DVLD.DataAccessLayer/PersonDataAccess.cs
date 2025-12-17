@@ -1,5 +1,4 @@
-﻿using DVLD.EntityLayer;
-using System;
+﻿using System;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -135,6 +134,31 @@ namespace DVLD.DataAccessLayer
             }
 
             return rowsAffected > 0; 
+        }
+
+        public static bool DeletePersonByID(int personID)
+        {
+            string query = @"DELETE FROM People WHERE PersonID = @PersonID";
+            int rowsAffected = 0;
+
+            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@PersonID", personID);
+                connection.Open();
+
+                try
+                {
+                    rowsAffected = command.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error: {ex}");
+                    return false;
+                }
+            }
+
+            return rowsAffected > 0;
         }
     }
 }
