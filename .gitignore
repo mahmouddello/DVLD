@@ -401,6 +401,8 @@ FodyWeavers.xsd
 
 *.env
 
+.vscode
+
 ### VisualStudio Patch ###
 # Additional files built by Visual Studio
 

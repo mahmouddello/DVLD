@@ -45,25 +45,33 @@ namespace DVLD.BusinessLayer
             return PersonDataAccess.DeletePersonByID(personID);
         }
 
-        public static bool Save(ref Person person)
+        private static bool Add(Person person)
         {
-            if (person.ID == -1)
-            {
-                // Add new
-                person.ID = PersonDataAccess.InsertNewPerson(
-                    person.NationalNo, person.FirstName, person.SecondName,
-                    person.ThirdName, person.LastName, person.DateOfBirth,
-                    (byte)person.Gender, person.Address, person.Phone,
-                    person.Email, person.Nationality.ID, person.ImagePath
-                );
+            // Add new
+            person.ID = PersonDataAccess.InsertNewPerson(
+                person.NationalNo, person.FirstName, person.SecondName,
+                person.ThirdName, person.LastName, person.DateOfBirth,
+                (byte)person.Gender, person.Address, person.Phone,
+                person.Email, person.Nationality.ID, person.ImagePath
+            );
 
-                return person.ID != -1;  // Success if ID was assigned
-            }
+            return person.ID != -1;
+        }
 
+        private static bool Update(Person person)
+        {
             return PersonDataAccess.UpdatePerson(person.ID, person.NationalNo, person.FirstName, person.SecondName,
                     person.ThirdName, person.LastName, person.DateOfBirth,
                     (byte)person.Gender, person.Address, person.Phone,
                     person.Email, person.Nationality.ID, person.ImagePath);
+        }
+
+        public static bool Save(Person person)
+        {
+            if (person.ID == -1)
+                return Add(person);
+
+            return Update(person);
         }
     }
 }

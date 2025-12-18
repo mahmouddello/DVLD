@@ -38,7 +38,7 @@ namespace DVLD.PresentationLayer.People
             ctrl.lblGender.Text = person.Gender.ToString();
             ctrl.lblEmail.Text = person.Email;
             ctrl.lblPhone.Text = person.Phone;
-            ctrl.lblDateOfBirth.Text = person.DateOfBirth.ToString("dd/mm/yyyy");
+            ctrl.lblDateOfBirth.Text = person.DateOfBirth.ToString("MM/dd/yyyy");
             ctrl.lblAddress.Text = person.Address;
             ctrl.lblCountry.Text = person.Nationality.Name;
 

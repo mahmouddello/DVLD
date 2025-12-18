@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.lblModeTitle = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.txtFirstName = new System.Windows.Forms.TextBox();
@@ -43,7 +44,7 @@
             this.label7 = new System.Windows.Forms.Label();
             this.dtpDateOfBirth = new System.Windows.Forms.DateTimePicker();
             this.label8 = new System.Windows.Forms.Label();
-            this.gbGenderRadios = new System.Windows.Forms.GroupBox();
+            this.gbGender = new System.Windows.Forms.GroupBox();
             this.rbFemale = new System.Windows.Forms.RadioButton();
             this.rbMale = new System.Windows.Forms.RadioButton();
             this.txtPhone = new System.Windows.Forms.TextBox();
@@ -53,21 +54,23 @@
             this.label11 = new System.Windows.Forms.Label();
             this.cbCountry = new System.Windows.Forms.ComboBox();
             this.label12 = new System.Windows.Forms.Label();
-            this.rtxtAddress = new System.Windows.Forms.RichTextBox();
             this.pbPersonImage = new System.Windows.Forms.PictureBox();
             this.llImageLink = new System.Windows.Forms.LinkLabel();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.dialogSetImage = new System.Windows.Forms.OpenFileDialog();
-            this.gbGenderRadios.SuspendLayout();
+            this.errProviderValidation = new System.Windows.Forms.ErrorProvider(this.components);
+            this.txtAddress = new System.Windows.Forms.TextBox();
+            this.gbGender.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbPersonImage)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errProviderValidation)).BeginInit();
             this.SuspendLayout();
             // 
             // lblModeTitle
             // 
             this.lblModeTitle.AutoSize = true;
             this.lblModeTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblModeTitle.Location = new System.Drawing.Point(484, 39);
+            this.lblModeTitle.Location = new System.Drawing.Point(473, 25);
             this.lblModeTitle.Name = "lblModeTitle";
             this.lblModeTitle.Size = new System.Drawing.Size(113, 40);
             this.lblModeTitle.TabIndex = 0;
@@ -89,7 +92,9 @@
             this.txtFirstName.Location = new System.Drawing.Point(167, 186);
             this.txtFirstName.Name = "txtFirstName";
             this.txtFirstName.Size = new System.Drawing.Size(219, 30);
-            this.txtFirstName.TabIndex = 7;
+            this.txtFirstName.TabIndex = 0;
+            this.txtFirstName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.OnlyLettersTextBox_KeyPress);
+            this.txtFirstName.Validating += new System.ComponentModel.CancelEventHandler(this.RequiredField_Validating);
             // 
             // txtLastName
             // 
@@ -97,7 +102,9 @@
             this.txtLastName.Location = new System.Drawing.Point(881, 186);
             this.txtLastName.Name = "txtLastName";
             this.txtLastName.Size = new System.Drawing.Size(219, 30);
-            this.txtLastName.TabIndex = 8;
+            this.txtLastName.TabIndex = 3;
+            this.txtLastName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.OnlyLettersTextBox_KeyPress);
+            this.txtLastName.Validating += new System.ComponentModel.CancelEventHandler(this.RequiredField_Validating);
             // 
             // txtThirdName
             // 
@@ -105,7 +112,8 @@
             this.txtThirdName.Location = new System.Drawing.Point(643, 186);
             this.txtThirdName.Name = "txtThirdName";
             this.txtThirdName.Size = new System.Drawing.Size(219, 30);
-            this.txtThirdName.TabIndex = 9;
+            this.txtThirdName.TabIndex = 2;
+            this.txtThirdName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.OnlyLettersTextBox_KeyPress);
             // 
             // txtSecondName
             // 
@@ -113,7 +121,9 @@
             this.txtSecondName.Location = new System.Drawing.Point(405, 186);
             this.txtSecondName.Name = "txtSecondName";
             this.txtSecondName.Size = new System.Drawing.Size(219, 30);
-            this.txtSecondName.TabIndex = 10;
+            this.txtSecondName.TabIndex = 1;
+            this.txtSecondName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.OnlyLettersTextBox_KeyPress);
+            this.txtSecondName.Validating += new System.ComponentModel.CancelEventHandler(this.RequiredField_Validating);
             // 
             // label2
             // 
@@ -171,7 +181,8 @@
             this.txtNationalNo.Location = new System.Drawing.Point(167, 256);
             this.txtNationalNo.Name = "txtNationalNo";
             this.txtNationalNo.Size = new System.Drawing.Size(219, 30);
-            this.txtNationalNo.TabIndex = 16;
+            this.txtNationalNo.TabIndex = 4;
+            this.txtNationalNo.Validating += new System.ComponentModel.CancelEventHandler(this.RequiredField_Validating);
             // 
             // label7
             // 
@@ -187,10 +198,10 @@
             // 
             this.dtpDateOfBirth.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dtpDateOfBirth.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpDateOfBirth.Location = new System.Drawing.Point(643, 256);
+            this.dtpDateOfBirth.Location = new System.Drawing.Point(643, 263);
             this.dtpDateOfBirth.Name = "dtpDateOfBirth";
             this.dtpDateOfBirth.Size = new System.Drawing.Size(219, 30);
-            this.dtpDateOfBirth.TabIndex = 18;
+            this.dtpDateOfBirth.TabIndex = 5;
             // 
             // label8
             // 
@@ -202,21 +213,21 @@
             this.label8.TabIndex = 19;
             this.label8.Text = "Gender:";
             // 
-            // gbGenderRadios
+            // gbGender
             // 
-            this.gbGenderRadios.Controls.Add(this.rbFemale);
-            this.gbGenderRadios.Controls.Add(this.rbMale);
-            this.gbGenderRadios.Location = new System.Drawing.Point(167, 310);
-            this.gbGenderRadios.Name = "gbGenderRadios";
-            this.gbGenderRadios.Size = new System.Drawing.Size(239, 53);
-            this.gbGenderRadios.TabIndex = 20;
-            this.gbGenderRadios.TabStop = false;
+            this.gbGender.Controls.Add(this.rbFemale);
+            this.gbGender.Controls.Add(this.rbMale);
+            this.gbGender.Location = new System.Drawing.Point(167, 310);
+            this.gbGender.Name = "gbGender";
+            this.gbGender.Size = new System.Drawing.Size(219, 53);
+            this.gbGender.TabIndex = 6;
+            this.gbGender.TabStop = false;
             // 
             // rbFemale
             // 
             this.rbFemale.AutoSize = true;
             this.rbFemale.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rbFemale.Location = new System.Drawing.Point(131, 17);
+            this.rbFemale.Location = new System.Drawing.Point(117, 17);
             this.rbFemale.Name = "rbFemale";
             this.rbFemale.Size = new System.Drawing.Size(102, 29);
             this.rbFemale.TabIndex = 1;
@@ -229,7 +240,7 @@
             // 
             this.rbMale.AutoSize = true;
             this.rbMale.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rbMale.Location = new System.Drawing.Point(26, 18);
+            this.rbMale.Location = new System.Drawing.Point(6, 17);
             this.rbMale.Name = "rbMale";
             this.rbMale.Size = new System.Drawing.Size(80, 29);
             this.rbMale.TabIndex = 0;
@@ -244,7 +255,9 @@
             this.txtPhone.Location = new System.Drawing.Point(643, 320);
             this.txtPhone.Name = "txtPhone";
             this.txtPhone.Size = new System.Drawing.Size(219, 30);
-            this.txtPhone.TabIndex = 22;
+            this.txtPhone.TabIndex = 7;
+            this.txtPhone.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.OnlyDigitsTextBox_KeyPress);
+            this.txtPhone.Validating += new System.ComponentModel.CancelEventHandler(this.RequiredField_Validating);
             // 
             // label9
             // 
@@ -262,7 +275,7 @@
             this.txtEmail.Location = new System.Drawing.Point(167, 395);
             this.txtEmail.Name = "txtEmail";
             this.txtEmail.Size = new System.Drawing.Size(219, 30);
-            this.txtEmail.TabIndex = 24;
+            this.txtEmail.TabIndex = 8;
             // 
             // label10
             // 
@@ -291,7 +304,8 @@
             this.cbCountry.Location = new System.Drawing.Point(643, 387);
             this.cbCountry.Name = "cbCountry";
             this.cbCountry.Size = new System.Drawing.Size(219, 33);
-            this.cbCountry.TabIndex = 26;
+            this.cbCountry.TabIndex = 9;
+            this.cbCountry.Validating += new System.ComponentModel.CancelEventHandler(this.cbCountry_Validating);
             // 
             // label12
             // 
@@ -302,14 +316,6 @@
             this.label12.Size = new System.Drawing.Size(91, 25);
             this.label12.TabIndex = 27;
             this.label12.Text = "Address:";
-            // 
-            // rtxtAddress
-            // 
-            this.rtxtAddress.Location = new System.Drawing.Point(167, 462);
-            this.rtxtAddress.Name = "rtxtAddress";
-            this.rtxtAddress.Size = new System.Drawing.Size(695, 116);
-            this.rtxtAddress.TabIndex = 28;
-            this.rtxtAddress.Text = "";
             // 
             // pbPersonImage
             // 
@@ -328,7 +334,7 @@
             this.llImageLink.Location = new System.Drawing.Point(940, 478);
             this.llImageLink.Name = "llImageLink";
             this.llImageLink.Size = new System.Drawing.Size(101, 25);
-            this.llImageLink.TabIndex = 30;
+            this.llImageLink.TabIndex = 11;
             this.llImageLink.TabStop = true;
             this.llImageLink.Text = "Set Image";
             this.llImageLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llImageLink_LinkClicked);
@@ -341,7 +347,7 @@
             this.btnSave.Location = new System.Drawing.Point(701, 614);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(161, 40);
-            this.btnSave.TabIndex = 31;
+            this.btnSave.TabIndex = 13;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
@@ -354,7 +360,7 @@
             this.btnClose.Location = new System.Drawing.Point(534, 614);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(161, 40);
-            this.btnClose.TabIndex = 32;
+            this.btnClose.TabIndex = 12;
             this.btnClose.Text = "Close";
             this.btnClose.UseVisualStyleBackColor = false;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
@@ -363,16 +369,30 @@
             // 
             this.dialogSetImage.FileName = "dialogSetImage";
             // 
+            // errProviderValidation
+            // 
+            this.errProviderValidation.ContainerControl = this;
+            // 
+            // txtAddress
+            // 
+            this.txtAddress.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtAddress.Location = new System.Drawing.Point(167, 473);
+            this.txtAddress.Multiline = true;
+            this.txtAddress.Name = "txtAddress";
+            this.txtAddress.Size = new System.Drawing.Size(695, 120);
+            this.txtAddress.TabIndex = 10;
+            this.txtAddress.Validating += new System.ComponentModel.CancelEventHandler(this.RequiredField_Validating);
+            // 
             // frmAddUpdatePerson
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1155, 694);
+            this.Controls.Add(this.txtAddress);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.llImageLink);
             this.Controls.Add(this.pbPersonImage);
-            this.Controls.Add(this.rtxtAddress);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.cbCountry);
             this.Controls.Add(this.label11);
@@ -380,7 +400,7 @@
             this.Controls.Add(this.label10);
             this.Controls.Add(this.txtPhone);
             this.Controls.Add(this.label9);
-            this.Controls.Add(this.gbGenderRadios);
+            this.Controls.Add(this.gbGender);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.dtpDateOfBirth);
             this.Controls.Add(this.label7);
@@ -398,10 +418,12 @@
             this.Controls.Add(this.lblModeTitle);
             this.Name = "frmAddUpdatePerson";
             this.Text = "Add / Edit Person Form";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmAddUpdatePerson_FormClosing);
             this.Load += new System.EventHandler(this.frmAddUpdatePerson_Load);
-            this.gbGenderRadios.ResumeLayout(false);
-            this.gbGenderRadios.PerformLayout();
+            this.gbGender.ResumeLayout(false);
+            this.gbGender.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbPersonImage)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errProviderValidation)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -424,7 +446,7 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.DateTimePicker dtpDateOfBirth;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.GroupBox gbGenderRadios;
+        private System.Windows.Forms.GroupBox gbGender;
         private System.Windows.Forms.RadioButton rbFemale;
         private System.Windows.Forms.RadioButton rbMale;
         private System.Windows.Forms.TextBox txtPhone;
@@ -434,11 +456,12 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.ComboBox cbCountry;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.RichTextBox rtxtAddress;
         private System.Windows.Forms.PictureBox pbPersonImage;
         private System.Windows.Forms.LinkLabel llImageLink;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.OpenFileDialog dialogSetImage;
+        private System.Windows.Forms.ErrorProvider errProviderValidation;
+        private System.Windows.Forms.TextBox txtAddress;
     }
 }

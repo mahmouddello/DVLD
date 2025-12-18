@@ -52,7 +52,7 @@ namespace DVLD.DataAccessLayer
         {
             string query = @"INSERT INTO People (NationalNo, FirstName, SecondName, 
                      ThirdName, LastName, DateOfBirth, Gender, Address, Phone, 
-                     Email, CountryID, NationalityCountryID)
+                     Email, NationalityCountryID, ImagePath)
                      VALUES (@NationalNo, @FirstName, @SecondName, @ThirdName,
                      @LastName, @DateOfBirth, @Gender, @Address, @Phone, 
                      @Email, @CountryID, @ImagePath);
