@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
+using DVLD.EntityLayer;
 
 namespace DVLD.DataAccessLayer
 {
@@ -75,15 +77,22 @@ namespace DVLD.DataAccessLayer
                 command.Parameters.AddWithValue("@CountryID", countryID);
                 command.Parameters.AddWithValue("@ImagePath", DbValue(imagePath));
 
-                connection.Open();
+                try
+                {
+                    connection.Open();
+                    object result = command.ExecuteScalar();
 
-                object result = command.ExecuteScalar();
-
-                if (result != null && result != DBNull.Value)
-                    return Convert.ToInt32(result);
-                else
+                    if (result != null && result != DBNull.Value)
+                        return Convert.ToInt32(result);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.ToString());
                     return -1;
+                }
             }
+
+            return -1;
         }
 
         public static bool UpdatePerson(int personID, string nationalNo, string firstName,
@@ -161,6 +170,25 @@ namespace DVLD.DataAccessLayer
             return string.IsNullOrWhiteSpace(value)
                 ? (object)DBNull.Value
                 : value;
+        }
+
+        public static bool IsExistByNationalNo(string nationalNo)
+        {
+            string query = @"SELECT FOUND = 1 FROM People WHERE NationalNo = @NationalNo";
+            bool isFound = false;
+
+            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@NationalNo", nationalNo);
+                connection.Open();
+
+                object result = command.ExecuteScalar();
+                if (result != null)
+                    isFound = true;
+
+                return isFound;
+            }
         }
     }
 }

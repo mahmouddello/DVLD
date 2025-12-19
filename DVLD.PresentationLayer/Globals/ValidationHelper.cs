@@ -1,7 +1,7 @@
-﻿using DVLD.BusinessLayer;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using DVLD.BusinessLayer;
 
 namespace DVLD.PresentationLayer
 {
@@ -13,6 +13,11 @@ namespace DVLD.PresentationLayer
             Match match = regex.Match(email);
 
             return match.Success;
+        }
+
+        public static bool IsUniqueNationalNo(string nationalNo)
+        {
+            return !PersonBusiness.ExistsByNationalNo(nationalNo);
         }
     }
 }

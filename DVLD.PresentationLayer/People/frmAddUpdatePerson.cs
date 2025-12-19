@@ -16,6 +16,7 @@ namespace DVLD.PresentationLayer.People
 
         private Person _person;
         private int _personID;
+        private string _originalNationalNo;
 
         public frmAddUpdatePerson(int personID)
         {
@@ -61,6 +62,7 @@ namespace DVLD.PresentationLayer.People
             txtThirdName.Text = _person.ThirdName;
             txtLastName.Text = _person.LastName;
             txtNationalNo.Text = _person.NationalNo;
+            _originalNationalNo = _person.NationalNo; // save original national no to a local variable
             txtEmail.Text = _person.Email;
             txtPhone.Text = _person.Phone;
             txtAddress.Text = _person.Address;
@@ -213,9 +215,9 @@ namespace DVLD.PresentationLayer.People
             if (senderTextBox == null)
                 return;
 
-            string proccessedText = senderTextBox.Text.Trim();
+            string nationalNo = senderTextBox.Text.Trim();
 
-            if (string.IsNullOrWhiteSpace(proccessedText))
+            if (string.IsNullOrWhiteSpace(nationalNo))
             {
                 e.Cancel = true; // prevent user from leaving textbox.
                 senderTextBox.Focus();
@@ -280,5 +282,31 @@ namespace DVLD.PresentationLayer.People
             else
                 errProviderValidation.SetError(txtEmail, string.Empty);
         }
+
+        private void txtNationalNo_Validating(object sender, CancelEventArgs e)
+        {
+            string nationalNo = txtNationalNo.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(nationalNo))
+            {
+                e.Cancel = true; // prevent user from leaving textbox.
+                txtNationalNo.Focus();
+                errProviderValidation.SetError(txtNationalNo, "This field is required");
+                return;
+            }
+
+            if (!ValidationHelper.IsUniqueNationalNo(nationalNo) && nationalNo.ToLower() != _originalNationalNo.ToLower())
+            {
+                e.Cancel = true; // prevent user from leaving textbox.
+                txtNationalNo.Focus();
+                errProviderValidation.SetError(txtNationalNo, "This field is required");
+            }
+
+            else
+            {
+                e.Cancel = false;
+                errProviderValidation.SetError(txtNationalNo, string.Empty);
+            }
+        }
     }
-}
+} 

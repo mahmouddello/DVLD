@@ -182,7 +182,7 @@
             this.txtNationalNo.Name = "txtNationalNo";
             this.txtNationalNo.Size = new System.Drawing.Size(219, 30);
             this.txtNationalNo.TabIndex = 4;
-            this.txtNationalNo.Validating += new System.ComponentModel.CancelEventHandler(this.RequiredField_Validating);
+            this.txtNationalNo.Validating += new System.ComponentModel.CancelEventHandler(this.txtNationalNo_Validating);
             // 
             // label7
             // 

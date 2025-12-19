@@ -73,5 +73,10 @@ namespace DVLD.BusinessLayer
 
             return Update(person);
         }
+
+        public static bool ExistsByNationalNo(string nationalNo)
+        {
+            return PersonDataAccess.IsExistByNationalNo(nationalNo);
+        }
     }
 }
