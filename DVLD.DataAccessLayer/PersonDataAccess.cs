@@ -65,15 +65,15 @@ namespace DVLD.DataAccessLayer
                 command.Parameters.AddWithValue("@NationalNo", nationalNo);
                 command.Parameters.AddWithValue("@FirstName", firstName);
                 command.Parameters.AddWithValue("@SecondName", secondName);
-                command.Parameters.AddWithValue("@ThirdName", thirdName);
+                command.Parameters.AddWithValue("@ThirdName", DbValue(thirdName));
                 command.Parameters.AddWithValue("@LastName", lastName);
                 command.Parameters.AddWithValue("@DateOfBirth", dateOfBirth);
                 command.Parameters.AddWithValue("@Gender", gender);
                 command.Parameters.AddWithValue("@Address", address);
                 command.Parameters.AddWithValue("@Phone", phone);
-                command.Parameters.AddWithValue("@Email", email);
+                command.Parameters.AddWithValue("@Email", DbValue(email));
                 command.Parameters.AddWithValue("@CountryID", countryID);
-                command.Parameters.AddWithValue("@ImagePath", imagePath);
+                command.Parameters.AddWithValue("@ImagePath", DbValue(imagePath));
 
                 connection.Open();
 
@@ -110,24 +110,19 @@ namespace DVLD.DataAccessLayer
             using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
             using (SqlCommand command = new SqlCommand(query, connection))
             {
-                // AddWithValue handles null automatically
                 command.Parameters.AddWithValue("@PersonID", personID);
                 command.Parameters.AddWithValue("@NationalNo", nationalNo);
                 command.Parameters.AddWithValue("@FirstName", firstName);
                 command.Parameters.AddWithValue("@SecondName", secondName);
-                command.Parameters.AddWithValue("@ThirdName", thirdName);
+                command.Parameters.AddWithValue("@ThirdName", DbValue(thirdName));
                 command.Parameters.AddWithValue("@LastName", lastName);
                 command.Parameters.AddWithValue("@DateOfBirth", dateOfBirth);
                 command.Parameters.AddWithValue("@Gender", gender);
                 command.Parameters.AddWithValue("@Address", address);
                 command.Parameters.AddWithValue("@Phone", phone);
-                command.Parameters.AddWithValue("@Email", email);
+                command.Parameters.AddWithValue("@Email", DbValue(email));
                 command.Parameters.AddWithValue("@CountryID", countryID);
-
-                if (imagePath != "")
-                    command.Parameters.AddWithValue("@ImagePath", imagePath);
-                else
-                    command.Parameters.AddWithValue("@ImagePath", DBNull.Value);
+                command.Parameters.AddWithValue("@ImagePath", DbValue(imagePath));
 
                 connection.Open();
                 rowsAffected = command.ExecuteNonQuery();
@@ -159,6 +154,13 @@ namespace DVLD.DataAccessLayer
             }
 
             return rowsAffected > 0;
+        }
+
+        private static object DbValue(string value)
+        {
+            return string.IsNullOrWhiteSpace(value)
+                ? (object)DBNull.Value
+                : value;
         }
     }
 }

@@ -136,6 +136,26 @@ namespace DVLD.PresentationLayer.People
             }
         }
 
+        private void MapData()
+        {
+            _person.NationalNo = txtNationalNo.Text.Trim();
+            _person.FirstName = txtFirstName.Text.Trim();
+            _person.SecondName = txtSecondName.Text.Trim();
+            _person.ThirdName = txtThirdName.Text.Trim();
+            _person.LastName = txtLastName.Text.Trim();
+            _person.DateOfBirth = dtpDateOfBirth.Value;
+            _person.Gender = rbMale.Checked ? enGender.Male : enGender.Female;
+            _person.Email = txtEmail.Text.Trim();
+            _person.Phone = txtPhone.Text.Trim();
+            _person.Address = txtAddress.Text.Trim();
+
+            _person.Nationality = new Country
+            {
+                ID = cbCountry.SelectedIndex,
+                Name = cbCountry.SelectedItem?.ToString()
+            };
+        }
+
         private void btnSave_Click(object sender, EventArgs e)
         {
             // This triggers ALL Validating events
@@ -145,21 +165,7 @@ namespace DVLD.PresentationLayer.People
             if (!ValidateRadioGroups())
                 return;
 
-            _person.NationalNo = txtNationalNo.Text;
-            _person.FirstName = txtFirstName.Text;
-            _person.SecondName = txtSecondName.Text;
-            _person.ThirdName = txtThirdName.Text;
-            _person.LastName = txtLastName.Text;
-            _person.DateOfBirth = dtpDateOfBirth.Value;
-            _person.Gender = rbMale.Checked ? enGender.Male : enGender.Female;
-            _person.Email = txtEmail.Text;
-            _person.Phone = txtPhone.Text;
-            _person.Nationality = new Country
-            {
-                ID = cbCountry.SelectedIndex,
-                Name = cbCountry.SelectedItem.ToString()
-            };
-            _person.Address = txtAddress.Text;
+            MapData();
 
             if (PersonBusiness.Save(_person))
                 MessageBox.Show($"Saved the person data sucessfully with id {_person.ID}!");
@@ -256,6 +262,23 @@ namespace DVLD.PresentationLayer.People
         private void frmAddUpdatePerson_FormClosing(object sender, FormClosingEventArgs e)
         {
             e.Cancel = false; // ensures that user can exit the form if there's an active error.
+        }
+
+        private void txtEmail_Validating(object sender, CancelEventArgs e)
+        {
+            string processedEmail = txtEmail.Text.Trim();
+
+            // Email is not required
+            if (processedEmail.Length == 0)
+            {
+                errProviderValidation.SetError(txtEmail, string.Empty);
+                return;
+            }
+
+            if (!ValidationHelper.IsValidEmail(processedEmail))
+                errProviderValidation.SetError(txtEmail, "Please enter a valid email address!");
+            else
+                errProviderValidation.SetError(txtEmail, string.Empty);
         }
     }
 }
