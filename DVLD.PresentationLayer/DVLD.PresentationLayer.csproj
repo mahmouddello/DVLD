@@ -72,6 +72,8 @@
     <Compile Include="frmMain.Designer.cs">
       <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="Globals\SharedGlobals.cs" />
+    <Compile Include="Globals\UtilityHelper.cs" />
     <Compile Include="People\ctrlPersonInformation.cs">
       <SubType>UserControl</SubType>
     </Compile>

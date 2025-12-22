@@ -54,7 +54,7 @@
             this.label11 = new System.Windows.Forms.Label();
             this.cbCountry = new System.Windows.Forms.ComboBox();
             this.label12 = new System.Windows.Forms.Label();
-            this.pbPersonImage = new System.Windows.Forms.PictureBox();
+            this.pbPerson = new System.Windows.Forms.PictureBox();
             this.llImageLink = new System.Windows.Forms.LinkLabel();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
@@ -62,7 +62,7 @@
             this.errProviderValidation = new System.Windows.Forms.ErrorProvider(this.components);
             this.txtAddress = new System.Windows.Forms.TextBox();
             this.gbGender.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbPersonImage)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbPerson)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errProviderValidation)).BeginInit();
             this.SuspendLayout();
             // 
@@ -318,15 +318,15 @@
             this.label12.TabIndex = 27;
             this.label12.Text = "Address:";
             // 
-            // pbPersonImage
+            // pbPerson
             // 
-            this.pbPersonImage.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.pbPersonImage.Location = new System.Drawing.Point(881, 233);
-            this.pbPersonImage.Name = "pbPersonImage";
-            this.pbPersonImage.Size = new System.Drawing.Size(219, 208);
-            this.pbPersonImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pbPersonImage.TabIndex = 29;
-            this.pbPersonImage.TabStop = false;
+            this.pbPerson.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.pbPerson.Location = new System.Drawing.Point(881, 233);
+            this.pbPerson.Name = "pbPerson";
+            this.pbPerson.Size = new System.Drawing.Size(219, 208);
+            this.pbPerson.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbPerson.TabIndex = 29;
+            this.pbPerson.TabStop = false;
             // 
             // llImageLink
             // 
@@ -393,7 +393,7 @@
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.llImageLink);
-            this.Controls.Add(this.pbPersonImage);
+            this.Controls.Add(this.pbPerson);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.cbCountry);
             this.Controls.Add(this.label11);
@@ -423,7 +423,7 @@
             this.Load += new System.EventHandler(this.frmAddUpdatePerson_Load);
             this.gbGender.ResumeLayout(false);
             this.gbGender.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbPersonImage)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbPerson)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errProviderValidation)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -457,7 +457,7 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.ComboBox cbCountry;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.PictureBox pbPersonImage;
+        private System.Windows.Forms.PictureBox pbPerson;
         private System.Windows.Forms.LinkLabel llImageLink;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnClose;

@@ -20,24 +20,25 @@ namespace DVLD.BusinessLayer
                 return null;
 
             return new Person
-            {
-                ID = (int)row["PersonID"],
-                NationalNo = (string)row["NationalNo"],
-                FirstName = (string)row["FirstName"],
-                SecondName = (string)row["SecondName"],
-                ThirdName = row["ThirdName"] != DBNull.Value ? (string)row["ThirdName"] : string.Empty,
-                LastName = (string)row["LastName"],
-                DateOfBirth = (DateTime)row["DateOfBirth"],
-                Gender = (enGender)(byte)row["Gender"],
-                Address = (string)row["Address"],
-                Phone = (string)row["Phone"],
-                Email = row["Email"] != DBNull.Value ? (string)row["Email"] : string.Empty,
-                ImagePath = row["ImagePath"] != DBNull.Value ? (string)row["ImagePath"] : string.Empty,
-                Nationality = new Country{
-                    ID = (int)row["CountryID"],
-                    Name = (string)row["Nationality"]
-                }
-            };
+            (
+                id: (int)row["PersonID"],
+                nationalNo: (string)row["NationalNo"],
+                firstName: (string)row["FirstName"],
+                secondName: (string)row["SecondName"],
+                thirdName: row["ThirdName"] != DBNull.Value ? (string)row["ThirdName"] : string.Empty,
+                lastName: (string)row["LastName"],
+                dateOfBirth: (DateTime)row["DateOfBirth"],
+                gender: (enGender)(byte)row["Gender"],
+                address: (string)row["Address"],
+                phone: (string)row["Phone"],
+                email: row["Email"] != DBNull.Value ? (string)row["Email"] : string.Empty,
+                imagePath: row["ImagePath"] != DBNull.Value ? (string)row["ImagePath"] : string.Empty,
+                nationality: new Country
+                (
+                    countryId: (int)row["CountryID"], 
+                    countryName: (string)row["Nationality"]
+                )
+            );
         }
 
         public static bool Delete(int personID)
