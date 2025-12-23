@@ -47,6 +47,26 @@ namespace DVLD.DataAccessLayer
             return dt.Rows.Count > 0 ? dt.Rows[0] : null;
         }
 
+        public static DataRow GetPersonByNationalNo(string nationalNo)
+        {
+            DataTable dt = new DataTable();
+            string query = @"SELECT * FROM vw_PersonDetails WHERE NationalNo = @NationalNo";
+
+            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@NationalNo", nationalNo);
+                connection.Open();
+
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    dt.Load(reader);
+                }
+            }
+
+            return dt.Rows.Count > 0 ? dt.Rows[0] : null;
+        }
+
         public static int InsertNewPerson(string nationalNo, string firstName,
             string secondName, string thirdName, string lastName, DateTime dateOfBirth,
             byte gender, string address, string phone, string email,
@@ -67,15 +87,15 @@ namespace DVLD.DataAccessLayer
                 command.Parameters.AddWithValue("@NationalNo", nationalNo);
                 command.Parameters.AddWithValue("@FirstName", firstName);
                 command.Parameters.AddWithValue("@SecondName", secondName);
-                command.Parameters.AddWithValue("@ThirdName", DbValue(thirdName));
+                command.Parameters.AddWithValue("@ThirdName", GetValueOrDBNull(thirdName));
                 command.Parameters.AddWithValue("@LastName", lastName);
                 command.Parameters.AddWithValue("@DateOfBirth", dateOfBirth);
                 command.Parameters.AddWithValue("@Gender", gender);
                 command.Parameters.AddWithValue("@Address", address);
                 command.Parameters.AddWithValue("@Phone", phone);
-                command.Parameters.AddWithValue("@Email", DbValue(email));
+                command.Parameters.AddWithValue("@Email", GetValueOrDBNull(email));
                 command.Parameters.AddWithValue("@CountryID", countryID);
-                command.Parameters.AddWithValue("@ImagePath", DbValue(imagePath));
+                command.Parameters.AddWithValue("@ImagePath", GetValueOrDBNull(imagePath));
 
                 try
                 {
@@ -95,7 +115,7 @@ namespace DVLD.DataAccessLayer
             return -1;
         }
 
-        public static bool UpdatePerson(int personID, string nationalNo, string firstName,
+        public static bool UpdatePersonByID(int personID, string nationalNo, string firstName,
             string secondName, string thirdName, string lastName, DateTime dateOfBirth,
             byte gender, string address, string phone, string email,
             int countryID, string imagePath)
@@ -123,15 +143,15 @@ namespace DVLD.DataAccessLayer
                 command.Parameters.AddWithValue("@NationalNo", nationalNo);
                 command.Parameters.AddWithValue("@FirstName", firstName);
                 command.Parameters.AddWithValue("@SecondName", secondName);
-                command.Parameters.AddWithValue("@ThirdName", DbValue(thirdName));
+                command.Parameters.AddWithValue("@ThirdName", GetValueOrDBNull(thirdName));
                 command.Parameters.AddWithValue("@LastName", lastName);
                 command.Parameters.AddWithValue("@DateOfBirth", dateOfBirth);
                 command.Parameters.AddWithValue("@Gender", gender);
                 command.Parameters.AddWithValue("@Address", address);
                 command.Parameters.AddWithValue("@Phone", phone);
-                command.Parameters.AddWithValue("@Email", DbValue(email));
+                command.Parameters.AddWithValue("@Email", GetValueOrDBNull(email));
                 command.Parameters.AddWithValue("@CountryID", countryID);
-                command.Parameters.AddWithValue("@ImagePath", DbValue(imagePath));
+                command.Parameters.AddWithValue("@ImagePath", GetValueOrDBNull(imagePath));
 
                 connection.Open();
                 rowsAffected = command.ExecuteNonQuery();
@@ -165,14 +185,12 @@ namespace DVLD.DataAccessLayer
             return rowsAffected > 0;
         }
 
-        private static object DbValue(string value)
+        private static object GetValueOrDBNull(string value)
         {
-            return string.IsNullOrWhiteSpace(value)
-                ? (object)DBNull.Value
-                : value;
+            return string.IsNullOrWhiteSpace(value) ? (object)DBNull.Value : value;
         }
 
-        public static bool IsExistByNationalNo(string nationalNo)
+        public static bool IsExistsByNationalNo(string nationalNo)
         {
             string query = @"SELECT FOUND = 1 FROM People WHERE NationalNo = @NationalNo";
             bool isFound = false;
@@ -190,5 +208,25 @@ namespace DVLD.DataAccessLayer
                 return isFound;
             }
         }
+
+        public static bool IsExistsByID(int personID)
+        {
+            string query = @"SELECT FOUND = 1 FROM People WHERE PersonID = @PersonID";
+            bool isFound = false;
+
+            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@PersonID", personID);
+                connection.Open();
+
+                object result = command.ExecuteScalar();
+                if (result != null)
+                    isFound = true;
+
+                return isFound;
+            }
+        }
+
     }
 }

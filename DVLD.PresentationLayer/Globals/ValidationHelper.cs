@@ -17,7 +17,7 @@ namespace DVLD.PresentationLayer
 
         public static bool IsUniqueNationalNo(string nationalNo)
         {
-            return !PersonBusiness.ExistsByNationalNo(nationalNo);
+            return !PersonBusiness.IsExists(nationalNo);
         }
     }
 }

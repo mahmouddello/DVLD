@@ -41,6 +41,35 @@ namespace DVLD.BusinessLayer
             );
         }
 
+        public static Person Find(string nationalNo)
+        {
+            DataRow row = PersonDataAccess.GetPersonByNationalNo(nationalNo);
+
+            if (row == null)
+                return null;
+
+            return new Person
+            (
+                id: (int)row["PersonID"],
+                nationalNo: (string)row["NationalNo"],
+                firstName: (string)row["FirstName"],
+                secondName: (string)row["SecondName"],
+                thirdName: row["ThirdName"] != DBNull.Value ? (string)row["ThirdName"] : string.Empty,
+                lastName: (string)row["LastName"],
+                dateOfBirth: (DateTime)row["DateOfBirth"],
+                gender: (enGender)(byte)row["Gender"],
+                address: (string)row["Address"],
+                phone: (string)row["Phone"],
+                email: row["Email"] != DBNull.Value ? (string)row["Email"] : string.Empty,
+                imagePath: row["ImagePath"] != DBNull.Value ? (string)row["ImagePath"] : string.Empty,
+                nationality: new Country
+                (
+                    countryId: (int)row["CountryID"], 
+                    countryName: (string)row["Nationality"]
+                )
+            );
+        }
+
         public static bool Delete(int personID)
         {
             return PersonDataAccess.DeletePersonByID(personID);
@@ -61,7 +90,7 @@ namespace DVLD.BusinessLayer
 
         private static bool Update(Person person)
         {
-            return PersonDataAccess.UpdatePerson(person.ID, person.NationalNo, person.FirstName, person.SecondName,
+            return PersonDataAccess.UpdatePersonByID(person.ID, person.NationalNo, person.FirstName, person.SecondName,
                     person.ThirdName, person.LastName, person.DateOfBirth,
                     (byte)person.Gender, person.Address, person.Phone,
                     person.Email, person.Nationality.ID, person.ImagePath);
@@ -75,9 +104,14 @@ namespace DVLD.BusinessLayer
             return Update(person);
         }
 
-        public static bool ExistsByNationalNo(string nationalNo)
+        public static bool IsExists(string nationalNo)
         {
-            return PersonDataAccess.IsExistByNationalNo(nationalNo);
+            return PersonDataAccess.IsExistsByNationalNo(nationalNo);
+        }
+
+        public static bool IsExists(int personID)
+        {
+            return PersonDataAccess.IsExistsByID(personID);
         }
     }
 }
