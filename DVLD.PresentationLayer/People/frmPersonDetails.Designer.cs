@@ -28,21 +28,22 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmPersonDetails));
             this.label1 = new System.Windows.Forms.Label();
             this.btnCloseForm = new System.Windows.Forms.Button();
-            this.ctrlPersonInformation1 = new DVLD.PresentationLayer.People.ctrlPersonInformation();
+            this.ctrlPersonInformation1 = new DVLD.PresentationLayer.People.ctrlPersonCard();
             this.SuspendLayout();
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 22F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.Firebrick;
-            this.label1.Location = new System.Drawing.Point(425, 52);
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.Black;
+            this.label1.Location = new System.Drawing.Point(21, 52);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(306, 52);
+            this.label1.Size = new System.Drawing.Size(1115, 52);
             this.label1.TabIndex = 1;
             this.label1.Text = "Person Details";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // btnCloseForm
             // 
@@ -70,18 +71,17 @@
             this.Controls.Add(this.ctrlPersonInformation1);
             this.Controls.Add(this.btnCloseForm);
             this.Controls.Add(this.label1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmPersonDetails";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Person Details";
-            this.Load += new System.EventHandler(this.frmPersonDetails_Load);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnCloseForm;
-        private ctrlPersonInformation ctrlPersonInformation1;
+        private ctrlPersonCard ctrlPersonInformation1;
     }
 }

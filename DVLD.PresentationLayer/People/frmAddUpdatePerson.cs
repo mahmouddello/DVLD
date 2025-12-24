@@ -25,6 +25,11 @@ namespace DVLD.PresentationLayer.People
         private string _selectedImageSourcePath = null; // new image (not saved yet)
         private bool _imageMarkedForDeletion;
 
+        public delegate void DataBackEventHandler(object sender, int PersonID);
+
+        // Declare an event using the delegate
+        public event DataBackEventHandler DataBack;
+
         private string _fullImagePath
         {
             get
@@ -245,7 +250,14 @@ namespace DVLD.PresentationLayer.People
             HandleImage();
 
             if (PersonBusiness.Save(_person))
+            {
                 MessageBox.Show($"Saved the person data sucessfully with id {_person.ID}!");
+                _mode = enMode.Update;
+                lblModeTitle.Text = "Edit Person Details";
+
+                // Trigger the event to send data back to the caller form.
+                DataBack?.Invoke(this, _person.ID);
+            }
             else
                 MessageBox.Show("Failed to save person data to the database!");
         }

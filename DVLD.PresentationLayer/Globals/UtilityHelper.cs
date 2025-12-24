@@ -59,5 +59,11 @@ namespace DVLD.PresentationLayer.Globals
                 return false;
             }
         }
+
+        public static void PlayBeepSound()
+        {
+            System.Media.SystemSounds.Beep.Play();
+        }
+
     }
 }

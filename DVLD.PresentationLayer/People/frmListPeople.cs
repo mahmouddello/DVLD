@@ -2,26 +2,27 @@
 using System.Data;
 using System.Windows.Forms;
 using DVLD.BusinessLayer;
+using DVLD.PresentationLayer.Globals;
 
 namespace DVLD.PresentationLayer.People
 {
-    enum enFilterTypes : byte
-    {
-        None,
-        PersonID,
-        NationalNo,
-        FirstName,
-        SecondName,
-        ThirdName,
-        LastName,
-        Gender,
-        Nationality,
-        Phone,
-        Email
-    }
-
     public partial class frmListPeople : Form
     {
+        private enum enFilterTypes : byte
+        {
+            None,
+            PersonID,
+            NationalNo,
+            FirstName,
+            SecondName,
+            ThirdName,
+            LastName,
+            Gender,
+            Nationality,
+            Phone,
+            Email
+        }
+
         DataTable _peopleDataTable;
         
         public frmListPeople()
@@ -256,7 +257,7 @@ namespace DVLD.PresentationLayer.People
                 // Numeric Fields: Only numbers allowed
                 case enFilterTypes.PersonID:
                 case enFilterTypes.Phone:
-                    if (!char.IsDigit(e.KeyChar)) { System.Media.SystemSounds.Beep.Play(); e.Handled = true; }
+                    if (!char.IsDigit(e.KeyChar)) { UtilityHelper.PlayBeepSound(); e.Handled = true; }
                     break;
 
                 // String Only Fields : Only letters allowed
@@ -265,7 +266,7 @@ namespace DVLD.PresentationLayer.People
                 case enFilterTypes.ThirdName:
                 case enFilterTypes.LastName:
                 case enFilterTypes.Nationality:
-                    if (!char.IsLetter(e.KeyChar)) { System.Media.SystemSounds.Beep.Play(); e.Handled = true; }
+                    if (!char.IsLetter(e.KeyChar)) { UtilityHelper.PlayBeepSound(); e.Handled = true; }
                     break;
 
                 // String + Numeric Mix Fields (National No, Email): Don't do checks;

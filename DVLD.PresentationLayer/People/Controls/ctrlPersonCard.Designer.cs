@@ -1,6 +1,6 @@
 ﻿namespace DVLD.PresentationLayer.People
 {
-    partial class ctrlPersonInformation
+    partial class ctrlPersonCard
     {
         /// <summary> 
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.gbPersonInfo = new System.Windows.Forms.GroupBox();
-            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.llEditInfo = new System.Windows.Forms.LinkLabel();
             this.pbImage = new System.Windows.Forms.PictureBox();
             this.lblCountry = new System.Windows.Forms.Label();
             this.lblPhone = new System.Windows.Forms.Label();
@@ -55,7 +55,7 @@
             // 
             // gbPersonInfo
             // 
-            this.gbPersonInfo.Controls.Add(this.linkLabel1);
+            this.gbPersonInfo.Controls.Add(this.llEditInfo);
             this.gbPersonInfo.Controls.Add(this.pbImage);
             this.gbPersonInfo.Controls.Add(this.lblCountry);
             this.gbPersonInfo.Controls.Add(this.lblPhone);
@@ -83,15 +83,16 @@
             this.gbPersonInfo.TabStop = false;
             this.gbPersonInfo.Text = "Person Information";
             // 
-            // linkLabel1
+            // llEditInfo
             // 
-            this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(909, 114);
-            this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(149, 25);
-            this.linkLabel1.TabIndex = 19;
-            this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "Edit Person Info";
+            this.llEditInfo.AutoSize = true;
+            this.llEditInfo.Location = new System.Drawing.Point(909, 114);
+            this.llEditInfo.Name = "llEditInfo";
+            this.llEditInfo.Size = new System.Drawing.Size(149, 25);
+            this.llEditInfo.TabIndex = 19;
+            this.llEditInfo.TabStop = true;
+            this.llEditInfo.Text = "Edit Person Info";
+            this.llEditInfo.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llEditInfo_LinkClicked);
             // 
             // pbImage
             // 
@@ -308,7 +309,7 @@
         public System.Windows.Forms.Label lblCountry;
         public System.Windows.Forms.Label lblPhone;
         public System.Windows.Forms.Label lblDateOfBirth;
-        private System.Windows.Forms.LinkLabel linkLabel1;
+        private System.Windows.Forms.LinkLabel llEditInfo;
         public System.Windows.Forms.PictureBox pbImage;
     }
 }
