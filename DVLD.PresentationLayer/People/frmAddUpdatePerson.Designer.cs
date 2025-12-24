@@ -61,6 +61,7 @@
             this.dialogSetImage = new System.Windows.Forms.OpenFileDialog();
             this.errProviderValidation = new System.Windows.Forms.ErrorProvider(this.components);
             this.txtAddress = new System.Windows.Forms.TextBox();
+            this.llRemoveImage = new System.Windows.Forms.LinkLabel();
             this.gbGender.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbPerson)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errProviderValidation)).BeginInit();
@@ -68,13 +69,13 @@
             // 
             // lblModeTitle
             // 
-            this.lblModeTitle.AutoSize = true;
             this.lblModeTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblModeTitle.Location = new System.Drawing.Point(473, 25);
+            this.lblModeTitle.Location = new System.Drawing.Point(40, 25);
             this.lblModeTitle.Name = "lblModeTitle";
-            this.lblModeTitle.Size = new System.Drawing.Size(113, 40);
+            this.lblModeTitle.Size = new System.Drawing.Size(1060, 40);
             this.lblModeTitle.TabIndex = 0;
             this.lblModeTitle.Text = "label1";
+            this.lblModeTitle.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // label1
             // 
@@ -384,11 +385,26 @@
             this.txtAddress.TabIndex = 10;
             this.txtAddress.Validating += new System.ComponentModel.CancelEventHandler(this.RequiredField_Validating);
             // 
+            // llRemoveImage
+            // 
+            this.llRemoveImage.AutoSize = true;
+            this.llRemoveImage.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.llRemoveImage.Location = new System.Drawing.Point(940, 540);
+            this.llRemoveImage.Name = "llRemoveImage";
+            this.llRemoveImage.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.llRemoveImage.Size = new System.Drawing.Size(84, 25);
+            this.llRemoveImage.TabIndex = 30;
+            this.llRemoveImage.TabStop = true;
+            this.llRemoveImage.Text = "Remove";
+            this.llRemoveImage.Visible = false;
+            this.llRemoveImage.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llRemoveImage_LinkClicked);
+            // 
             // frmAddUpdatePerson
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1155, 694);
+            this.Controls.Add(this.llRemoveImage);
             this.Controls.Add(this.txtAddress);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.btnSave);
@@ -464,5 +480,6 @@
         private System.Windows.Forms.OpenFileDialog dialogSetImage;
         private System.Windows.Forms.ErrorProvider errProviderValidation;
         private System.Windows.Forms.TextBox txtAddress;
+        private System.Windows.Forms.LinkLabel llRemoveImage;
     }
 }

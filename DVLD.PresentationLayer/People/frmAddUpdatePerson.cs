@@ -15,23 +15,39 @@ namespace DVLD.PresentationLayer.People
     public partial class frmAddUpdatePerson : Form
     {
 
+        private enum enMode { AddNew = 0, Update = 1 }
+        private enMode _mode;
+
         private Person _person;
         private int _personID;
         private string _originalNationalNo;
-        private string _persistedImagePath; // saved image
-        private string _selectedImageSourcePath = null;     // new image (not saved yet)
+        private string _persistedImagePath = null; // saved image
+        private string _selectedImageSourcePath = null; // new image (not saved yet)
+        private bool _imageMarkedForDeletion;
+
         private string _fullImagePath
         {
             get
             {
+                if (_person == null)
+                    return null;
+
                 return Path.Combine(SharedGlobals.ImagesRootDirectory, _person.ImagePath);
             }
+        }
+
+        public frmAddUpdatePerson()
+        {
+            InitializeComponent();
+            _mode = enMode.AddNew;
         }
 
         public frmAddUpdatePerson(int personID)
         {
             InitializeComponent();
+
             _personID = personID;
+            _mode = enMode.Update;
         }
 
         private void _LoadCountryCombobox()
@@ -43,19 +59,24 @@ namespace DVLD.PresentationLayer.People
                 cbCountry.Items.Add(dr["CountryName"]);
         }
 
-        private void _LoadPersonData()
+        private void _SetDefaultValues()
         {
             _LoadCountryCombobox();
             cbCountry.SelectedIndex = 0; // None, Default
-            dtpDateOfBirth.MaxDate = DateTime.Now.AddYears(-18);
+            llRemoveImage.Visible = false;
 
-            if (_personID == -1)
+            if (_mode  == enMode.AddNew)
             {
-                _person = new Person();
                 lblModeTitle.Text = "Add New Person";
-                return;
+                _person = new Person();
             }
 
+            dtpDateOfBirth.MaxDate = DateTime.Now.AddYears(-18);
+            dtpDateOfBirth.MinDate = DateTime.Now.AddYears(-100);
+        }
+
+        private void _LoadPersonData()
+        {
             _person = PersonBusiness.Find(_personID);
 
             if (_person == null)
@@ -88,6 +109,7 @@ namespace DVLD.PresentationLayer.People
             {
                 _persistedImagePath = _person.ImagePath; // save original guid.png
                 pbPerson.Image = Image.FromFile(_fullImagePath); // load the image
+                llRemoveImage.Visible = true;
             }
             else
                 _UpdateDefaultImage();
@@ -95,7 +117,10 @@ namespace DVLD.PresentationLayer.People
 
         private void frmAddUpdatePerson_Load(object sender, System.EventArgs e)
         {
-            _LoadPersonData();
+            _SetDefaultValues();
+
+            if (_mode == enMode.Update)
+                _LoadPersonData();
         }
 
         private void _UpdateDefaultImage()
@@ -148,19 +173,36 @@ namespace DVLD.PresentationLayer.People
 
             if (dialogSetImage.ShowDialog() == DialogResult.OK)
             {
-                pbPerson.Image?.Dispose(); // release image reference if not null
+                pbPerson.Image?.Dispose();
                 pbPerson.Image = null;
 
                 _selectedImageSourcePath = dialogSetImage.FileName;
-                pbPerson.Image = Image.FromFile($"{_selectedImageSourcePath}");
+                pbPerson.Image = Image.FromFile(_selectedImageSourcePath);
+
+                _imageMarkedForDeletion = false;
+                llRemoveImage.Visible = true;
             }
         }
 
-        private void SavePersonImageIfChanged()
+        private void HandleImage()
         {
-            if (_selectedImageSourcePath == null)
+            // Case 1: Image removed
+            if (_imageMarkedForDeletion)
+            {
+                if (!string.IsNullOrWhiteSpace(_persistedImagePath))
+                    UtilityHelper.DeleteImageFromDirectory(_persistedImagePath);
+
+                _person.ImagePath = null;
+                _persistedImagePath = null;
+                _imageMarkedForDeletion = false;
+                return;
+            }
+
+            // Case 2: Image unchanged
+            if (string.IsNullOrWhiteSpace(_selectedImageSourcePath))
                 return;
 
+            // Case 3: Image replaced
             string newImagePath = UtilityHelper.CopyImageToDirectory(_selectedImageSourcePath);
 
             if (!string.IsNullOrWhiteSpace(_persistedImagePath))
@@ -200,7 +242,7 @@ namespace DVLD.PresentationLayer.People
                 return;
 
             MapPersonFields();
-            SavePersonImageIfChanged();
+            HandleImage();
 
             if (PersonBusiness.Save(_person))
                 MessageBox.Show($"Saved the person data sucessfully with id {_person.ID}!");
@@ -341,6 +383,17 @@ namespace DVLD.PresentationLayer.People
                 e.Cancel = false;
                 errProviderValidation.SetError(txtNationalNo, string.Empty);
             }
+        }
+
+        private void llRemoveImage_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            pbPerson.Image?.Dispose();
+            pbPerson.Image = null;
+
+            _selectedImageSourcePath = null;
+            _imageMarkedForDeletion = true;
+
+            llRemoveImage.Visible = false;
         }
     }
 }

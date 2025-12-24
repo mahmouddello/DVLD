@@ -187,7 +187,7 @@ namespace DVLD.PresentationLayer.People
 
         private void btnAddNewPerson_Click(object sender, EventArgs e)
         {
-            frmAddUpdatePerson frm = new frmAddUpdatePerson(-1);
+            frmAddUpdatePerson frm = new frmAddUpdatePerson();
             frm.ShowDialog();
 
             _LoadData();
