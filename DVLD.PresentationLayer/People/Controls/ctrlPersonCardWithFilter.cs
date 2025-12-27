@@ -17,8 +17,8 @@ namespace DVLD.PresentationLayer.People
     {
         private enum enFilterMode
         {
-            PersonID = 1,
-            NationalNo = 2
+            PersonID = 0,
+            NationalNo = 1
         }
         private enFilterMode filterMode;
 
@@ -88,23 +88,36 @@ namespace DVLD.PresentationLayer.People
 
         private void txtQuery_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (e.KeyChar == (char)13) // enter key
+            // ENTER key
+            if (e.KeyChar == (char)Keys.Enter)
+            {
                 btnSearch.PerformClick();
+                e.Handled = true;
+                return;
+            }
 
-            // The pressed key is : space, delete, backspace, ...etc. skips the checks.
-            if (char.IsControl(e.KeyChar)) return;
+            // Allow control keys (Backspace, Delete, etc.)
+            if (char.IsControl(e.KeyChar))
+                return;
 
             filterMode = (enFilterMode)cbFilter.SelectedIndex;
 
             switch (filterMode)
             {
                 case enFilterMode.PersonID:
-                    if (!char.IsDigit(e.KeyChar)) { UtilityHelper.PlayBeepSound(); e.Handled = true; }
+                    if (!char.IsDigit(e.KeyChar))
+                    {
+                        UtilityHelper.PlayBeepSound();
+                        e.Handled = true;
+                    }
                     break;
+
                 case enFilterMode.NationalNo:
-                    if (!char.IsLetter(e.KeyChar)) { UtilityHelper.PlayBeepSound(); e.Handled = true; }
-                    break;
-                default:
+                    if (!char.IsLetterOrDigit(e.KeyChar))
+                    {
+                        UtilityHelper.PlayBeepSound();
+                        e.Handled = true;
+                    }
                     break;
             }
         }
@@ -170,6 +183,7 @@ namespace DVLD.PresentationLayer.People
         private void ctrlPersonCardWithFilter_Load(object sender, EventArgs e)
         {
             cbFilter.SelectedIndex = 0;
+            filterMode = (enFilterMode)cbFilter.SelectedIndex;
             txtQuery.Focus();
         }
     }
