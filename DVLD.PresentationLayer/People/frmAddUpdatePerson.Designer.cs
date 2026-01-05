@@ -434,6 +434,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lblModeTitle);
             this.Name = "frmAddUpdatePerson";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Add / Edit Person Form";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmAddUpdatePerson_FormClosing);
             this.Load += new System.EventHandler(this.frmAddUpdatePerson_Load);

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -66,6 +67,11 @@ namespace DVLD.BusinessLayer
         private static bool Update(User user)
         {
             return UserData.UpdateById(user.UserId, user.PersonId, user.Username, user.Password, user.IsActive);
+        }
+
+        public static bool Delete(int userId)
+        {
+            return UserData.DeleteById(userId);
         }
 
         public static bool Save(User user)

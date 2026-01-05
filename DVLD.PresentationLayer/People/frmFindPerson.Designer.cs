@@ -76,6 +76,7 @@
             this.Controls.Add(this.ctrlPersonCardWithFilter1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmFindPerson";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Find Person";
             this.ResumeLayout(false);
 

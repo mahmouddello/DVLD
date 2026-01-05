@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 using dotenv.net;
 using DVLD.PresentationLayer.People;
+using DVLD.PresentationLayer.Users;
 
 namespace DVLD.PresentationLayer
 {
@@ -32,13 +33,9 @@ namespace DVLD.PresentationLayer
 
         private void usersToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show
-            (
-                "This feature will be implemented in the future",
-                "Stub",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Warning
-            );
+            frmListUsers form = new frmListUsers();
+            form.MdiParent = this;
+            form.Show();
         }
 
         private void _LoadDotEnv()

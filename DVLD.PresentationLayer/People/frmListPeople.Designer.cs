@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmListPeople));
             this.dgvAllPeople = new System.Windows.Forms.DataGridView();
             this.cmsOptions = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -55,9 +56,9 @@
             // dgvAllPeople
             // 
             this.dgvAllPeople.AllowUserToAddRows = false;
-            this.dgvAllPeople.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dgvAllPeople.AllowUserToResizeColumns = false;
             this.dgvAllPeople.BackgroundColor = System.Drawing.SystemColors.ButtonHighlight;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
@@ -77,7 +78,11 @@
             this.dgvAllPeople.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvAllPeople.Location = new System.Drawing.Point(19, 312);
             this.dgvAllPeople.Name = "dgvAllPeople";
+            this.dgvAllPeople.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.dgvAllPeople.RowHeadersWidth = 62;
+            this.dgvAllPeople.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
+            this.dgvAllPeople.RowsDefaultCellStyle = dataGridViewCellStyle3;
             this.dgvAllPeople.RowTemplate.Height = 28;
             this.dgvAllPeople.Size = new System.Drawing.Size(1657, 466);
             this.dgvAllPeople.TabIndex = 0;
@@ -201,10 +206,6 @@
             this.cbGender.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbGender.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbGender.FormattingEnabled = true;
-            this.cbGender.Items.AddRange(new object[] {
-            "All",
-            "Male",
-            "Female"});
             this.cbGender.Location = new System.Drawing.Point(231, 260);
             this.cbGender.Name = "cbGender";
             this.cbGender.Size = new System.Drawing.Size(160, 33);
@@ -250,7 +251,8 @@
             this.Controls.Add(this.dgvAllPeople);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmListPeople";
-            this.Text = "frmListPeople";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Manage People";
             this.Load += new System.EventHandler(this.frmListPeople_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvAllPeople)).EndInit();
             this.cmsOptions.ResumeLayout(false);

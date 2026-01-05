@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,7 +14,19 @@ namespace DVLD.DataAccessLayer
         public static DataTable GetAll()
         {
             DataTable dt = new DataTable();
-            string query = @"SELECT UserID, PersonID, Username, IsActive FROM Users";
+            string query = @"SELECT 
+                                U.UserID,
+                                U.PersonID,
+                                U.UserName,
+                                U.IsActive,
+                                CONCAT(
+                                    P.FirstName, ' ',
+                                    P.SecondName, ' ',
+                                    ISNULL(P.ThirdName + ' ', ''),
+                                    P.LastName
+                                ) AS FullName
+                            FROM Users U
+                            INNER JOIN People P ON U.PersonID = P.PersonID;";
 
             using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
             using (SqlCommand command = new SqlCommand(query, connection))
@@ -51,7 +64,7 @@ namespace DVLD.DataAccessLayer
         public static DataRow GetByUsername(string username)
         {
             DataTable dt = new DataTable();
-            string query = @"SELECT * FROM Users WHERE Username = @Username";
+            string query = @"SELECT * FROM Users WHERE UserName = @Username";
 
             using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
             using (SqlCommand command = new SqlCommand(query, connection))
@@ -84,7 +97,7 @@ namespace DVLD.DataAccessLayer
 
         public static bool ExistsByUsername(string username)
         {
-            string query = @"SELECT 1 FROM Users WHERE Username = @Username";
+            string query = @"SELECT 1 FROM Users WHERE UserName = @Username";
 
             using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
             using (SqlCommand command = new SqlCommand(query, connection))
@@ -98,37 +111,51 @@ namespace DVLD.DataAccessLayer
 
         public static bool DeleteById(int userId)
         {
-            string query = @"DELETE FROM Users WHERE UserID = @UserID";
-
-            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
-            using (SqlCommand command = new SqlCommand(query, connection))
+            try
             {
-                command.Parameters.AddWithValue("@UserID", userId);
-                connection.Open();
+                string query = "DELETE FROM Users WHERE UserID = @UserID";
 
-                return command.ExecuteNonQuery() > 0;
+                using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@UserID", userId);
+                    connection.Open();
+
+                    return command.ExecuteNonQuery() > 0;
+                }
+            }
+            catch (SqlException ex)
+            {
+                Debug.WriteLine(ex.Message);
+                return false;
             }
         }
 
-        public static int InsertNew(int personId, string username,  string password, bool isActive)
+        public static int InsertNew(int personId, string username, string password, bool isActive)
         {
-            string query = @"INSERT INTO Users (PersonID, Username, Password, IsActive)
-                                    VALUES (@PersonID, @Username, @Password, @IsActive);
-                             SELECT SCOPE_IDENTITY();";
-
-            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
-            using (SqlCommand command = new SqlCommand(query, connection))
+            try
             {
-                command.Parameters.AddWithValue("@PersonID", personId);
-                command.Parameters.AddWithValue("@Username", username);
-                command.Parameters.AddWithValue("@Password", password);
-                command.Parameters.AddWithValue("@IsActive", isActive);
+                string query = @"INSERT INTO Users (PersonID, UserName, Password, IsActive)
+                         VALUES (@PersonID, @Username, @Password, @IsActive);
+                         SELECT SCOPE_IDENTITY();";
 
-                connection.Open();
+                using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@PersonID", personId);
+                    command.Parameters.AddWithValue("@Username", username);
+                    command.Parameters.AddWithValue("@Password", password);
+                    command.Parameters.AddWithValue("@IsActive", isActive);
 
-                object result = command.ExecuteScalar();
+                    connection.Open();
+                    object result = command.ExecuteScalar();
 
-                return result == null ? -1 : Convert.ToInt32(result);
+                    return result == null ? -1 : Convert.ToInt32(result);
+                }
+            }
+            catch
+            {
+                return -1;
             }
         }
 
@@ -136,22 +163,32 @@ namespace DVLD.DataAccessLayer
         {
             string query = @"UPDATE Users SET
                                  PersonID = @PersonID,
-                                 Username = @Username,
+                                 UserName = @Username,
                                  Password = @Password,
                                  IsActive = @IsActive
                              WHERE 
                                  UserID = @UserID";
-
-            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
-            using (SqlCommand command = new SqlCommand(query, connection))
+            try
             {
-                command.Parameters.AddWithValue("@UserID", userId);
-                command.Parameters.AddWithValue("@PersonID", personId);
-                command.Parameters.AddWithValue("@Username", username);
-                command.Parameters.AddWithValue("@Password", password);
-                command.Parameters.AddWithValue("@IsActive", isActive);
 
-                return command.ExecuteNonQuery() > 0;
+                using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@UserID", userId);
+                    command.Parameters.AddWithValue("@PersonID", personId);
+                    command.Parameters.AddWithValue("@Username", username);
+                    command.Parameters.AddWithValue("@Password", password);
+                    command.Parameters.AddWithValue("@IsActive", isActive);
+
+                    return command.ExecuteNonQuery() > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Debug.WriteLine(ex.Message);
+                return false;
+
             }
         }
     }
