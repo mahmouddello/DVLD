@@ -188,6 +188,64 @@ namespace DVLD.PresentationLayer.Users
             ApplyQueryFilter();
         }
 
+        private void sendEmailToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show
+            (
+                "This feature will be implemented in the future",
+                "Stub",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Warning
+            );
+        }
+
+        private void sendSMSToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show
+            (
+                "This feature will be implemented in the future",
+                "Stub",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Warning
+            );
+        }
+
+        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int rowUserID = (int)dgvUsers.CurrentRow.Cells[0].Value;
+
+            if (MessageBox.Show
+            (
+                "Are you sure you want to delete this person? This action can't be undone!",
+                $"Delete Person ID = {rowUserID}",
+                MessageBoxButtons.OKCancel,
+                MessageBoxIcon.Warning
+            ) == DialogResult.OK)
+            {
+                if (UserBusiness.Delete(rowUserID))
+                {
+                    MessageBox.Show("Deleted Successfully!");
+                    LoadUsersFromDB();
+                    RefreshUsersList();
+                }
+                else
+                    MessageBox.Show(
+                        "Delete operation failed because of referential integrity error!",
+                        "Operation Failed",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning
+                    );
+            }
+        }
+
+        private void showDetailsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int rowUserId = (int)dgvUsers.CurrentRow.Cells[0].Value;
+
+            frmUserDetails form = new frmUserDetails(rowUserId);
+            form.ShowDialog();
+        }
+
         private void ApplyQueryFilter()
         {
             DataView dv = new DataView(dtAllUsers);
