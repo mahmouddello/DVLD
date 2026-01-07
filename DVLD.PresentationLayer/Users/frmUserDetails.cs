@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DVLD.EntityLayer;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -16,6 +17,12 @@ namespace DVLD.PresentationLayer.Users
         {
             InitializeComponent();
             ctrlUserLoginInfo1.LoadUserInfo(userId);
+        }
+
+        public frmUserDetails(User user)
+        {
+            InitializeComponent();
+            ctrlUserLoginInfo1.LoadUserInfo(user);
         }
 
         private void frmUserDetails_Load(object sender, EventArgs e)

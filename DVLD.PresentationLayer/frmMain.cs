@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using dotenv.net;
+using DVLD.PresentationLayer.Globals;
 using DVLD.PresentationLayer.People;
 using DVLD.PresentationLayer.Users;
 
@@ -38,17 +39,22 @@ namespace DVLD.PresentationLayer
             form.Show();
         }
 
-        private void _LoadDotEnv()
+        private void currentUserInfoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // Load .env once
-            string envPath = "../../../.env";
-            var options = new DotEnvOptions(envFilePaths: new[] { envPath }, overwriteExistingVars: true);
-            DotEnv.Load(options);
+            frmUserDetails frm = new frmUserDetails(SharedGlobals.CurrentUser);
+            frm.ShowDialog();
         }
 
-        private void frmMain_Load(object sender, EventArgs e)
+        private void signOutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _LoadDotEnv();
+            SharedGlobals.Logout();
+            this.Hide(); // hide main form
+
+            // Show login dialog first
+            frmLoginScreen loginForm = new frmLoginScreen();
+
+            if (loginForm.ShowDialog() == DialogResult.OK)
+                this.Show(); // unhide after successfull login
         }
     }
 }

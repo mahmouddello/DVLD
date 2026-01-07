@@ -40,6 +40,19 @@ namespace DVLD.PresentationLayer.Users
             FillUserInfo();
         }
 
+        public void LoadUserInfo(User userParam)
+        {
+            if (userParam == null)
+            {
+                ResetUserInfo();
+                MessageBox.Show("No User with UserID = " + userParam.UserId.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            user = userParam;
+            FillUserInfo();
+        }
+
         private void ResetUserInfo()
         {
             userID = -1; // not found

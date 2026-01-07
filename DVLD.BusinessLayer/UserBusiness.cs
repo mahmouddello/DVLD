@@ -91,5 +91,12 @@ namespace DVLD.BusinessLayer
         {
             return UserData.ExistsByUsername(username);
         }
+
+        public static User Login(string username, string password)
+        {
+            User user = Find(username);
+
+            return user == null || !user.IsActive || user.Password != password ? null: user;
+        }
     }
 }
