@@ -180,6 +180,8 @@ namespace DVLD.DataAccessLayer
                     command.Parameters.AddWithValue("@Password", password);
                     command.Parameters.AddWithValue("@IsActive", isActive);
 
+                    connection.Open();
+
                     return command.ExecuteNonQuery() > 0;
                 }
             }
@@ -188,7 +190,22 @@ namespace DVLD.DataAccessLayer
 
                 Debug.WriteLine(ex.Message);
                 return false;
+            }
+        }
 
+        public static bool UpdatePassword(int userId, string password)
+        {
+            string query = @"UPDATE Users SET Password = @Password WHERE UserID = @UserID";
+
+            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                connection.Open();
+
+                command.Parameters.AddWithValue("@UserID", userId);
+                command.Parameters.AddWithValue("@Password", password);
+
+                return command.ExecuteNonQuery() > 0;
             }
         }
     }

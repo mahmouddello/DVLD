@@ -1,8 +1,4 @@
-﻿using dotenv.net;
-using DVLD.BusinessLayer;
-using DVLD.EntityLayer;
-using DVLD.PresentationLayer.Globals;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -11,6 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DVLD.BusinessLayer;
+using DVLD.EntityLayer;
+using DVLD.PresentationLayer.GlobalClasses;
 
 namespace DVLD.PresentationLayer
 {
@@ -64,7 +63,7 @@ namespace DVLD.PresentationLayer
             }
             else
             {
-                SharedGlobals.CurrentUser = user;
+                Globals.CurrentUser = user;
                 this.DialogResult = DialogResult.OK;  // Signal success
                 this.Close();  // Now safe to close
             }

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Windows.Forms;
 using DVLD.BusinessLayer;
 using DVLD.EntityLayer;
-using DVLD.PresentationLayer.Globals;
+using DVLD.PresentationLayer.GlobalClasses;
 using DVLD.PresentationLayer.Properties;
 
 namespace DVLD.PresentationLayer.People
@@ -37,7 +37,7 @@ namespace DVLD.PresentationLayer.People
                 if (_person == null)
                     return null;
 
-                return Path.Combine(SharedGlobals.ImagesRootDirectory, _person.ImagePath);
+                return Path.Combine(Globals.ImagesRootDirectory, _person.ImagePath);
             }
         }
 
@@ -195,7 +195,7 @@ namespace DVLD.PresentationLayer.People
             if (_imageMarkedForDeletion)
             {
                 if (!string.IsNullOrWhiteSpace(_persistedImagePath))
-                    UtilityHelper.DeleteImageFromDirectory(_persistedImagePath);
+                    Utility.DeleteImageFromDirectory(_persistedImagePath);
 
                 _person.ImagePath = null;
                 _persistedImagePath = null;
@@ -208,10 +208,10 @@ namespace DVLD.PresentationLayer.People
                 return;
 
             // Case 3: Image replaced
-            string newImagePath = UtilityHelper.CopyImageToDirectory(_selectedImageSourcePath);
+            string newImagePath = Utility.CopyImageToDirectory(_selectedImageSourcePath);
 
             if (!string.IsNullOrWhiteSpace(_persistedImagePath))
-                UtilityHelper.DeleteImageFromDirectory(_persistedImagePath);
+                Utility.DeleteImageFromDirectory(_persistedImagePath);
 
             _person.ImagePath = newImagePath;
             _persistedImagePath = newImagePath;
@@ -271,13 +271,11 @@ namespace DVLD.PresentationLayer.People
         private void OnlyLettersTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             // The pressed key is : space, delete, backspace, ...etc. skips the checks.
-            if (char.IsControl(e.KeyChar)) return;
+            if (char.IsControl(e.KeyChar))
+                return;
 
             if (!char.IsLetter(e.KeyChar))
-            {
-                System.Media.SystemSounds.Beep.Play();
-                e.Handled = true;
-            }
+                Utility.HandleWrongKey(e);
             else
                 e.Handled = false;
         }
@@ -285,13 +283,11 @@ namespace DVLD.PresentationLayer.People
         private void OnlyDigitsTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             // The pressed key is : space, delete, backspace, ...etc. skips the checks.
-            if (char.IsControl(e.KeyChar)) return;
+            if (char.IsControl(e.KeyChar))
+                return;
 
             if (!char.IsDigit(e.KeyChar))
-            {
-                System.Media.SystemSounds.Beep.Play();
-                e.Handled = true;
-            }
+                Utility.HandleWrongKey(e);
             else
                 e.Handled = false;
         }
@@ -365,7 +361,7 @@ namespace DVLD.PresentationLayer.People
                 return;
             }
 
-            if (!ValidationHelper.IsValidEmail(processedEmail))
+            if (!Validation.IsValidEmail(processedEmail))
                 errProviderValidation.SetError(txtEmail, "Please enter a valid email address!");
             else
                 errProviderValidation.SetError(txtEmail, string.Empty);
@@ -383,7 +379,7 @@ namespace DVLD.PresentationLayer.People
                 return;
             }
 
-            if (!ValidationHelper.IsUniqueNationalNo(nationalNo) && nationalNo.ToLower() != _originalNationalNo.ToLower())
+            if (!Validation.IsUniqueNationalNo(nationalNo) && nationalNo.ToLower() != _originalNationalNo.ToLower())
             {
                 e.Cancel = true; // prevent user from leaving textbox.
                 txtNationalNo.Focus();

@@ -1,5 +1,4 @@
-﻿using DVLD.PresentationLayer.People;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -8,9 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace DVLD.PresentationLayer.Globals
+namespace DVLD.PresentationLayer.GlobalClasses
 {
-    internal static class UtilityHelper
+    public static class Utility
     {
         private static string NewGuidString()
         {
@@ -30,11 +29,11 @@ namespace DVLD.PresentationLayer.Globals
             if (!File.Exists(sourceFilePath))
                 throw new FileNotFoundException("Source image not found.", sourceFilePath);
 
-            EnsureDirectoryExists(SharedGlobals.ImagesRootDirectory);
+            EnsureDirectoryExists(Globals.ImagesRootDirectory);
 
             string extension = Path.GetExtension(sourceFilePath);
             string fileName = $"{NewGuidString()}{extension}";
-            string destinationPath = Path.Combine(SharedGlobals.ImagesRootDirectory, fileName);
+            string destinationPath = Path.Combine(Globals.ImagesRootDirectory, fileName);
 
             File.Copy(sourceFilePath, destinationPath, overwrite: true);
 
@@ -43,14 +42,14 @@ namespace DVLD.PresentationLayer.Globals
 
         public static bool DeleteImageFromDirectory(string fileName)
         {
-            string fullPath = Path.Combine(SharedGlobals.ImagesRootDirectory, fileName);
+            string fullPath = Path.Combine(Globals.ImagesRootDirectory, fileName);
 
             if (!File.Exists(fullPath))
                 return true; // Person's old image doesn't exists, accept as deleted
 
             try
             {
-                File.Delete(Path.Combine(SharedGlobals.ImagesRootDirectory, fileName));
+                File.Delete(Path.Combine(Globals.ImagesRootDirectory, fileName));
                 return true;
             }
             catch (Exception ex)
@@ -65,5 +64,26 @@ namespace DVLD.PresentationLayer.Globals
             System.Media.SystemSounds.Beep.Play();
         }
 
+        public static void HandleWrongKey(KeyPressEventArgs e)
+        {
+            PlayBeepSound();
+            e.Handled = true;
+        }
+
+        public static bool IsLoggedIn()
+        {
+            return Globals.CurrentUser != null;
+        }
+
+        public static bool Logout()
+        {
+            if (IsLoggedIn())
+            {
+                Globals.CurrentUser = null;
+                return true;
+            }
+
+            return false;
+        }
     }
 }

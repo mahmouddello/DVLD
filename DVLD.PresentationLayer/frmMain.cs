@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using dotenv.net;
-using DVLD.PresentationLayer.Globals;
+using DVLD.PresentationLayer.GlobalClasses;
 using DVLD.PresentationLayer.People;
 using DVLD.PresentationLayer.Users;
 
@@ -41,13 +41,13 @@ namespace DVLD.PresentationLayer
 
         private void currentUserInfoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            frmUserDetails frm = new frmUserDetails(SharedGlobals.CurrentUser);
+            frmUserDetails frm = new frmUserDetails(Globals.CurrentUser);
             frm.ShowDialog();
         }
 
         private void signOutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SharedGlobals.Logout();
+            Utility.Logout();
             this.Hide(); // hide main form
 
             // Show login dialog first
@@ -55,6 +55,12 @@ namespace DVLD.PresentationLayer
 
             if (loginForm.ShowDialog() == DialogResult.OK)
                 this.Show(); // unhide after successfull login
+        }
+
+        private void changePasswordToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmChangeUserPassword frm = new frmChangeUserPassword(Globals.CurrentUser);
+            frm.ShowDialog();
         }
     }
 }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using DVLD.BusinessLayer;
 using DVLD.EntityLayer;
-using DVLD.PresentationLayer.Globals;
+using DVLD.PresentationLayer.GlobalClasses;
 
 namespace DVLD.PresentationLayer.People
 {
@@ -100,24 +100,16 @@ namespace DVLD.PresentationLayer.People
             if (char.IsControl(e.KeyChar))
                 return;
 
-            filterMode = (enFilterMode)cbFilter.SelectedIndex;
-
             switch (filterMode)
             {
                 case enFilterMode.PersonID:
                     if (!char.IsDigit(e.KeyChar))
-                    {
-                        UtilityHelper.PlayBeepSound();
-                        e.Handled = true;
-                    }
+                        Utility.HandleWrongKey(e);
                     break;
 
                 case enFilterMode.NationalNo:
                     if (!char.IsLetterOrDigit(e.KeyChar))
-                    {
-                        UtilityHelper.PlayBeepSound();
-                        e.Handled = true;
-                    }
+                        Utility.HandleWrongKey(e);
                     break;
             }
         }
@@ -146,7 +138,6 @@ namespace DVLD.PresentationLayer.People
 
         private void FindNow()
         {
-            filterMode = (enFilterMode)cbFilter.SelectedIndex;
             string query = txtQuery.Text.Trim();
 
             switch (filterMode)

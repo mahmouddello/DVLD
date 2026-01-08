@@ -3,7 +3,7 @@ using System.IO;
 using System.Windows.Forms;
 using DVLD.BusinessLayer;
 using DVLD.EntityLayer;
-using DVLD.PresentationLayer.Globals;
+using DVLD.PresentationLayer.GlobalClasses;
 using DVLD.PresentationLayer.Properties;
 
 namespace DVLD.PresentationLayer.People
@@ -19,7 +19,7 @@ namespace DVLD.PresentationLayer.People
                 if (person == null)
                     return null;
 
-                return Path.Combine(SharedGlobals.ImagesRootDirectory, person.ImagePath);
+                return Path.Combine(Globals.ImagesRootDirectory, person.ImagePath);
             }
         }
 

@@ -2,7 +2,7 @@
 using System.Data;
 using System.Windows.Forms;
 using DVLD.BusinessLayer;
-using DVLD.PresentationLayer.Globals;
+using DVLD.PresentationLayer.GlobalClasses;
 
 namespace DVLD.PresentationLayer.People
 {
@@ -310,7 +310,8 @@ namespace DVLD.PresentationLayer.People
                 // Numeric Fields: Only numbers allowed
                 case enFilter.PersonID:
                 case enFilter.Phone:
-                    if (!char.IsDigit(e.KeyChar)) { UtilityHelper.PlayBeepSound(); e.Handled = true; }
+                    if (!char.IsDigit(e.KeyChar))
+                        Utility.HandleWrongKey(e);
                     break;
 
                 // String Only Fields : Only letters allowed
@@ -319,7 +320,8 @@ namespace DVLD.PresentationLayer.People
                 case enFilter.ThirdName:
                 case enFilter.LastName:
                 case enFilter.Nationality:
-                    if (!char.IsLetter(e.KeyChar)) { UtilityHelper.PlayBeepSound(); e.Handled = true; }
+                    if (!char.IsLetter(e.KeyChar))
+                        Utility.HandleWrongKey(e);
                     break;
 
                 // String + Numeric Mix Fields (National No, Email): Don't do checks;

@@ -98,5 +98,18 @@ namespace DVLD.BusinessLayer
 
             return user == null || !user.IsActive || user.Password != password ? null: user;
         }
+
+        public static bool ChangePassword(int userId, string currentPassword, string newPassword)
+        {
+            User user = Find(userId);
+
+            if (user == null)
+                return false;
+
+            if (user.Password != currentPassword)
+                return false;
+
+            return UserData.UpdatePassword(userId, newPassword);
+        }
     }
 }

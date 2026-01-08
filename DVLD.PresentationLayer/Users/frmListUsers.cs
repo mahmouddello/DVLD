@@ -1,5 +1,5 @@
 ﻿using DVLD.BusinessLayer;
-using DVLD.PresentationLayer.Globals;
+using DVLD.PresentationLayer.GlobalClasses;
 using System;
 using System.Data;
 using System.Windows.Forms;
@@ -157,17 +157,13 @@ namespace DVLD.PresentationLayer.Users
                 // Only Numeric
                 case Filter.UserID:
                 case Filter.PersonID:
-                    if (!char.IsDigit(e.KeyChar)) 
-                    { 
-                        UtilityHelper.PlayBeepSound(); e.Handled = true; 
-                    }
+                    if (!char.IsDigit(e.KeyChar))
+                        Utility.HandleWrongKey(e);
                     break;
                 // Only Letters
                 case Filter.FullName:
                     if (!char.IsLetter(e.KeyChar) && e.KeyChar != ' ')
-                    {
-                        UtilityHelper.PlayBeepSound(); e.Handled = true; 
-                    }
+                        Utility.HandleWrongKey(e);
                     break;
                 // Allow Numeric + Letters (Username)
                 default:

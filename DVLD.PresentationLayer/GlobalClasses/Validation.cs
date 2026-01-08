@@ -1,11 +1,14 @@
-﻿using System;
+﻿using DVLD.BusinessLayer;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
-using DVLD.BusinessLayer;
+using System.Threading.Tasks;
 
-namespace DVLD.PresentationLayer
+namespace DVLD.PresentationLayer.GlobalClasses
 {
-    internal class ValidationHelper
+    public static class Validation
     {
         public static bool IsValidEmail(string email)
         {

@@ -27,8 +27,7 @@ namespace DVLD.PresentationLayer.Users
 
         private void frmUserDetails_Load(object sender, EventArgs e)
         {
-            if (ctrlUserLoginInfo1.SelectedUser != null) 
-                ctrlPersonCard1.LoadPersonInfo(ctrlUserLoginInfo1.SelectedUser.PersonId);
+            ctrlPersonCard1.LoadPersonInfo(ctrlUserLoginInfo1.SelectedUser.PersonId);
         }
     }
 }
