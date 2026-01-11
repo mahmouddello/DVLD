@@ -109,6 +109,20 @@ namespace DVLD.DataAccessLayer
             }
         }
 
+        public static bool ExistsByPersonId(int personId)
+        {
+            string query = @"SELECT 1 FROM Users WHERE PersonID = @PersonID";
+
+            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@PersonID", personId);
+                connection.Open();
+
+                return command.ExecuteScalar() != null;
+            }
+        }
+
         public static bool DeleteById(int userId)
         {
             try

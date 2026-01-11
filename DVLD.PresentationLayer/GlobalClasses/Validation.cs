@@ -22,5 +22,15 @@ namespace DVLD.PresentationLayer.GlobalClasses
         {
             return !PersonBusiness.IsExists(nationalNo);
         }
+
+        public static bool DoPasswordsMatch(string password, string passwordConfirm)
+        {
+            return password == passwordConfirm;
+        }
+
+        public static bool IsUniqueUsername(string username)
+        {
+            return !UserBusiness.Exists(username);
+        }
     }
 }

@@ -138,8 +138,6 @@
         }
 
         #endregion
-
-        private ctrlPersonCard ctrlPersonCard1;
         private System.Windows.Forms.GroupBox gbFilters;
         private System.Windows.Forms.TextBox txtQuery;
         private System.Windows.Forms.ComboBox cbFilter;
@@ -147,5 +145,6 @@
         private System.Windows.Forms.Button btnAddNewPerson;
         private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.ErrorProvider errorProvider1;
+        public ctrlPersonCard ctrlPersonCard1;
     }
 }

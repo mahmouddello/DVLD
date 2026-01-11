@@ -56,23 +56,16 @@ namespace DVLD.PresentationLayer.Users
             }
         }
 
-        private bool ArePasswordsMatch()
+        private void ShowPasswordMismatchErrors()
         {
-            string newPassword = txtNewPassword.Text.Trim();
-            string newPasswordConfirmation = txtNewPasswordConfirmation.Text.Trim();
+            errProvider.SetError(txtNewPassword, "Passwords do not match.");
+            errProvider.SetError(txtNewPasswordConfirmation, "Passwords do not match.");
+        }
 
-            if (!(newPassword == newPasswordConfirmation))
-            {
-                errProvider.SetError(txtNewPassword, "Passwords doesn't match!");
-                errProvider.SetError(txtNewPasswordConfirmation, "Passwords doesn't match!");
-                return false;
-            }
-            else
-            {
-                errProvider.SetError(txtNewPassword, string.Empty);
-                errProvider.SetError(txtNewPasswordConfirmation, string.Empty);
-                return true;
-            }
+        private void ClearPasswordErrors()
+        {
+            errProvider.SetError(txtNewPassword, string.Empty);
+            errProvider.SetError(txtNewPasswordConfirmation, string.Empty);
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -80,14 +73,21 @@ namespace DVLD.PresentationLayer.Users
             if (!ValidateChildren())
                 return;
 
-            if (!ArePasswordsMatch())
+            string newPass = txtNewPassword.Text.Trim();
+            string newPassConfirm = txtNewPasswordConfirmation.Text.Trim();
+
+            if (!Validation.DoPasswordsMatch(newPass, newPassConfirm))
+            {
+                ShowPasswordMismatchErrors();
                 return;
+            }
+
+            ClearPasswordErrors();
 
             int currentUserId = Globals.CurrentUser.UserId;
             string currentPassword = txtCurrentPassword.Text.Trim();
-            string newPassword = txtNewPassword.Text.Trim();
 
-            if (UserBusiness.ChangePassword(currentUserId, currentPassword, newPassword))
+            if (UserBusiness.ChangePassword(currentUserId, currentPassword, newPass))
                 MessageBox.Show("Updated password successfully!");
             else
                 MessageBox.Show("Current password is incorrect!");

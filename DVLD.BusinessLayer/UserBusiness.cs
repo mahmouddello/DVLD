@@ -92,6 +92,11 @@ namespace DVLD.BusinessLayer
             return UserData.ExistsByUsername(username);
         }
 
+        public static bool IsPersonLinkedToUser(int personId)
+        {
+            return UserData.ExistsByPersonId(personId);
+        }
+
         public static User Login(string username, string password)
         {
             User user = Find(username);

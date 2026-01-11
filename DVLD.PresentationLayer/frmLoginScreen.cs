@@ -43,6 +43,25 @@ namespace DVLD.PresentationLayer
             }
         }
 
+        private void MapDefaultValues()
+        {
+            // Set the values of the saved username, password, and remember me state
+            if (chkRememberMe.Checked)
+            {
+                Properties.Settings.Default.RemeberMe = true;
+                Properties.Settings.Default.Username = txtUsername.Text;
+                Properties.Settings.Default.Password = txtPassword.Text; // ⚠ see note below
+            }
+            else
+            {
+                Properties.Settings.Default.RemeberMe = false;
+                Properties.Settings.Default.Username = "";
+                Properties.Settings.Default.Password = "";
+            }
+
+            Properties.Settings.Default.Save();
+        }
+
         private void btnLogin_Click(object sender, EventArgs e)
         {
             if (!ValidateChildren())
@@ -55,17 +74,24 @@ namespace DVLD.PresentationLayer
 
             if (user == null)
             {
-                MessageBox.Show(
-                    "Invalid credntials or user is not active!",
-                    "Login Failed",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                MessageBox.Show("Invalid credntials!", "Login Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
             {
-                Globals.CurrentUser = user;
                 this.DialogResult = DialogResult.OK;  // Signal success
+                Globals.CurrentUser = user;
+                MapDefaultValues();
                 this.Close();  // Now safe to close
+            }
+        }
+
+        private void frmLoginScreen_Load(object sender, EventArgs e)
+        {
+            if (Properties.Settings.Default.RemeberMe)
+            {
+                txtUsername.Text = Properties.Settings.Default.Username;
+                txtPassword.Text = Properties.Settings.Default.Password;
+                chkRememberMe.Checked = true;
             }
         }
     }

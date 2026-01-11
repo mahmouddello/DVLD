@@ -74,6 +74,12 @@ namespace DVLD.PresentationLayer.People
             get { return ctrlPersonCard1.SelectedPerson; } 
         }
 
+        public string QueryText
+        {
+            get => txtQuery.Text;
+            set => txtQuery.Text = value;
+        }
+
         public ctrlPersonCardWithFilter()
         {
             InitializeComponent();
@@ -159,9 +165,9 @@ namespace DVLD.PresentationLayer.People
         private void btnAddNewPerson_Click(object sender, EventArgs e)
         {
             frmAddUpdatePerson form = new frmAddUpdatePerson();
-            form.DataBack += AddUpdatePersonForm_DataBack;
-
             form.ShowDialog();
+            
+            form.DataBack += AddUpdatePersonForm_DataBack;
         }
 
         private void AddUpdatePersonForm_DataBack(object sender, int personID)

@@ -242,6 +242,27 @@ namespace DVLD.PresentationLayer.Users
             form.ShowDialog();
         }
 
+        private void editToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int rowUserId = (int)dgvUsers.CurrentRow.Cells[0].Value;
+
+            frmAddUpdateUser frm = new frmAddUpdateUser(rowUserId);
+            frm.ShowDialog();
+
+            LoadUsersFromDB();
+            RefreshUsersList(); // refresh incase changes applied.
+        }
+
+        private void btnAddNewPerson_Click(object sender, EventArgs e)
+        {
+            frmAddUpdateUser frm = new frmAddUpdateUser();
+            frm.ShowDialog();
+
+            // Refresh users in case of change
+            LoadUsersFromDB();
+            RefreshUsersList();
+        }
+
         private void ApplyQueryFilter()
         {
             DataView dv = new DataView(dtAllUsers);

@@ -38,7 +38,7 @@ namespace DVLD.PresentationLayer.People
             if (person == null)
             {
                 ResetPersonInfo();
-                MessageBox.Show("No Person with PersonID = " + PersonID.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("No Person with PersonID = " + personID.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -52,7 +52,7 @@ namespace DVLD.PresentationLayer.People
             if (person == null)
             {
                 ResetPersonInfo();
-                MessageBox.Show("No Person with PersonID = " + nationalNo.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("No Person with national no = " + nationalNo.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
