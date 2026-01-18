@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows.Forms;
-using dotenv.net;
 using DVLD.PresentationLayer.GlobalClasses;
 using DVLD.PresentationLayer.People;
 using DVLD.PresentationLayer.Users;
