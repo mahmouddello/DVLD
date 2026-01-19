@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using DVLD.PresentationLayer.ApplicationTypes;
 using DVLD.PresentationLayer.GlobalClasses;
 using DVLD.PresentationLayer.People;
 using DVLD.PresentationLayer.Users;
@@ -59,6 +60,12 @@ namespace DVLD.PresentationLayer
         private void changePasswordToolStripMenuItem_Click(object sender, EventArgs e)
         {
             frmChangeUserPassword frm = new frmChangeUserPassword(Globals.CurrentUser);
+            frm.ShowDialog();
+        }
+
+        private void manageApplicationTypesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmApplicationTypes frm = new frmApplicationTypes();
             frm.ShowDialog();
         }
     }

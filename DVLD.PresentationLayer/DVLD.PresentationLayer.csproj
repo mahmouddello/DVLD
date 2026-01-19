@@ -66,6 +66,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Applications\ApplicationTypes\frmApplicationTypes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Applications\ApplicationTypes\frmApplicationTypes.Designer.cs">
+      <DependentUpon>frmApplicationTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Applications\ApplicationTypes\frmUpdateApplicationType.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Applications\ApplicationTypes\frmUpdateApplicationType.Designer.cs">
+      <DependentUpon>frmUpdateApplicationType.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmLoginScreen.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -119,6 +131,11 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Settings.cs" />
     <Compile Include="Users\ctrlUserLoginInfo.cs">
       <SubType>UserControl</SubType>
@@ -150,6 +167,12 @@
     <Compile Include="Users\frmUserDetails.Designer.cs">
       <DependentUpon>frmUserDetails.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Applications\ApplicationTypes\frmApplicationTypes.resx">
+      <DependentUpon>frmApplicationTypes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Applications\ApplicationTypes\frmUpdateApplicationType.resx">
+      <DependentUpon>frmUpdateApplicationType.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmLoginScreen.resx">
       <DependentUpon>frmLoginScreen.cs</DependentUpon>
     </EmbeddedResource>
@@ -176,14 +199,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <EmbeddedResource Include="Users\ctrlUserLoginInfo.resx">
       <DependentUpon>ctrlUserLoginInfo.cs</DependentUpon>
     </EmbeddedResource>
@@ -244,6 +262,45 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\searchPersonIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\contract.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\contact-list.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\user-logout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\reset-password.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\user-info.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\user-settings.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\user-settings1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\user-password.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\users-list.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\applications.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\drivers-list.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\people-list.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\contract1.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
