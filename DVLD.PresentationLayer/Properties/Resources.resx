@@ -118,58 +118,100 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="reset-password" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\reset-password.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="contract1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\contract1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="drivers-list" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\drivers-list.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="person-details" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\person-details.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="user-logout" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\user-logout.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="user-info" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\user-info.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="driverMale" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\driverMale.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="person-call" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\person-call.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="applications" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\applications.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="peopleGroup" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\peopleGroup.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="users-list" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\users-list.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="user-settings" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\user-settings1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="addPersonIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\addPersonIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="contact-list" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\contact-list.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="user-password" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\user-password.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="personCardIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\personCardIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="people-list" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\people-list.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="contract" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\contract.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="searchPersonIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\searchPersonIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="person-user-delete" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\person-user-delete.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="people-list" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\people-list.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="application64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\application64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dvld-wallpaper2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dvld-wallpaper2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="peopleGroup" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\peopleGroup.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="user-settings" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\user-settings1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="user-logout" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\user-logout.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="contact-list" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\contact-list.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="addPersonIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\addPersonIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="user-password" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\user-password.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="person-edit" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\person-edit.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="person-email" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\person-email.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="reset-password" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\reset-password.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="people-list512" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\people-list512.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dvld-wallpaper4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dvld-wallpaper4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="driverMale" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\driverMale.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="personCardIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\personCardIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="user-info" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\user-info.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="person-info" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\person-info.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="user-list512" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\user-list512.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="users-list" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\users-list.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="driverFemale" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\driverFemale.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="contract1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\contract1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="person-add" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\person-add.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="drivers-list" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\drivers-list.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dvld-login" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dvld-login.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="searchPersonIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\searchPersonIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="person-sms" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\person-sms.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

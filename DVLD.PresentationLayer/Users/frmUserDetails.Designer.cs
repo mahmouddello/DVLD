@@ -66,6 +66,7 @@
             this.Controls.Add(this.ctrlUserLoginInfo1);
             this.Controls.Add(this.ctrlPersonCard1);
             this.Controls.Add(this.label1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "frmUserDetails";
             this.Text = "frmUserDetails";
             this.Load += new System.EventHandler(this.frmUserDetails_Load);

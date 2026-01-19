@@ -433,6 +433,7 @@
             this.Controls.Add(this.txtFirstName);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lblModeTitle);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "frmAddUpdatePerson";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Add / Edit Person Form";

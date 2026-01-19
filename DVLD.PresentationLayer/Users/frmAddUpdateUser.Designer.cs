@@ -260,6 +260,7 @@
             this.ClientSize = new System.Drawing.Size(1198, 755);
             this.Controls.Add(this.lblFormMode);
             this.Controls.Add(this.tabControl1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "frmAddUpdateUser";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "frmAddUpdateUser";

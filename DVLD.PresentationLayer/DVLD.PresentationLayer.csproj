@@ -302,5 +302,47 @@
   <ItemGroup>
     <None Include="Resources\contract1.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dvld-wallpaper2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dvld-wallpaper4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dvld-login.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\person-details.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\person-edit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\person-user-delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\person-email.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\person-call.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\person-add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\person-info.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\people-list512.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\application64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\user-list512.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\person-sms.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
