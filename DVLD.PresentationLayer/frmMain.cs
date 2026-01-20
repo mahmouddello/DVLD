@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using DVLD.PresentationLayer.ApplicationTypes;
 using DVLD.PresentationLayer.GlobalClasses;
 using DVLD.PresentationLayer.People;
+using DVLD.PresentationLayer.Tests.TestTypes;
 using DVLD.PresentationLayer.Users;
 
 namespace DVLD.PresentationLayer
@@ -66,6 +67,12 @@ namespace DVLD.PresentationLayer
         private void manageApplicationTypesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             frmApplicationTypes frm = new frmApplicationTypes();
+            frm.ShowDialog();
+        }
+
+        private void manageTestTypesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmListTestTypes frm = new frmListTestTypes();
             frm.ShowDialog();
         }
     }

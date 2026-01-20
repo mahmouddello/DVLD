@@ -137,6 +137,18 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Settings.cs" />
+    <Compile Include="Tests\TestTypes\frmListTestTypes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tests\TestTypes\frmListTestTypes.Designer.cs">
+      <DependentUpon>frmListTestTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tests\TestTypes\frmUpdateTestType.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tests\TestTypes\frmUpdateTestType.Designer.cs">
+      <DependentUpon>frmUpdateTestType.cs</DependentUpon>
+    </Compile>
     <Compile Include="Users\ctrlUserLoginInfo.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -201,6 +213,12 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tests\TestTypes\frmListTestTypes.resx">
+      <DependentUpon>frmListTestTypes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tests\TestTypes\frmUpdateTestType.resx">
+      <DependentUpon>frmUpdateTestType.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Users\ctrlUserLoginInfo.resx">
       <DependentUpon>ctrlUserLoginInfo.cs</DependentUpon>
@@ -343,6 +361,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\person-sms.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\edit-application64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\test64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\test512.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

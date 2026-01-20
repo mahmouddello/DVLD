@@ -183,6 +183,16 @@ namespace DVLD.PresentationLayer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap edit_application64 {
+            get {
+                object obj = ResourceManager.GetObject("edit-application64", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap people_list {
             get {
                 object obj = ResourceManager.GetObject("people-list", resourceCulture);
@@ -316,6 +326,26 @@ namespace DVLD.PresentationLayer.Properties {
         public static System.Drawing.Bitmap searchPersonIcon {
             get {
                 object obj = ResourceManager.GetObject("searchPersonIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap test512 {
+            get {
+                object obj = ResourceManager.GetObject("test512", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap test64 {
+            get {
+                object obj = ResourceManager.GetObject("test64", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

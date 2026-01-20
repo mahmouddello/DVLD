@@ -33,14 +33,14 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.label1 = new System.Windows.Forms.Label();
             this.dgvApplicationTypes = new System.Windows.Forms.DataGridView();
+            this.cmsApplicationOptions = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.lblRecordsCount = new System.Windows.Forms.Label();
             this.btnCloseForm = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.cmsApplicationOptions = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dgvApplicationTypes)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.cmsApplicationOptions.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -84,6 +84,15 @@
             this.dgvApplicationTypes.Size = new System.Drawing.Size(1002, 450);
             this.dgvApplicationTypes.TabIndex = 8;
             // 
+            // cmsApplicationOptions
+            // 
+            this.cmsApplicationOptions.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmsApplicationOptions.ImageScalingSize = new System.Drawing.Size(24, 24);
+            this.cmsApplicationOptions.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.editToolStripMenuItem});
+            this.cmsApplicationOptions.Name = "cmsApplicationOptions";
+            this.cmsApplicationOptions.Size = new System.Drawing.Size(167, 76);
+            // 
             // lblRecordsCount
             // 
             this.lblRecordsCount.AutoSize = true;
@@ -115,19 +124,13 @@
             this.pictureBox1.TabIndex = 11;
             this.pictureBox1.TabStop = false;
             // 
-            // cmsApplicationOptions
-            // 
-            this.cmsApplicationOptions.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmsApplicationOptions.ImageScalingSize = new System.Drawing.Size(24, 24);
-            this.cmsApplicationOptions.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.editToolStripMenuItem});
-            this.cmsApplicationOptions.Name = "cmsApplicationOptions";
-            this.cmsApplicationOptions.Size = new System.Drawing.Size(241, 71);
-            // 
             // editToolStripMenuItem
             // 
+            this.editToolStripMenuItem.Image = global::DVLD.PresentationLayer.Properties.Resources.edit_application64;
+            this.editToolStripMenuItem.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.editToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
-            this.editToolStripMenuItem.Size = new System.Drawing.Size(240, 34);
+            this.editToolStripMenuItem.Size = new System.Drawing.Size(166, 72);
             this.editToolStripMenuItem.Text = "Edit";
             this.editToolStripMenuItem.Click += new System.EventHandler(this.editToolStripMenuItem_Click);
             // 
@@ -146,8 +149,8 @@
             this.Text = "Application Types";
             this.Load += new System.EventHandler(this.frmApplicationTypes_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvApplicationTypes)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.cmsApplicationOptions.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
