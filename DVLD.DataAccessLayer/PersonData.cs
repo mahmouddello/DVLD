@@ -6,7 +6,7 @@ using DVLD.EntityLayer;
 
 namespace DVLD.DataAccessLayer
 {
-    public class PersonDataAccess
+    public class PersonData
     {
         public static DataTable GetAllPeople()
         {
@@ -27,7 +27,7 @@ namespace DVLD.DataAccessLayer
             return dt;
         }
 
-        public static DataRow GetPersonByID(int PersonID)
+        public static DataRow GetById(int PersonID)
         {
             DataTable dt = new DataTable();
             string query = @"SELECT * FROM vw_PersonDetails WHERE PersonID = @PersonID";
@@ -47,7 +47,7 @@ namespace DVLD.DataAccessLayer
             return dt.Rows.Count > 0 ? dt.Rows[0] : null;
         }
 
-        public static DataRow GetPersonByNationalNo(string nationalNo)
+        public static DataRow GetByNationalNo(string nationalNo)
         {
             DataTable dt = new DataTable();
             string query = @"SELECT * FROM vw_PersonDetails WHERE NationalNo = @NationalNo";
@@ -67,7 +67,7 @@ namespace DVLD.DataAccessLayer
             return dt.Rows.Count > 0 ? dt.Rows[0] : null;
         }
 
-        public static int InsertNewPerson(string nationalNo, string firstName,
+        public static int InsertNew(string nationalNo, string firstName,
             string secondName, string thirdName, string lastName, DateTime dateOfBirth,
             byte gender, string address, string phone, string email,
             int countryID, string imagePath)
@@ -115,7 +115,7 @@ namespace DVLD.DataAccessLayer
             return -1;
         }
 
-        public static bool UpdatePersonByID(int personID, string nationalNo, string firstName,
+        public static bool UpdateById(int personID, string nationalNo, string firstName,
             string secondName, string thirdName, string lastName, DateTime dateOfBirth,
             byte gender, string address, string phone, string email,
             int countryID, string imagePath)
@@ -160,7 +160,7 @@ namespace DVLD.DataAccessLayer
             return rowsAffected > 0; 
         }
 
-        public static bool DeletePersonByID(int personID)
+        public static bool DeleteById(int personID)
         {
             string query = @"DELETE FROM People WHERE PersonID = @PersonID";
             int rowsAffected = 0;
@@ -190,7 +190,7 @@ namespace DVLD.DataAccessLayer
             return string.IsNullOrWhiteSpace(value) ? (object)DBNull.Value : value;
         }
 
-        public static bool IsExistsByNationalNo(string nationalNo)
+        public static bool ExistsByNationalNo(string nationalNo)
         {
             string query = @"SELECT FOUND = 1 FROM People WHERE NationalNo = @NationalNo";
             bool isFound = false;
@@ -209,7 +209,7 @@ namespace DVLD.DataAccessLayer
             }
         }
 
-        public static bool IsExistsByID(int personID)
+        public static bool ExistsById(int personID)
         {
             string query = @"SELECT FOUND = 1 FROM People WHERE PersonID = @PersonID";
             bool isFound = false;

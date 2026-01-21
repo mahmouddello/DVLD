@@ -9,12 +9,12 @@ namespace DVLD.BusinessLayer
     {
         public static DataTable GetPeople()
         {
-            return PersonDataAccess.GetAllPeople();
+            return PersonData.GetAllPeople();
         }
 
         public static Person Find(int personID)
         {
-            DataRow row = PersonDataAccess.GetPersonByID(personID);
+            DataRow row = PersonData.GetById(personID);
 
             if (row == null)
                 return null;
@@ -43,7 +43,7 @@ namespace DVLD.BusinessLayer
 
         public static Person Find(string nationalNo)
         {
-            DataRow row = PersonDataAccess.GetPersonByNationalNo(nationalNo);
+            DataRow row = PersonData.GetByNationalNo(nationalNo);
 
             if (row == null)
                 return null;
@@ -72,13 +72,13 @@ namespace DVLD.BusinessLayer
 
         public static bool Delete(int personID)
         {
-            return PersonDataAccess.DeletePersonByID(personID);
+            return PersonData.DeleteById(personID);
         }
 
         private static bool Add(Person person)
         {
             // Add new
-            person.ID = PersonDataAccess.InsertNewPerson(
+            person.ID = PersonData.InsertNew(
                 person.NationalNo, person.FirstName, person.SecondName,
                 person.ThirdName, person.LastName, person.DateOfBirth,
                 (byte)person.Gender, person.Address, person.Phone,
@@ -90,7 +90,7 @@ namespace DVLD.BusinessLayer
 
         private static bool Update(Person person)
         {
-            return PersonDataAccess.UpdatePersonByID(person.ID, person.NationalNo, person.FirstName, person.SecondName,
+            return PersonData.UpdateById(person.ID, person.NationalNo, person.FirstName, person.SecondName,
                     person.ThirdName, person.LastName, person.DateOfBirth,
                     (byte)person.Gender, person.Address, person.Phone,
                     person.Email, person.Nationality.ID, person.ImagePath);
@@ -104,14 +104,14 @@ namespace DVLD.BusinessLayer
             return Update(person);
         }
 
-        public static bool IsExists(string nationalNo)
+        public static bool Exists(string nationalNo)
         {
-            return PersonDataAccess.IsExistsByNationalNo(nationalNo);
+            return PersonData.ExistsByNationalNo(nationalNo);
         }
 
-        public static bool IsExists(int personID)
+        public static bool Exists(int personID)
         {
-            return PersonDataAccess.IsExistsByID(personID);
+            return PersonData.ExistsById(personID);
         }
     }
 }

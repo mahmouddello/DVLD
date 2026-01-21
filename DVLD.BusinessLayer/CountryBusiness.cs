@@ -10,12 +10,12 @@ namespace DVLD.BusinessLayer
     {
         public static DataTable GetCountries()
         {
-            return CountryDataAccess.GetAllCountries();
+            return CountryData.GetAllCountries();
         }
 
         public static Country Find(int countryID)
         {
-            DataRow row = CountryDataAccess.GetCountryByID(countryID);
+            DataRow row = CountryData.GetById(countryID);
 
             if (row == null)
                 return null;
@@ -25,7 +25,7 @@ namespace DVLD.BusinessLayer
 
         public static Country Find(string countryName)
         {
-            DataRow row = CountryDataAccess.GetCountryByName(countryName);
+            DataRow row = CountryData.GetByName(countryName);
 
             if (row == null)
                 return null;

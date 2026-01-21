@@ -5,7 +5,7 @@ using System.Data.SqlClient;
 
 namespace DVLD.DataAccessLayer
 {
-    public class CountryDataAccess
+    public class CountryData
     {
         public static DataTable GetAllCountries()
         {
@@ -26,7 +26,7 @@ namespace DVLD.DataAccessLayer
             return dt;
         }
 
-        public static DataRow GetCountryByID(int countryID)
+        public static DataRow GetById(int countryID)
         {
             DataTable dt = new DataTable();
             string query = @"SELECT * FROM Countries WHERE CountryID = @CountryID";
@@ -46,7 +46,7 @@ namespace DVLD.DataAccessLayer
             return dt.Rows.Count > 0 ? dt.Rows[0] : null;
         }
 
-        public static DataRow GetCountryByName(string countryName)
+        public static DataRow GetByName(string countryName)
         {
             DataTable dt = new DataTable();
             string query = @"SELECT * FROM Countries WHERE CountryName = @CountryName";

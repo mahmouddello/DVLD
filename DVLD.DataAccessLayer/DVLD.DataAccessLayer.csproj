@@ -55,8 +55,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationTypeData.cs" />
-    <Compile Include="CountryDataAccess.cs" />
-    <Compile Include="PersonDataAccess.cs" />
+    <Compile Include="CountryData.cs" />
+    <Compile Include="PersonData.cs" />
     <Compile Include="DataAccessSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestTypeData.cs" />
