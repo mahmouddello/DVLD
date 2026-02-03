@@ -8,7 +8,7 @@ namespace DVLD.EntityLayer
 {
     public class Country
     {
-        public int ID { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
 
         public Country()
@@ -18,7 +18,7 @@ namespace DVLD.EntityLayer
 
         public Country(int countryId, string countryName)
         {
-            this.ID = countryId;
+            this.Id = countryId;
             this.Name = countryName;
         }
     }

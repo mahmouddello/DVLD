@@ -59,14 +59,14 @@ namespace DVLD.BusinessLayer
 
         private static bool Add(User user)
         {
-            user.UserId = UserData.InsertNew(user.PersonId, user.Username, user.Password, user.IsActive);
+            user.Id = UserData.InsertNew(user.PersonId, user.Username, user.Password, user.IsActive);
 
             return user != null;
         }
 
         private static bool Update(User user)
         {
-            return UserData.UpdateById(user.UserId, user.PersonId, user.Username, user.Password, user.IsActive);
+            return UserData.UpdateById(user.Id, user.PersonId, user.Username, user.Password, user.IsActive);
         }
 
         public static bool Delete(int userId)
@@ -76,7 +76,7 @@ namespace DVLD.BusinessLayer
 
         public static bool Save(User user)
         {
-            if (user.UserId == -1)
+            if (user.Id == -1)
                 return Add(user);
 
             return Update(user);

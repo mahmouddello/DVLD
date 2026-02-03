@@ -44,7 +44,7 @@ namespace DVLD.PresentationLayer.Users
             user = new User();
 
             mode = FormMode.AddNew;
-            defaultMessage = $"Added the new user to the database with id {user.UserId}";
+            defaultMessage = $"Added the new user to the database with id {user.Id}";
         }
 
         private void LoadPersonInfo()
@@ -60,7 +60,7 @@ namespace DVLD.PresentationLayer.Users
         {
             if (Globals.CurrentUser != null)
             {
-                lblUserID.Text = Globals.CurrentUser.UserId.ToString();
+                lblUserID.Text = Globals.CurrentUser.Id.ToString();
                 txtUsername.Text = Globals.CurrentUser.Username;
             }
             else
@@ -137,7 +137,7 @@ namespace DVLD.PresentationLayer.Users
 
             if (UserBusiness.Save(user))
             {
-                lblUserID.Text = user.UserId.ToString();
+                lblUserID.Text = user.Id.ToString();
                 Globals.CurrentUser = user; // update the current user after save
                 MessageBox.Show(defaultMessage, "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }

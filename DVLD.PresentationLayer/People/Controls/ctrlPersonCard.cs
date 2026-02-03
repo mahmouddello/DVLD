@@ -77,15 +77,15 @@ namespace DVLD.PresentationLayer.People
         private void FillPersonInfo()
         {
             llEditInfo.Enabled = true;
-            personID = person.ID;
-            lblPersonID.Text = person.ID.ToString();
+            personID = person.Id;
+            lblPersonID.Text = person.Id.ToString();
             lblNationalNo.Text = person.NationalNo;
             lblName.Text = person.FullName;
             lblGender.Text = person.Gender == enGender.Male ? "Male" : "Female";
             lblEmail.Text = person.Email;
             lblPhone.Text = person.Phone;
             lblDateOfBirth.Text = person.DateOfBirth.ToShortDateString();
-            lblCountry.Text = CountryBusiness.Find(person.Nationality.ID).Name;
+            lblCountry.Text = CountryBusiness.Find(person.Nationality.Id).Name;
             lblAddress.Text = person.Address;
 
             LoadPersonImage();

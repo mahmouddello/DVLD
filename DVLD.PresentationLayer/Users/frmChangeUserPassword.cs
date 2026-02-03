@@ -84,7 +84,7 @@ namespace DVLD.PresentationLayer.Users
 
             ClearPasswordErrors();
 
-            int currentUserId = Globals.CurrentUser.UserId;
+            int currentUserId = Globals.CurrentUser.Id;
             string currentPassword = txtCurrentPassword.Text.Trim();
 
             if (UserBusiness.ChangePassword(currentUserId, currentPassword, newPass))

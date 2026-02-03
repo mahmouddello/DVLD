@@ -45,7 +45,7 @@ namespace DVLD.PresentationLayer.Users
             if (userParam == null)
             {
                 ResetUserInfo();
-                MessageBox.Show("No User with UserID = " + userParam.UserId.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("No User with UserID = " + userParam.Id.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -63,7 +63,7 @@ namespace DVLD.PresentationLayer.Users
 
         private void FillUserInfo()
         {
-            userID = user.UserId;
+            userID = user.Id;
             lblUserID.Text = userID.ToString();
             lblUsername.Text = user.Username;
             lblIsActive.Text = user.IsActive ? "Yes" : "No";

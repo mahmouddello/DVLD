@@ -12,7 +12,7 @@ namespace DVLD.EntityLayer
 
     public class Person
     {
-        public int ID { get; set; } = -1;
+        public int Id { get; set; } = -1;
         public string NationalNo { get; set; } = string.Empty;
         public string FirstName { get; set; } = string.Empty;
         public string SecondName { get; set; } = string.Empty;
@@ -54,7 +54,7 @@ namespace DVLD.EntityLayer
             string imagePath
         )
         {
-            this.ID = id;
+            this.Id = id;
             this.NationalNo = nationalNo;
             this.FirstName = firstName;
             this.SecondName = secondName;

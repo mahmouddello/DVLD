@@ -103,7 +103,7 @@ namespace DVLD.PresentationLayer.People
             txtPhone.Text = _person.Phone;
             txtAddress.Text = _person.Address;
             dtpDateOfBirth.Value = _person.DateOfBirth;
-            cbCountry.SelectedIndex = _person.Nationality.ID;
+            cbCountry.SelectedIndex = _person.Nationality.Id;
 
             if (_person.Gender == enGender.Male)
                 rbMale.Checked = true;
@@ -251,12 +251,12 @@ namespace DVLD.PresentationLayer.People
 
             if (PersonBusiness.Save(_person))
             {
-                MessageBox.Show($"Saved the person data sucessfully with id {_person.ID}!");
+                MessageBox.Show($"Saved the person data sucessfully with id {_person.Id}!");
                 _mode = enMode.Update;
                 lblModeTitle.Text = "Edit Person Details";
 
                 // Trigger the event to send data back to the caller form.
-                DataBack?.Invoke(this, _person.ID);
+                DataBack?.Invoke(this, _person.Id);
             }
             else
                 MessageBox.Show("Failed to save person data to the database!");

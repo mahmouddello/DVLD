@@ -78,27 +78,27 @@ namespace DVLD.BusinessLayer
         private static bool Add(Person person)
         {
             // Add new
-            person.ID = PersonData.InsertNew(
+            person.Id = PersonData.InsertNew(
                 person.NationalNo, person.FirstName, person.SecondName,
                 person.ThirdName, person.LastName, person.DateOfBirth,
                 (byte)person.Gender, person.Address, person.Phone,
-                person.Email, person.Nationality.ID, person.ImagePath
+                person.Email, person.Nationality.Id, person.ImagePath
             );
 
-            return person.ID != -1;
+            return person.Id != -1;
         }
 
         private static bool Update(Person person)
         {
-            return PersonData.UpdateById(person.ID, person.NationalNo, person.FirstName, person.SecondName,
+            return PersonData.UpdateById(person.Id, person.NationalNo, person.FirstName, person.SecondName,
                     person.ThirdName, person.LastName, person.DateOfBirth,
                     (byte)person.Gender, person.Address, person.Phone,
-                    person.Email, person.Nationality.ID, person.ImagePath);
+                    person.Email, person.Nationality.Id, person.ImagePath);
         }
 
         public static bool Save(Person person)
         {
-            if (person.ID == -1)
+            if (person.Id == -1)
                 return Add(person);
 
             return Update(person);
