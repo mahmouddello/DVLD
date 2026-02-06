@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using DVLD.PresentationLayer.Applications;
 using DVLD.PresentationLayer.ApplicationTypes;
 using DVLD.PresentationLayer.GlobalClasses;
 using DVLD.PresentationLayer.People;
@@ -73,6 +74,12 @@ namespace DVLD.PresentationLayer
         private void manageTestTypesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             frmListTestTypes frm = new frmListTestTypes();
+            frm.ShowDialog();
+        }
+
+        private void localLicenseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmLocalDrivingLicenseApplication frm = new frmLocalDrivingLicenseApplication();
             frm.ShowDialog();
         }
     }

@@ -14,10 +14,10 @@ namespace DVLD.PresentationLayer.Applications.ApplicationTypes
 {
     public partial class frmUpdateApplicationType : Form
     {
-        private int _applicationTypeId;
+        private ApplicationType.enApplicationType _applicationTypeId;
         private ApplicationType _applicationType;
 
-        public frmUpdateApplicationType(int applicationTypeId)
+        public frmUpdateApplicationType(ApplicationType.enApplicationType applicationTypeId)
         {
             InitializeComponent();
             _applicationTypeId = applicationTypeId;
@@ -74,7 +74,7 @@ namespace DVLD.PresentationLayer.Applications.ApplicationTypes
 
         private void FillApplicationInfo()
         {
-            lblID.Text = _applicationTypeId.ToString();
+            lblID.Text = ((int)_applicationTypeId).ToString();
             txtTitle.Text = _applicationType.Title;
             txtFees.Text = _applicationType.Fees.ToString();
         }

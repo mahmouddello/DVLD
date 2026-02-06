@@ -47,6 +47,7 @@
             this.ctrlPersonCard1.Name = "ctrlPersonCard1";
             this.ctrlPersonCard1.Size = new System.Drawing.Size(1124, 382);
             this.ctrlPersonCard1.TabIndex = 0;
+            this.ctrlPersonCard1.Load += new System.EventHandler(this.ctrlPersonCard1_Load);
             // 
             // gbFilters
             // 

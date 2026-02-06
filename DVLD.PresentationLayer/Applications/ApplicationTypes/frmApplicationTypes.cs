@@ -1,4 +1,5 @@
 ﻿using DVLD.BusinessLayer;
+using DVLD.EntityLayer;
 using DVLD.PresentationLayer.Applications.ApplicationTypes;
 using System;
 using System.Collections.Generic;
@@ -67,7 +68,7 @@ namespace DVLD.PresentationLayer.ApplicationTypes
         {
             int applicationId = (int)dgvApplicationTypes.CurrentRow.Cells[0].Value;
 
-            frmUpdateApplicationType frm = new frmUpdateApplicationType(applicationId);
+            frmUpdateApplicationType frm = new frmUpdateApplicationType((ApplicationType.enApplicationType)applicationId);
             frm.ShowDialog();
 
             ReloadAndRefresh(); // reload data and refresh the data grid view

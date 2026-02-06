@@ -8,13 +8,25 @@ namespace DVLD.EntityLayer
 {
     public class ApplicationType
     {
-        public int Id { get; } = -1;
+        public enum enApplicationType
+        {
+            None = 0,
+            NewLocalDrivingLicense = 1,
+            RenewDrivingLicense = 2,
+            ReplaceLostDrivingLicense = 3,
+            ReplaceDamagedDrivingLicense = 4,
+            ReleaseDetainedLicense = 5,
+            NewInternationalLicense = 6,
+            RetakeTest = 7
+        }
+
+        public enApplicationType Id { get; } = enApplicationType.None;
         public string Title { get; set; } = string.Empty;
         public decimal Fees { get; set; } = 0;
 
-        public ApplicationType(int id, string title, decimal fees)
+        public ApplicationType(enApplicationType applicationTypeId, string title, decimal fees)
         {
-            this.Id = id;
+            this.Id = applicationTypeId;
             this.Title = title;
             this.Fees = fees;
         }

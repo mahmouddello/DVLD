@@ -307,6 +307,7 @@
             this.cbCountry.Name = "cbCountry";
             this.cbCountry.Size = new System.Drawing.Size(219, 33);
             this.cbCountry.TabIndex = 9;
+            this.cbCountry.SelectedIndexChanged += new System.EventHandler(this.cbCountry_SelectedIndexChanged);
             this.cbCountry.Validating += new System.ComponentModel.CancelEventHandler(this.cbCountry_Validating);
             // 
             // label12

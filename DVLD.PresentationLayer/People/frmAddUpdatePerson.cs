@@ -403,5 +403,10 @@ namespace DVLD.PresentationLayer.People
 
             llRemoveImage.Visible = false;
         }
+
+        private void cbCountry_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

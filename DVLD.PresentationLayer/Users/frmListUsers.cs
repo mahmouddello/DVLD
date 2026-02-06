@@ -22,13 +22,13 @@ namespace DVLD.PresentationLayer.Users
         }
         private static Filter filter;
 
-        private enum ActiveStatus
+        private enum ActiveApplicationStatus
         {
             All,
             Yes,
             No
         }
-        private static ActiveStatus activeStatusFilter;
+        private static ActiveApplicationStatus activeApplicationStatusFilter;
 
         public frmListUsers()
         {
@@ -102,7 +102,7 @@ namespace DVLD.PresentationLayer.Users
 
         private void cbIsActive_SelectedIndexChanged(object sender, EventArgs e)
         {
-            activeStatusFilter = (ActiveStatus)cbIsActive.SelectedIndex;
+            activeApplicationStatusFilter = (ActiveApplicationStatus)cbIsActive.SelectedIndex;
             ApplyActivityFilter();
         }
 
@@ -114,7 +114,7 @@ namespace DVLD.PresentationLayer.Users
                 return;
             }
 
-            if (activeStatusFilter == ActiveStatus.All)
+            if (activeApplicationStatusFilter == ActiveApplicationStatus.All)
             {
                 RefreshUsersList();
                 return;
@@ -122,12 +122,12 @@ namespace DVLD.PresentationLayer.Users
 
             DataView dv = new DataView(dtAllUsers);
 
-            switch (activeStatusFilter)
+            switch (activeApplicationStatusFilter)
             {
-                case ActiveStatus.Yes:
+                case ActiveApplicationStatus.Yes:
                     dv.RowFilter = "IsActive = 'true'";
                     break;
-                case ActiveStatus.No:
+                case ActiveApplicationStatus.No:
                     dv.RowFilter = "IsActive = 'false'";
                     break;
                 default:

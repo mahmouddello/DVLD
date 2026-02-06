@@ -41,8 +41,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicationBusiness.cs" />
     <Compile Include="ApplicationTypeBusiness.cs" />
     <Compile Include="CountryBusiness.cs" />
+    <Compile Include="LicenseClassBusiness.cs" />
+    <Compile Include="LocalDrivingLicenseApplicationBusiness.cs" />
     <Compile Include="PersonBusiness.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestTypeBusiness.cs" />

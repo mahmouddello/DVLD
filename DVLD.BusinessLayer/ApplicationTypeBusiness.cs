@@ -16,22 +16,22 @@ namespace DVLD.BusinessLayer
             return ApplicationTypeData.GetAllApplicationTypes();
         }
 
-        public static ApplicationType Find(int applicationId)
+        public static ApplicationType Find(ApplicationType.enApplicationType applicationTypeId)
         {
-            DataRow row = ApplicationTypeData.GetById(applicationId);
+            DataRow row = ApplicationTypeData.GetById((int)applicationTypeId);
 
             if (row == null) 
                 return null;
 
             return new ApplicationType(
-                id: (int)row["ApplicationTypeID"],
+                applicationTypeId: (ApplicationType.enApplicationType)row["ApplicationTypeID"],
                 title: (string)row["ApplicationTypeTitle"],
                 fees: (decimal)row["ApplicationFees"]);
         }
 
-        public static bool Save(ApplicationType application)
+        public static bool Save(ApplicationType applicationType)
         {
-            return ApplicationTypeData.UpdateById(application.Id, application.Title, application.Fees);
+            return ApplicationTypeData.UpdateById((int)applicationType.Id, applicationType.Title, applicationType.Fees);
         }
     }
 }
