@@ -1,9 +1,11 @@
-﻿using System;
+﻿using DVLD.EntityLayer;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 using static DVLD.EntityLayer.Application;
@@ -107,6 +109,35 @@ namespace DVLD.DataAccessLayer
                 command.Parameters.AddWithValue("@LicenseClassID", licenseClassId);
 
                 return command.ExecuteScalar() != null;
+            }
+        }
+
+        public static bool UpdateApplicationStatus(int applicationId, Application.ApplicationStatus status)
+        {
+            string query = @"UPDATE Applications SET ApplicationStatus = @Status WHERE ApplicationID = @ApplicationID";
+
+            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                connection.Open();
+                command.Parameters.AddWithValue("@ApplicationID", applicationId);
+                command.Parameters.AddWithValue("@Status", (int)status);
+
+                return command.ExecuteNonQuery() > 0;
+            }
+        }
+
+        public static bool DeleteById(int applicationId)
+        {
+            string query = @"DELETE FROM Applications WHERE ApplicationID = @ApplicationID";
+
+            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                connection.Open();
+                command.Parameters.AddWithValue("@ApplicationID", applicationId);
+
+                return command.ExecuteNonQuery() > 0;
             }
         }
     }

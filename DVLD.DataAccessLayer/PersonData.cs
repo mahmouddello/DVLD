@@ -11,7 +11,7 @@ namespace DVLD.DataAccessLayer
         public static DataTable GetAllPeople()
         {
             DataTable dt = new DataTable();
-            string query = @"SELECT * FROM vw_PeopleDetails";
+            string query = @"SELECT * FROM PeopleDetails_View";
 
             using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
             using (SqlCommand command = new SqlCommand(query, connection))
@@ -30,7 +30,7 @@ namespace DVLD.DataAccessLayer
         public static DataRow GetById(int PersonID)
         {
             DataTable dt = new DataTable();
-            string query = @"SELECT * FROM vw_PersonDetails WHERE PersonID = @PersonID";
+            string query = @"SELECT * FROM PersonDetails_View WHERE PersonID = @PersonID";
 
             using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
             using (SqlCommand command = new SqlCommand(query, connection))
@@ -50,7 +50,7 @@ namespace DVLD.DataAccessLayer
         public static DataRow GetByNationalNo(string nationalNo)
         {
             DataTable dt = new DataTable();
-            string query = @"SELECT * FROM vw_PersonDetails WHERE NationalNo = @NationalNo";
+            string query = @"SELECT * FROM PersonDetails_View WHERE NationalNo = @NationalNo";
 
             using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
             using (SqlCommand command = new SqlCommand(query, connection))

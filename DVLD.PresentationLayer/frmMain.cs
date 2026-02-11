@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using DVLD.PresentationLayer.Applications;
+using DVLD.PresentationLayer.Applications.LocalDrivingLicense;
 using DVLD.PresentationLayer.ApplicationTypes;
 using DVLD.PresentationLayer.GlobalClasses;
 using DVLD.PresentationLayer.People;
@@ -80,6 +81,12 @@ namespace DVLD.PresentationLayer
         private void localLicenseToolStripMenuItem_Click(object sender, EventArgs e)
         {
             frmLocalDrivingLicenseApplication frm = new frmLocalDrivingLicenseApplication();
+            frm.ShowDialog();
+        }
+
+        private void localDrivingLicenseApplicationsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmListLocalDrivingLicenseApplications frm = new frmListLocalDrivingLicenseApplications();
             frm.ShowDialog();
         }
     }

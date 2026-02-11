@@ -75,6 +75,16 @@ namespace DVLD.BusinessLayer
             return false;
         }
 
+        public static bool Cancel(Application application)
+        {
+            return ApplicationData.UpdateApplicationStatus(application.Id, Application.ApplicationStatus.Cancelled);
+        }
+
+        public static bool Delete(Application application)
+        {
+            return ApplicationData.DeleteById(application.Id);
+        }
+
         public static bool HasSameClassApplication(int applicantId, int licenseClassId)
         {
             return ApplicationData.ExistsSameClassApplication(applicantId, licenseClassId);
