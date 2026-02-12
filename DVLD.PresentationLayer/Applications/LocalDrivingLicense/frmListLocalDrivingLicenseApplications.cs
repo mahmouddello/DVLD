@@ -22,7 +22,7 @@ namespace DVLD.PresentationLayer.Applications.LocalDrivingLicense
             LdlaId,
             ClassName,
             NationalNo,
-            FullName, 
+            FullName,
             Status
         }
 
@@ -160,7 +160,7 @@ namespace DVLD.PresentationLayer.Applications.LocalDrivingLicense
             txtQuery.Visible = filter != Filter.Status && filter != Filter.None;
             cbStatus.Visible = filter == Filter.Status;
 
-            switch(filter)
+            switch (filter)
             {
                 case Filter.None:
                     RefreshApplicationsList();
@@ -168,7 +168,7 @@ namespace DVLD.PresentationLayer.Applications.LocalDrivingLicense
 
                 case Filter.Status:
 
-                    cbStatus.SelectedItem = StatusFilter.All; 
+                    cbStatus.SelectedItem = StatusFilter.All;
                     break;
 
                 default:
@@ -211,10 +211,10 @@ namespace DVLD.PresentationLayer.Applications.LocalDrivingLicense
         private void txtQuery_KeyPress(object sender, KeyPressEventArgs e)
         {
             // The pressed key is : space, delete, backspace, ...etc. skips the checks.
-            if (char.IsControl(e.KeyChar)) 
+            if (char.IsControl(e.KeyChar))
                 return;
 
-            switch(filter)
+            switch (filter)
             {
                 // only numeric
                 case Filter.LdlaId:
@@ -279,7 +279,7 @@ namespace DVLD.PresentationLayer.Applications.LocalDrivingLicense
 
         private void deleteApplicationToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (dgvLDLA.CurrentRow == null) 
+            if (dgvLDLA.CurrentRow == null)
                 return;
 
             int ldlaId = (int)dgvLDLA.CurrentRow.Cells[0].Value;
@@ -300,6 +300,117 @@ namespace DVLD.PresentationLayer.Applications.LocalDrivingLicense
 
             cbFilter.SelectedIndex = 0;
             ReloadAndRefresh();
+        }
+
+        private void cmsLDLA_Opening(object sender, CancelEventArgs e)
+        {
+            // Don't show the menu if there's no row selected
+            if (dgvLDLA.CurrentRow == null)
+            {
+                e.Cancel = true;
+                return;
+            }
+
+            // Reset everything to a clean state
+            foreach (ToolStripItem item in cmsLDLA.Items)
+            {
+                item.Enabled = true;
+            }
+
+            string status = dgvLDLA.CurrentRow.Cells["Status"].Value?.ToString();
+            int passedTests = Convert.ToInt32(dgvLDLA.CurrentRow.Cells["PassedTests"].Value);
+
+            // Logical override
+            if (status == "Cancelled")
+            {
+                SetEnabled(false, editApplicationToolStripMenuItem, deleteApplicationToolStripMenuItem,
+                           cancelApplicationToolStripMenuItem, scheduleTestToolStripMenuItem,
+                           issueDrivingLicenseFirstTimeToolStripMenuItem, showLicenseInfoToolStripMenuItem);
+            }
+            else if (status == "Completed")
+            {
+                SetEnabled(false, editApplicationToolStripMenuItem, deleteApplicationToolStripMenuItem,
+                           cancelApplicationToolStripMenuItem, scheduleTestToolStripMenuItem,
+                           issueDrivingLicenseFirstTimeToolStripMenuItem);
+            }
+            else // New Application logic
+            {
+                scheduleTestToolStripMenuItem.Enabled = (passedTests < 3);
+                issueDrivingLicenseFirstTimeToolStripMenuItem.Enabled = (passedTests == 3);
+                showLicenseInfoToolStripMenuItem.Enabled = false; // Usually not available for new apps
+            }
+        }
+
+        // Helper method to disable multiple items at once
+        private void SetEnabled(bool enabled, params ToolStripItem[] items)
+        {
+            foreach (var item in items) item.Enabled = enabled;
+        }
+
+        private void visionTestToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show
+            (
+                "This feature will be implemented in the future",
+                "Stub",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Warning
+            );
+        }
+
+        private void scheduleVisionTestToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show
+             (
+                 "This feature will be implemented in the future",
+                 "Stub",
+                 MessageBoxButtons.OK,
+                 MessageBoxIcon.Warning
+             );
+        }
+
+        private void scheduleVisionTestToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show
+             (
+                 "This feature will be implemented in the future",
+                 "Stub",
+                 MessageBoxButtons.OK,
+                 MessageBoxIcon.Warning
+             );
+        }
+
+        private void issueDrivingLicenseFirstTimeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show
+             (
+                 "This feature will be implemented in the future",
+                 "Stub",
+                 MessageBoxButtons.OK,
+                 MessageBoxIcon.Warning
+             );
+        }
+
+        private void showLicenseInfoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show
+             (
+                 "This feature will be implemented in the future",
+                 "Stub",
+                 MessageBoxButtons.OK,
+                 MessageBoxIcon.Warning
+             );
+        }
+
+        private void showPersonLicenseHistoryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show
+             (
+                 "This feature will be implemented in the future",
+                 "Stub",
+                 MessageBoxButtons.OK,
+                 MessageBoxIcon.Warning
+             );
         }
     }
 }

@@ -62,5 +62,10 @@ namespace DVLD.BusinessLayer
 
             return false;
         }
+
+        public static bool DeleteLocalApplicationByMainId(int mainApplicationId)
+        {
+            return LocalDrivingLicenseApplicationData.DeleteByMainApplicationId(mainApplicationId);
+        }
     }
 }

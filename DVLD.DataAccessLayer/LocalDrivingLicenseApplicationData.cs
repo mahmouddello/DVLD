@@ -51,6 +51,20 @@ namespace DVLD.DataAccessLayer
             return dataTable.Rows.Count > 0 ? dataTable.Rows[0] : null;
         }
 
+        public static bool DeleteByMainApplicationId(int mainApplicationId)
+        {
+            string query = @"DELETE FROM LocalDrivingLicenseApplications WHERE ApplicationID = @ApplicationID";
+
+            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@ApplicationID", mainApplicationId);
+                connection.Open();
+
+                return command.ExecuteNonQuery() > 0;
+            }
+        }
+
         public static int InsertNew(int mainApplicationId, int licenseClassId)
         {
             string query = @"INSERT INTO 

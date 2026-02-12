@@ -410,5 +410,32 @@
   <ItemGroup>
     <None Include="Resources\webpage-list.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\application-details.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\delete-application.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\edit-application.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cancel-application.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\vision-test.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\written-test.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\driving-test.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\issue-driving-license.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\history.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

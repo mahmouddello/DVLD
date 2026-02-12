@@ -82,7 +82,9 @@ namespace DVLD.BusinessLayer
 
         public static bool Delete(Application application)
         {
-            return ApplicationData.DeleteById(application.Id);
+            bool linkedLocalDeleted = LocalDrivingLicenseApplicationBusiness.DeleteLocalApplicationByMainId(application.Id);
+
+            return ApplicationData.DeleteById(application.Id) && linkedLocalDeleted;
         }
 
         public static bool HasSameClassApplication(int applicantId, int licenseClassId)
