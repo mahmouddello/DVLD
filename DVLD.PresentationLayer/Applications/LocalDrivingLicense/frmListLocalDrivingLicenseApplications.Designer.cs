@@ -32,7 +32,6 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            this.btnNewLDLA = new System.Windows.Forms.Button();
             this.cbStatus = new System.Windows.Forms.ComboBox();
             this.txtQuery = new System.Windows.Forms.TextBox();
             this.cbFilter = new System.Windows.Forms.ComboBox();
@@ -40,7 +39,6 @@
             this.btnCloseForm = new System.Windows.Forms.Button();
             this.lblRecordsCount = new System.Windows.Forms.Label();
             this.dgvLDLA = new System.Windows.Forms.DataGridView();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.cmsLDLA = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.showApplicationDetailsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteApplicationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -53,22 +51,12 @@
             this.issueDrivingLicenseFirstTimeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showLicenseInfoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showPersonLicenseHistoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnNewLDLA = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLDLA)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.cmsLDLA.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
-            // 
-            // btnNewLDLA
-            // 
-            this.btnNewLDLA.BackColor = System.Drawing.Color.White;
-            this.btnNewLDLA.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnNewLDLA.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnNewLDLA.Location = new System.Drawing.Point(1691, 236);
-            this.btnNewLDLA.Name = "btnNewLDLA";
-            this.btnNewLDLA.Size = new System.Drawing.Size(78, 82);
-            this.btnNewLDLA.TabIndex = 17;
-            this.btnNewLDLA.UseVisualStyleBackColor = false;
-            this.btnNewLDLA.Click += new System.EventHandler(this.btnNewLDLA_Click);
             // 
             // cbStatus
             // 
@@ -170,15 +158,6 @@
             this.dgvLDLA.Size = new System.Drawing.Size(1757, 466);
             this.dgvLDLA.TabIndex = 9;
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Location = new System.Drawing.Point(759, 22);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(193, 144);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 12;
-            this.pictureBox1.TabStop = false;
-            // 
             // cmsLDLA
             // 
             this.cmsLDLA.ImageScalingSize = new System.Drawing.Size(24, 24);
@@ -192,7 +171,7 @@
             this.showLicenseInfoToolStripMenuItem,
             this.showPersonLicenseHistoryToolStripMenuItem});
             this.cmsLDLA.Name = "cmsLDLA";
-            this.cmsLDLA.Size = new System.Drawing.Size(339, 293);
+            this.cmsLDLA.Size = new System.Drawing.Size(339, 260);
             // 
             // showApplicationDetailsToolStripMenuItem
             // 
@@ -273,6 +252,30 @@
             this.showPersonLicenseHistoryToolStripMenuItem.Size = new System.Drawing.Size(338, 32);
             this.showPersonLicenseHistoryToolStripMenuItem.Text = "Show Person License History";
             // 
+            // btnNewLDLA
+            // 
+            this.btnNewLDLA.BackColor = System.Drawing.Color.White;
+            this.btnNewLDLA.BackgroundImage = global::DVLD.PresentationLayer.Properties.Resources.document;
+            this.btnNewLDLA.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnNewLDLA.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnNewLDLA.Location = new System.Drawing.Point(1691, 236);
+            this.btnNewLDLA.Name = "btnNewLDLA";
+            this.btnNewLDLA.Size = new System.Drawing.Size(78, 82);
+            this.btnNewLDLA.TabIndex = 17;
+            this.btnNewLDLA.UseVisualStyleBackColor = false;
+            this.btnNewLDLA.Click += new System.EventHandler(this.btnNewLDLA_Click);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackgroundImage = global::DVLD.PresentationLayer.Properties.Resources.webpage_list;
+            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.pictureBox1.Location = new System.Drawing.Point(838, 31);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(160, 144);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 12;
+            this.pictureBox1.TabStop = false;
+            // 
             // frmListLocalDrivingLicenseApplications
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -293,8 +296,8 @@
             this.Text = "Local Driving License Applications";
             this.Load += new System.EventHandler(this.frmListLocalDrivingLicenseApplications_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvLDLA)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.cmsLDLA.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

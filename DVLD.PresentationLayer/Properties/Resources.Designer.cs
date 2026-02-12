@@ -123,6 +123,26 @@ namespace DVLD.PresentationLayer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap document {
+            get {
+                object obj = ResourceManager.GetObject("document", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap driver_license {
+            get {
+                object obj = ResourceManager.GetObject("driver-license", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap driverFemale {
             get {
                 object obj = ResourceManager.GetObject("driverFemale", resourceCulture);
@@ -186,6 +206,46 @@ namespace DVLD.PresentationLayer.Properties {
         public static System.Drawing.Bitmap edit_application64 {
             get {
                 object obj = ResourceManager.GetObject("edit-application64", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap local_license {
+            get {
+                object obj = ResourceManager.GetObject("local-license", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap local_license1 {
+            get {
+                object obj = ResourceManager.GetObject("local-license1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap manage_applications {
+            get {
+                object obj = ResourceManager.GetObject("manage-applications", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap new_license {
+            get {
+                object obj = ResourceManager.GetObject("new-license", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -406,6 +466,16 @@ namespace DVLD.PresentationLayer.Properties {
         public static System.Drawing.Bitmap users_list {
             get {
                 object obj = ResourceManager.GetObject("users-list", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap webpage_list {
+            get {
+                object obj = ResourceManager.GetObject("webpage-list", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

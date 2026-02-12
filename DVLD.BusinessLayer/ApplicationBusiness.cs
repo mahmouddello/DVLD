@@ -89,5 +89,18 @@ namespace DVLD.BusinessLayer
         {
             return ApplicationData.ExistsSameClassApplication(applicantId, licenseClassId);
         }
+
+        public static bool MeetsMinimumAgeRequirement(int licenseClassId, int applicantId)
+        {
+            LicenseClass licenseClass = LicenseClassBusiness.Find(licenseClassId);
+            Person applicantPerson = PersonBusiness.Find(applicantId);
+
+            int personAge = DateTime.Now.Year - applicantPerson.DateOfBirth.Year;
+
+            if (licenseClass == null || applicantPerson == null)
+                return false;
+
+            return personAge >= licenseClass.MinimumAllowedAge;
+        }
     }
 }

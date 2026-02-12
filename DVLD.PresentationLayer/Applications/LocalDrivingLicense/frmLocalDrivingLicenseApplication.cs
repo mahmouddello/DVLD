@@ -149,6 +149,22 @@ namespace DVLD.PresentationLayer.Applications
             return true;
         }
 
+        private bool SatisfiesMinimumAllowedAge()
+        {
+            int selectedLicenseClassId = cbLicenseClass.SelectedIndex;
+
+            if (ApplicationBusiness.MeetsMinimumAgeRequirement(selectedLicenseClassId, this.application.ApplicantPersonId))
+                return true;
+
+            MessageBox.Show(
+                "Choose another license class, the selected person doesn't satisfy the minimum age requirement!",
+                "Error",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error);
+
+            return false;
+        }
+
         private bool SaveApplication()
         {
             if (!ApplicationBusiness.Save(this.application))
@@ -172,7 +188,6 @@ namespace DVLD.PresentationLayer.Applications
                 MessageBox.Show("Failed to save local application!");
         }
 
-
         private void btnSave_Click(object sender, EventArgs e)
         {
             if (!IsFormValid())
@@ -181,6 +196,9 @@ namespace DVLD.PresentationLayer.Applications
             MapApplicationFields();
 
             if (HasDuplicateApplication())
+                return;
+
+            if (!SatisfiesMinimumAllowedAge())
                 return;
 
             if (!SaveApplication())

@@ -39,12 +39,12 @@ namespace DVLD.DataAccessLayer
             using (SqlCommand command = new SqlCommand(query, connection))
             {
                 command.Parameters.AddWithValue("@LicenseClassID", licenseClassId);
-                    connection.Open();
+                connection.Open();
 
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
 
-                    if (reader.Read())
+                    if (reader.HasRows)
                         dt.Load(reader);
                 }
             }

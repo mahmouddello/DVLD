@@ -26,11 +26,11 @@ namespace DVLD.BusinessLayer
             LicenseClass licenseClass = new LicenseClass
             (
                 id: (int)row["LicenseClassID"],
-                name: (string)row["LicenseClassName"],
+                name: (string)row["ClassName"],
                 description: (string)row["ClassDescription"],
-                minimumAllowedAge: (int)row["MinimumAllowedAge"],
-                defaultValidityLength: (int)row["DefaultValidityLength"],
-                fees: (decimal)row["ClassFees"]
+                minimumAllowedAge: Convert.ToInt32(row["MinimumAllowedAge"]),
+                defaultValidityLength: Convert.ToInt32(row["DefaultValidityLength"]),
+                fees: Convert.ToDecimal(row["ClassFees"])
             );
 
             return licenseClass;

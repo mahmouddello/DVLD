@@ -389,5 +389,26 @@
   <ItemGroup>
     <None Include="Resources\test512.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\driver-license.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\new-license.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\local-license.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\manage-applications.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\local-license1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\document.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\webpage-list.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
