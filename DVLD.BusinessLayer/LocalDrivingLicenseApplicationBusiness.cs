@@ -60,12 +60,17 @@ namespace DVLD.BusinessLayer
             return false;
         }
 
-        public static bool Save(LocalDrivingLicenseApplication localDrivingLicenseApplication)
+        public static bool Save(LocalDrivingLicenseApplication ldla)
         {
-            if (localDrivingLicenseApplication.Id == -1)
-                return Add(localDrivingLicenseApplication);
+            if (ldla.Id == -1)
+                return Add(ldla);
 
-            return false;
+            return Update(ldla);
+        }
+
+        private static bool Update(LocalDrivingLicenseApplication ldla)
+        {
+            return LocalDrivingLicenseApplicationData.UpdateLicenseClass(ldla.Id, ldla.LicenseClassId);
         }
 
         public static bool DeleteLocalApplicationByMainId(int mainApplicationId)

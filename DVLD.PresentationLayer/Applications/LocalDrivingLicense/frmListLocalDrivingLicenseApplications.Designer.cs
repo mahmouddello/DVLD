@@ -199,6 +199,7 @@
             this.editApplicationToolStripMenuItem.Name = "editApplicationToolStripMenuItem";
             this.editApplicationToolStripMenuItem.Size = new System.Drawing.Size(386, 72);
             this.editApplicationToolStripMenuItem.Text = "Edit Application";
+            this.editApplicationToolStripMenuItem.Click += new System.EventHandler(this.editApplicationToolStripMenuItem_Click);
             // 
             // cancelApplicationToolStripMenuItem
             // 

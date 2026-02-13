@@ -72,7 +72,12 @@ namespace DVLD.BusinessLayer
             if (application.Id == -1)
                 return Add(application);
 
-            return false;
+            return Update(application);
+        }
+
+        private static bool Update(Application application)
+        {
+            return ApplicationData.UpdateApplication(application.Id, application.CreatedByUserId, application.LastStatusDate);
         }
 
         public static bool Cancel(Application application)

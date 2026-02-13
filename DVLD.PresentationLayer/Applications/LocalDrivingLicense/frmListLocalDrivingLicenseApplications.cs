@@ -420,5 +420,15 @@ namespace DVLD.PresentationLayer.Applications.LocalDrivingLicense
             frmLocalDrivingLicenseApplicationDetails frm = new frmLocalDrivingLicenseApplicationDetails(ldlaId);
             frm.ShowDialog();
         }
+
+        private void editApplicationToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int ldlaId = (int)dgvLDLA.CurrentRow.Cells[0].Value;
+
+            frmLocalDrivingLicenseApplication frm = new frmLocalDrivingLicenseApplication(ldlaId);
+            frm.ShowDialog();
+
+            ReloadAndRefresh();
+        }
     }
 }

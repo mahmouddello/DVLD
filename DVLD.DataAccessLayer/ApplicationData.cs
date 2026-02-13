@@ -112,6 +112,25 @@ namespace DVLD.DataAccessLayer
             }
         }
 
+        public static bool UpdateApplication(int applicationId, int createdByUserId, DateTime lastStatusDate)
+        {
+            string query = @"UPDATE Applications SET 
+                                LastStatusDate = @Date,
+                                CreatedByUserID = @UserId
+                            WHERE ApplicationID = @ApplicationID";
+
+            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                connection.Open();
+                command.Parameters.AddWithValue("@ApplicationID", applicationId);
+                command.Parameters.AddWithValue("@UserId", createdByUserId);
+                command.Parameters.AddWithValue("@Date", lastStatusDate);
+
+                return command.ExecuteNonQuery() > 0;
+            }
+        }
+
         public static bool UpdateApplicationStatus(int applicationId, Application.ApplicationStatus status)
         {
             string query = @"UPDATE Applications SET ApplicationStatus = @Status WHERE ApplicationID = @ApplicationID";

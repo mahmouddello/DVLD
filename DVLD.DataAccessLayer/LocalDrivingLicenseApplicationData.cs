@@ -113,5 +113,24 @@ namespace DVLD.DataAccessLayer
                 return result == null ? -1 : Convert.ToInt32(result);
             }
         }
+
+        public static bool UpdateLicenseClass(int ldlaId, int licenseClassId)
+        {
+            string query = @"UPDATE LocalDrivingLicenseApplications
+                     SET LicenseClassID = @LicenseClassID
+                     WHERE LocalDrivingLicenseApplicationID = @LocalDrivingLicenseApplicationID";
+
+            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", ldlaId);
+                command.Parameters.AddWithValue("@LicenseClassID", licenseClassId);
+
+                connection.Open();
+                int rowsAffected = command.ExecuteNonQuery();
+
+                return rowsAffected > 0;
+            }
+        }
     }
 }
