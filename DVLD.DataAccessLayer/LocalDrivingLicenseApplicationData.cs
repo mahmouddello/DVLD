@@ -51,6 +51,35 @@ namespace DVLD.DataAccessLayer
             return dataTable.Rows.Count > 0 ? dataTable.Rows[0] : null;
         }
 
+        public static int GetPassedTestCountById(int ldlaId)
+        {
+            string query = @"SELECT
+                                COUNT(CASE WHEN t.TestResult = 1 THEN 1 END) AS PassedTests
+                            FROM LocalDrivingLicenseApplications AS ldla
+
+                            LEFT JOIN TestAppointments AS ta
+                                ON ta.LocalDrivingLicenseApplicationID = ldla.LocalDrivingLicenseApplicationID
+
+                            LEFT JOIN Tests AS t
+                                ON t.TestAppointmentID = ta.TestAppointmentID
+
+                            WHERE ldla.LocalDrivingLicenseApplicationID = @ldlaId
+
+                            GROUP BY ldla.LocalDrivingLicenseApplicationID;";
+
+            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                connection.Open();
+                command.Parameters.AddWithValue("@ldlaId", ldlaId);
+
+
+                object result = command.ExecuteScalar();
+
+                return result != null ? Convert.ToInt32(result) : 0;
+            }
+        }
+
         public static bool DeleteByMainApplicationId(int mainApplicationId)
         {
             string query = @"DELETE FROM LocalDrivingLicenseApplications WHERE ApplicationID = @ApplicationID";

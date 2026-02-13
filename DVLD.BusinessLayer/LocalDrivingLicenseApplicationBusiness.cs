@@ -37,6 +37,11 @@ namespace DVLD.BusinessLayer
             return ldla;
         }
 
+        public static int GetPassedTestCountById(int ldlaId)
+        {
+            return LocalDrivingLicenseApplicationData.GetPassedTestCountById(ldlaId);
+        }
+
         private static bool Add(LocalDrivingLicenseApplication localDrivingLicenseApplication)
         {
             localDrivingLicenseApplication.Id = LocalDrivingLicenseApplicationData.InsertNew

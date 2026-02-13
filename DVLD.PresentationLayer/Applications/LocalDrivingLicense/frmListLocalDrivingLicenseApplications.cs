@@ -412,5 +412,13 @@ namespace DVLD.PresentationLayer.Applications.LocalDrivingLicense
                  MessageBoxIcon.Warning
              );
         }
+
+        private void showApplicationDetailsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int ldlaId = (int)dgvLDLA.CurrentRow.Cells[0].Value;
+
+            frmLocalDrivingLicenseApplicationDetails frm = new frmLocalDrivingLicenseApplicationDetails(ldlaId);
+            frm.ShowDialog();
+        }
     }
 }

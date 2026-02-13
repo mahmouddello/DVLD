@@ -40,8 +40,6 @@
             this.lblRecordsCount = new System.Windows.Forms.Label();
             this.dgvLDLA = new System.Windows.Forms.DataGridView();
             this.cmsLDLA = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.btnNewLDLA = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.showApplicationDetailsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteApplicationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editApplicationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -53,6 +51,8 @@
             this.issueDrivingLicenseFirstTimeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showLicenseInfoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showPersonLicenseHistoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnNewLDLA = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLDLA)).BeginInit();
             this.cmsLDLA.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -174,30 +174,6 @@
             this.cmsLDLA.Size = new System.Drawing.Size(387, 613);
             this.cmsLDLA.Opening += new System.ComponentModel.CancelEventHandler(this.cmsLDLA_Opening);
             // 
-            // btnNewLDLA
-            // 
-            this.btnNewLDLA.BackColor = System.Drawing.Color.White;
-            this.btnNewLDLA.BackgroundImage = global::DVLD.PresentationLayer.Properties.Resources.document;
-            this.btnNewLDLA.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnNewLDLA.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnNewLDLA.Location = new System.Drawing.Point(1691, 236);
-            this.btnNewLDLA.Name = "btnNewLDLA";
-            this.btnNewLDLA.Size = new System.Drawing.Size(78, 82);
-            this.btnNewLDLA.TabIndex = 17;
-            this.btnNewLDLA.UseVisualStyleBackColor = false;
-            this.btnNewLDLA.Click += new System.EventHandler(this.btnNewLDLA_Click);
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BackgroundImage = global::DVLD.PresentationLayer.Properties.Resources.webpage_list;
-            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox1.Location = new System.Drawing.Point(838, 31);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(160, 144);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 12;
-            this.pictureBox1.TabStop = false;
-            // 
             // showApplicationDetailsToolStripMenuItem
             // 
             this.showApplicationDetailsToolStripMenuItem.Image = global::DVLD.PresentationLayer.Properties.Resources.application_details;
@@ -205,6 +181,7 @@
             this.showApplicationDetailsToolStripMenuItem.Name = "showApplicationDetailsToolStripMenuItem";
             this.showApplicationDetailsToolStripMenuItem.Size = new System.Drawing.Size(386, 72);
             this.showApplicationDetailsToolStripMenuItem.Text = "Show Application Details";
+            this.showApplicationDetailsToolStripMenuItem.Click += new System.EventHandler(this.showApplicationDetailsToolStripMenuItem_Click);
             // 
             // deleteApplicationToolStripMenuItem
             // 
@@ -297,6 +274,30 @@
             this.showPersonLicenseHistoryToolStripMenuItem.Size = new System.Drawing.Size(386, 72);
             this.showPersonLicenseHistoryToolStripMenuItem.Text = "Show Person License History";
             this.showPersonLicenseHistoryToolStripMenuItem.Click += new System.EventHandler(this.showPersonLicenseHistoryToolStripMenuItem_Click);
+            // 
+            // btnNewLDLA
+            // 
+            this.btnNewLDLA.BackColor = System.Drawing.Color.White;
+            this.btnNewLDLA.BackgroundImage = global::DVLD.PresentationLayer.Properties.Resources.document;
+            this.btnNewLDLA.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnNewLDLA.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnNewLDLA.Location = new System.Drawing.Point(1691, 236);
+            this.btnNewLDLA.Name = "btnNewLDLA";
+            this.btnNewLDLA.Size = new System.Drawing.Size(78, 82);
+            this.btnNewLDLA.TabIndex = 17;
+            this.btnNewLDLA.UseVisualStyleBackColor = false;
+            this.btnNewLDLA.Click += new System.EventHandler(this.btnNewLDLA_Click);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackgroundImage = global::DVLD.PresentationLayer.Properties.Resources.webpage_list;
+            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.pictureBox1.Location = new System.Drawing.Point(838, 31);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(160, 144);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 12;
+            this.pictureBox1.TabStop = false;
             // 
             // frmListLocalDrivingLicenseApplications
             // 
