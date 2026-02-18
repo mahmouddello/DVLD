@@ -87,7 +87,72 @@ namespace DVLD.DataAccessLayer
                 command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", ldlaId);
                 command.Parameters.AddWithValue("@TestTypeID", testTypeId);
 
-                return command.ExecuteScalar() != null;
+                object result = command.ExecuteScalar();
+                return Convert.ToBoolean(result);
+            }
+        }
+        
+        public static bool HasTestFailedRecord(int ldlaId, int testTypeId)
+        {
+            string query = @"SELECT 
+	                            1
+                            FROM 
+	                            Tests
+                            WHERE TestAppointmentID IN 
+                            (
+	                            SELECT 
+			                            TestAppointmentID
+		                            FROM 
+			                            TestAppointments
+	                            WHERE
+		                            LocalDrivingLicenseApplicationID = @LocalDrivingLicenseApplicationID
+		                            AND
+		                            TestTypeID = @TestTypeID
+                            ) AND 
+	                            TestResult = 0;";
+
+            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                connection.Open();
+
+                command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", ldlaId);
+                command.Parameters.AddWithValue("@TestTypeID", testTypeId);
+
+                object result = command.ExecuteScalar();
+                return Convert.ToBoolean(result);
+            }
+        }
+
+        public static int GetTestTrialsCount(int ldlaId, int testTypeId)
+        {
+            string query = @"SELECT 
+                                COUNT(*)
+                            FROM 
+                                Tests
+                            WHERE TestAppointmentID IN 
+                            (
+                                SELECT 
+                                        TestAppointmentID
+                                    FROM 
+                                        TestAppointments
+                                WHERE
+                                    LocalDrivingLicenseApplicationID = @LocalDrivingLicenseApplicationID
+                                    AND
+                                    TestTypeID = @TestTypeID
+                            )";
+
+            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                connection.Open();
+
+                command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", ldlaId);
+                command.Parameters.AddWithValue("@TestTypeID", testTypeId);
+
+                object result = command.ExecuteScalar();
+
+                return result == null ? -1 : Convert.ToInt32(result);
             }
         }
     }

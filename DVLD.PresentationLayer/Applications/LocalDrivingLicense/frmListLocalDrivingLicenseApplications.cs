@@ -1,6 +1,7 @@
 ﻿using DVLD.BusinessLayer;
 using DVLD.EntityLayer;
 using DVLD.PresentationLayer.GlobalClasses;
+using DVLD.PresentationLayer.Tests;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -317,6 +318,7 @@ namespace DVLD.PresentationLayer.Applications.LocalDrivingLicense
                 item.Enabled = true;
             }
 
+            int ldlaId = (int)dgvLDLA.CurrentRow.Cells[0].Value;
             string status = dgvLDLA.CurrentRow.Cells["Status"].Value?.ToString();
             int passedTests = Convert.ToInt32(dgvLDLA.CurrentRow.Cells["PassedTests"].Value);
 
@@ -338,6 +340,10 @@ namespace DVLD.PresentationLayer.Applications.LocalDrivingLicense
                 scheduleTestToolStripMenuItem.Enabled = (passedTests < 3);
                 issueDrivingLicenseFirstTimeToolStripMenuItem.Enabled = (passedTests == 3);
                 showLicenseInfoToolStripMenuItem.Enabled = false; // Usually not available for new apps
+
+                scheduleVisionTestToolStripMenuItem.Enabled = passedTests == 0;
+                scheduleWrittenTestToolStripMenuItem.Enabled = TestBusiness.HasPassedTest(ldlaId, 1) && !TestBusiness.HasPassedTest(ldlaId, 2);
+                scheduleStreetTestToolStripMenuItem.Enabled = TestBusiness.HasPassedTest(ldlaId, 2);
             }
         }
 
@@ -349,35 +355,26 @@ namespace DVLD.PresentationLayer.Applications.LocalDrivingLicense
 
         private void visionTestToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show
-            (
-                "This feature will be implemented in the future",
-                "Stub",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Warning
-            );
+            int ldlaId = (int)dgvLDLA.CurrentRow.Cells[0].Value;
+            frmScheduleTest frm = new frmScheduleTest(ldlaId, 1);
+
+            frm.ShowDialog();
         }
 
         private void scheduleVisionTestToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show
-             (
-                 "This feature will be implemented in the future",
-                 "Stub",
-                 MessageBoxButtons.OK,
-                 MessageBoxIcon.Warning
-             );
+            int ldlaId = (int)dgvLDLA.CurrentRow.Cells[0].Value;
+            frmScheduleTest frm = new frmScheduleTest(ldlaId, 2);
+
+            frm.ShowDialog();
         }
 
         private void scheduleVisionTestToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            MessageBox.Show
-             (
-                 "This feature will be implemented in the future",
-                 "Stub",
-                 MessageBoxButtons.OK,
-                 MessageBoxIcon.Warning
-             );
+            int ldlaId = (int)dgvLDLA.CurrentRow.Cells[0].Value;
+            frmScheduleTest frm = new frmScheduleTest(ldlaId, 3);
+
+            frm.ShowDialog();
         }
 
         private void issueDrivingLicenseFirstTimeToolStripMenuItem_Click(object sender, EventArgs e)

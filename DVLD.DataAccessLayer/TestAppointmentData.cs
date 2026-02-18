@@ -11,15 +11,27 @@ namespace DVLD.DataAccessLayer
 {
     public static class TestAppointmentData
     {
-        public static DataTable GetAllTestAppointments()
+        public static DataTable GetAllTestAppointments(int ldlaId, int testTypeId)
         {
             DataTable dt = new DataTable();
-            string query = "SELECT * FROM TestAppointments";
+            string query = @"SELECT
+	                            TestAppointmentID,
+	                            AppointmentDate,
+	                            PaidFees,
+	                            IsLocked
+                            FROM
+	                            TestAppointments
+                            WHERE 
+                                 LocalDrivingLicenseApplicationID = @LocalDrivingLicenseApplicationID
+                                 AND
+                                 TestTypeID = @TestTypeID";
 
             using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
             using (SqlCommand command = new SqlCommand(query, connection))
             {
                 connection.Open();
+                command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", ldlaId);
+                command.Parameters.AddWithValue("@TestTypeID", testTypeId);
 
                 using (SqlDataReader reader = command.ExecuteReader())
                     if (reader.HasRows)
@@ -64,20 +76,68 @@ namespace DVLD.DataAccessLayer
             }
         }
 
+        public static int InsertNew(TestAppointment testAppointment)
+        {
+            string query = @"INSERT INTO TestAppointments 
+                             VALUES (@TestTypeID, @LocalDrivingLicenseApplicationID, @AppointmentDate,
+                                     @PaidFees, @CreatedByUserID, @IsLocked, @RetakeTestApplicationID);
+                             SELECT SCOPE_IDENTITY()";
+
+            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                connection.Open();
+
+                command.Parameters.AddWithValue("@TestTypeID", testAppointment.TestTypeId);
+                command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", testAppointment.LocalDrivingLicenseApplicationId);
+                command.Parameters.AddWithValue("@AppointmentDate", testAppointment.AppointmentDate);
+                command.Parameters.AddWithValue("@PaidFees", testAppointment.PaidFees);
+                command.Parameters.AddWithValue("@CreatedByUserID", testAppointment.CreatedByUserId);
+                command.Parameters.AddWithValue("@IsLocked", testAppointment.IsLocked);
+                var param = command.Parameters.Add("@RetakeTestApplicationID", SqlDbType.Int);
+
+                if (testAppointment.RetakeTestApplicationId == -1)
+                    param.Value = DBNull.Value;
+                else
+                    param.Value = testAppointment.RetakeTestApplicationId;
+
+                object result = command.ExecuteScalar();
+
+                return result == null ? -1 : Convert.ToInt32(result);
+            }
+        }
+
+        public static bool UpdateById(int testAppointmentId, DateTime newAppointmentDate)
+        {
+            string query = @"UPDATE TestAppointments SET AppointmentDate = @AppointmentDate
+                             WHERE TestAppointmentID = @TestAppointmentID";
+
+            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                connection.Open();
+
+                command.Parameters.AddWithValue("@TestAppointmentID", testAppointmentId);
+                command.Parameters.AddWithValue("@AppointmentDate", newAppointmentDate);
+
+                return command.ExecuteNonQuery() > 0;
+            }
+        }
+
         private static TestAppointment Map(SqlDataReader reader)
         {
             if (!reader.Read())
                 return null;
 
             return new TestAppointment(
-                id: (int)reader["TestAppointmentID"],
-                testTypeId: (int)reader["TestTypeID"],
-                localDrivingApplicationLicenseId: (int)reader["LocalDrivingLicenseApplicationID"],
-                appointmentDate: (DateTime)reader["AppointmentDate"],
-                paidFees: (decimal)reader["PaidFees"],
-                createdByUserId: (int)reader["CreatedByUserID"],
-                isLocked: (bool)reader["IsLocked"],
-                retakeTestApplicationId: (int)reader["RetakeTestApplicationID"]
+                id: Convert.ToInt32(reader["TestAppointmentID"]),
+                testTypeId: Convert.ToInt32(reader["TestTypeID"]),
+                localDrivingApplicationLicenseId: Convert.ToInt32(reader["LocalDrivingLicenseApplicationID"]),
+                appointmentDate: Convert.ToDateTime(reader["AppointmentDate"]),
+                paidFees: Convert.ToDecimal(reader["PaidFees"]),
+                createdByUserId: Convert.ToInt32(reader["CreatedByUserID"]),
+                isLocked: Convert.ToBoolean(reader["IsLocked"]),
+                retakeTestApplicationId: reader["RetakeTestApplicationID"] != DBNull.Value ? Convert.ToInt32(reader["RetakeTestApplicationID"]) : -1
             );
         }
     }

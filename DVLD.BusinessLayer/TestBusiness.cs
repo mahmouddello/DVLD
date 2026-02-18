@@ -25,5 +25,15 @@ namespace DVLD.BusinessLayer
         {
             return TestData.HasTestPassedRecord(ldlaId, testTypeId);
         }
+
+        public static bool HasFailedTest(int ldlaId, int testTypeId)
+        {
+            return TestData.HasTestFailedRecord(ldlaId, testTypeId);
+        }
+
+        public static int GetTrialsCount(int ldlaId, int testTypeId)
+        {
+            return TestData.GetTestTrialsCount(ldlaId, testTypeId);
+        }
     }
 }
