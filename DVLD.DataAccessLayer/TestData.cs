@@ -31,7 +31,7 @@ namespace DVLD.DataAccessLayer
 
         public static Test GetById(int testId)
         {
-            string query = "SELECT * FROM TestAppointments WHERE TestID = @TestID";
+            string query = "SELECT * FROM Tests WHERE TestID = @TestID";
 
             using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
             using (SqlCommand command = new SqlCommand(query, connection))
@@ -44,6 +44,42 @@ namespace DVLD.DataAccessLayer
             }
         }
 
+        public static int InsertNew(Test test)
+        {
+            const string query = @"INSERT INTO Tests VALUES (@TestAppointmentID, @TestResult, @Notes, @CreatedByUserID);
+                                   SELECT SCOPE_IDENTITY();";
+            int newTestId = -1;
+
+            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@TestAppointmentID", test.TestAppointmentId);
+                command.Parameters.AddWithValue("@TestResult", (int)test.Result);
+                command.Parameters.AddWithValue("@CreatedByUserID", test.CreatedByUserId);
+                var param = command.Parameters.Add("@Notes", SqlDbType.NVarChar);
+
+                if (string.IsNullOrWhiteSpace(test.Notes))
+                    param.Value = DBNull.Value;
+                else
+                    param.Value = test.Notes;
+
+                try
+                {
+                    connection.Open();
+                    object result = command.ExecuteScalar();
+
+                    if (result != DBNull.Value)
+                        newTestId = Convert.ToInt32(result);
+                }
+                catch
+                {
+                    // handle exception
+                }
+            }
+
+            return newTestId;
+        }
+
         private static Test Map(SqlDataReader reader)
         {
             if (!reader.Read())
@@ -52,8 +88,8 @@ namespace DVLD.DataAccessLayer
             return new Test(
                 id: (int)reader["TestID"],
                 testAppointmentId: (int)reader["TestAppointmentID"],
-                testResult: (TestResult)reader["TestResult"],
-                notes: (string)reader["Notes"],
+                testResult: (TestResult)Convert.ToInt32(reader["TestResult"]),
+                notes: reader["Notes"] == DBNull.Value ? "" : (string)reader["Notes"],
                 createdByUserId: (int)reader["CreatedByUserID"]
             );
         }

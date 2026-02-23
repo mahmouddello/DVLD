@@ -1,6 +1,7 @@
 ﻿using DVLD.BusinessLayer;
 using DVLD.EntityLayer;
 using DVLD.PresentationLayer.Applications.Controls;
+using DVLD.PresentationLayer.GlobalClasses;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,11 +18,36 @@ namespace DVLD.PresentationLayer.Tests.TestAppointments
 {
     public partial class frmScheduleEditAppointment : Form
     {
-        private enum Mode { AddNew = 0, Update = 1 }
+        private enum Mode { AddNew = 0, Update = 1, Locked = 2 }
         private Mode mode;
 
         int localDlaId, testTypeId, testApptId;
-        private bool hasFailedTest;
+        TestAppointment testAppointment;
+
+        private bool HasFailedTest
+        {
+            get
+            {
+                // If in AddNew mode, localDlaId and testTypeId are known
+                if (mode == Mode.AddNew)
+                {
+                    return TestBusiness.HasFailedTest(localDlaId, testTypeId);
+                }
+
+                // If in Update mode, fetch localDlaId and testTypeId from the existing appointment
+                else if (mode == Mode.Update && testApptId > 0)
+                {
+                    var appointment = TestAppointmentBusiness.Find(testApptId);
+                    if (appointment == null) return false;
+
+                    return TestBusiness.HasFailedTest(
+                        appointment.LocalDrivingLicenseApplicationId,
+                        appointment.TestTypeId
+                    );
+                }
+                return false; // fallback
+            }
+        }
 
         public frmScheduleEditAppointment(int localDlaId, int testTypeId)
         {
@@ -32,17 +58,20 @@ namespace DVLD.PresentationLayer.Tests.TestAppointments
             this.testTypeId = testTypeId;
         }
 
-        public frmScheduleEditAppointment(int testApptId)
+        public frmScheduleEditAppointment(int testApptId, bool isLocked)
         {
             InitializeComponent();
-            mode = Mode.Update;
-
             this.testApptId = testApptId;
+
+            if (isLocked)
+                mode = Mode.Locked;
+            else
+                mode = Mode.Update;
         }
 
         private void frmScheduleEditAppointment_Load(object sender, EventArgs e)
         {
-            if (mode == Mode.Update)
+            if (mode == Mode.Update || mode == Mode.Locked)
                 LoadExistingAppointment();
             else
                 LoadNewAppointmentDefaults();
@@ -55,17 +84,17 @@ namespace DVLD.PresentationLayer.Tests.TestAppointments
             switch (this.testTypeId)
             {
                 case 1:
-                    lblTestType.Text = "Vision Test Appointments";
+                    lblTestType.Text = "Schedule Vision Test Appointment";
                     pictureBox1.Image = Properties.Resources.vision_test;
                     break;
 
                 case 2:
-                    lblTestType.Text = "Written Test Appointments";
+                    lblTestType.Text = "Schedule Written Test Appointment";
                     pictureBox1.Image = Properties.Resources.written_test;
                     break;
 
                 case 3:
-                    lblTestType.Text = "Street Test Appointments";
+                    lblTestType.Text = "Schedule Street Test Appointment";
                     pictureBox1.Image = Properties.Resources.driving_test;
                     break;
             }
@@ -73,28 +102,38 @@ namespace DVLD.PresentationLayer.Tests.TestAppointments
 
         private void PopulateForm(LocalDrivingLicenseApplication localDla, int testTypeId)
         {
+            // Objects
             TestType testType = TestTypeBusiness.Find(testTypeId);
             ApplicationType applicationType = ApplicationTypeBusiness.Find(ApplicationType.enApplicationType.RetakeTest);
-            hasFailedTest = TestBusiness.HasFailedTest(localDla.Id, testTypeId);
 
+            // application data
             lblLocalDla.Text = localDla.Id.ToString();
             lblLicenseClass.Text = localDla.LicenseClassInfo.Name;
             lblPersonName.Text = localDla.MainApplicationInfo.ApplicantPersonInfo.FullName;
             lblTrialCount.Text = TestBusiness.GetTrialsCount(localDla.Id, testTypeId).ToString();
             lblFees.Text = TestTypeBusiness.Find(testTypeId).Fees.ToString();
 
-            gbRetakeTest.Enabled = hasFailedTest;
+            // group box data
+            gbRetakeTest.Enabled = HasFailedTest;
             lblRetakeApplicationFees.Text = applicationType.Fees.ToString();
-            lblTotalFees.Text = hasFailedTest ? (applicationType.Fees + testType.Fees).ToString() : testType.Fees.ToString();
+            lblTotalFees.Text = HasFailedTest ? (applicationType.Fees + testType.Fees).ToString() : testType.Fees.ToString();
+            lblAdditional.Text = "";
+
+            if (mode == Mode.Locked)
+            {
+                lblAdditional.Text = "Person already has sat for this test, you can't modify this appointment!";
+                btnSave.Enabled = false;
+                dtpAppointment.Enabled = false;
+            }
         }
 
         private void LoadNewAppointmentDefaults()
         {
-            var localDla = LocalDrivingLicenseApplicationBusiness.Find(localDlaId);
+            LocalDrivingLicenseApplication localDla = LocalDrivingLicenseApplicationBusiness.Find(localDlaId);
 
             if (localDla == null)
             {
-                ShowErrorAndClose($"No Local DLA found with id: {localDlaId}!");
+                Utility.ShowErrorMessage($"No Local DLA found with id: {localDlaId}!");
                 return;
             }
 
@@ -126,54 +165,78 @@ namespace DVLD.PresentationLayer.Tests.TestAppointments
             return ApplicationBusiness.Save(application);
         }
 
-        private void btnSave_Click(object sender, EventArgs e)
+        private bool UpdateAppointmentDate()
         {
-            TestAppointment testAppointment = new TestAppointment();
+            TestAppointment testAppointment = TestAppointmentBusiness.Find(testApptId);
+
+            if (testAppointment == null)
+                return false;
+
+            testAppointment.AppointmentDate = dtpAppointment.Value; // replace the value in case of date chang
+
+            return TestAppointmentBusiness.Save(testAppointment);
+        }
+
+        private void SaveTestAppointment()
+        {
+            Application application = new Application();
+            
 
             // if the mode is update, means we have an appointment, so we update only it's date (if changed)
             if (mode == Mode.Update)
             {
                 testAppointment = TestAppointmentBusiness.Find(testApptId);
-                testAppointment.AppointmentDate = dtpAppointment.Value; // replace the value in case of date change
 
-                if (testAppointment != null && TestAppointmentBusiness.Save(testAppointment))
+                if (!UpdateAppointmentDate())
                 {
-                    ShowSuccessMessage("Appointment Date updated sucessfully!");
+                    Utility.ShowErrorMessage($"Error finding the appointment wiht id: {testApptId}!");
                     return;
                 }
+
+                Utility.ShowSuccessMessage("Updated the appointment successfully!");
+                return;
             }
-            else
+
+            // From here, the mode is add new
+            testAppointment = new TestAppointment();
+            MapTestAppointmentData(testAppointment); // map data (new appointment)
+
+            // if the person has failed this test before, we need to create application of type Retake test.
+            if (HasFailedTest)
             {
-                if (hasFailedTest)
+                if (!CreateAndSaveRetakeTestApplication(application))
                 {
-                    Application application = new Application();
-
-                    if (!CreateAndSaveRetakeTestApplication(application))
-                        ShowErrorAndClose("Errorr saving retake test app. run in DEBUG Mode!");
-
-                    // Saved the retake, now map a new testAppointment
-                    MapTestAppointmentData(testAppointment);
-                    testAppointment.RetakeTestApplicationId = application.Id;
-                }
-                else
-                {
-                    // if no failed test, then just book a normal first time appointment
-                    MapTestAppointmentData(testAppointment);
+                    Utility.ShowErrorMessage("Error saving retake test application. This form will be closed");
+                    return;
                 }
 
-                if (TestAppointmentBusiness.Save(testAppointment))
-                {
-                    ShowSuccessMessage("Saved the new appoitment successfully!");
-                    lblRetakeTestApplicationID.Text = testAppointment.RetakeTestApplicationId.ToString();
-                }
-                else
-                    ShowErrorAndClose("Error booking the new appointment");
+                // Saved the retake, now map to the test appointment
+                testAppointment.RetakeTestApplicationId = application.Id;
             }
+
+            if (TestAppointmentBusiness.Save(testAppointment))
+            {
+                Utility.ShowSuccessMessage($"Saved the new appointment successfully with id: {testAppointment.Id}");
+                lblRetakeTestApplicationID.Text = testAppointment.RetakeTestApplicationId.ToString();
+                mode = Mode.Update;
+                return;
+            }
+
+            // Handle save failure
+            if (HasFailedTest && application != null)
+                ApplicationBusiness.Delete(application);
+
+            Utility.ShowErrorMessage("Error booking the new appointment!");
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+           SaveTestAppointment();
         }
 
         private void MapTestAppointmentData(TestAppointment testAppointment)
         {
-            testAppointment.Id = -1;
+            testAppointment.Id = -1; // default
             testAppointment.TestTypeId = testTypeId;
             testAppointment.LocalDrivingLicenseApplicationId = localDlaId;
             testAppointment.AppointmentDate = DateTime.Now;
@@ -189,7 +252,7 @@ namespace DVLD.PresentationLayer.Tests.TestAppointments
 
             if (appointment == null)
             {
-                ShowErrorAndClose($"No Appointment found with id: {testApptId}!");
+                Utility.ShowErrorMessage($"No Appointment found with id: {testApptId}!");
                 return;
             }
 
@@ -198,11 +261,11 @@ namespace DVLD.PresentationLayer.Tests.TestAppointments
 
             if (localDla == null)
             {
-                ShowErrorAndClose($"No Local DLA found with id: {appointment.LocalDrivingLicenseApplicationId}!");
+                Utility.ShowErrorMessage($"No Local DLA found with id: {appointment.LocalDrivingLicenseApplicationId}!");
                 return;
             }
 
-            if (appointment.RetakeTestApplicationId != null)
+            if (appointment.RetakeTestApplicationId != -1)
                 lblRetakeTestApplicationID.Text = appointment.RetakeTestApplicationId.ToString();
 
             dtpAppointment.Value = appointment.AppointmentDate;
@@ -213,17 +276,6 @@ namespace DVLD.PresentationLayer.Tests.TestAppointments
                 dtpAppointment.MinDate = appointment.AppointmentDate;
 
             PopulateForm(localDla, appointment.TestTypeId);
-        }
-
-        private void ShowErrorAndClose(string message)
-        {
-            MessageBox.Show(message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            this.Close();
-        }
-
-        private void ShowSuccessMessage(string message)
-        {
-            MessageBox.Show(message, "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
     }

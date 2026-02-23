@@ -51,6 +51,7 @@
             this.btnSave = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.dtpAppointment = new System.Windows.Forms.DateTimePicker();
+            this.lblAdditional = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.gbRetakeTest.SuspendLayout();
             this.SuspendLayout();
@@ -79,7 +80,7 @@
             // 
             this.lblRecordsCount.AutoSize = true;
             this.lblRecordsCount.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblRecordsCount.Location = new System.Drawing.Point(14, 278);
+            this.lblRecordsCount.Location = new System.Drawing.Point(14, 303);
             this.lblRecordsCount.Name = "lblRecordsCount";
             this.lblRecordsCount.Size = new System.Drawing.Size(111, 29);
             this.lblRecordsCount.TabIndex = 22;
@@ -89,7 +90,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(14, 349);
+            this.label1.Location = new System.Drawing.Point(14, 374);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(108, 29);
             this.label1.TabIndex = 23;
@@ -99,7 +100,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(14, 491);
+            this.label2.Location = new System.Drawing.Point(14, 516);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(68, 29);
             this.label2.TabIndex = 24;
@@ -109,7 +110,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(14, 420);
+            this.label3.Location = new System.Drawing.Point(14, 445);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(84, 29);
             this.label3.TabIndex = 25;
@@ -119,7 +120,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(14, 562);
+            this.label4.Location = new System.Drawing.Point(14, 587);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(69, 29);
             this.label4.TabIndex = 26;
@@ -129,7 +130,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(14, 633);
+            this.label5.Location = new System.Drawing.Point(14, 658);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(74, 29);
             this.label5.TabIndex = 27;
@@ -216,7 +217,7 @@
             // 
             this.lblLocalDla.AutoSize = true;
             this.lblLocalDla.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblLocalDla.Location = new System.Drawing.Point(131, 278);
+            this.lblLocalDla.Location = new System.Drawing.Point(131, 303);
             this.lblLocalDla.Name = "lblLocalDla";
             this.lblLocalDla.Size = new System.Drawing.Size(63, 29);
             this.lblLocalDla.TabIndex = 29;
@@ -226,7 +227,7 @@
             // 
             this.lblLicenseClass.AutoSize = true;
             this.lblLicenseClass.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblLicenseClass.Location = new System.Drawing.Point(128, 349);
+            this.lblLicenseClass.Location = new System.Drawing.Point(128, 374);
             this.lblLicenseClass.Name = "lblLicenseClass";
             this.lblLicenseClass.Size = new System.Drawing.Size(63, 29);
             this.lblLicenseClass.TabIndex = 30;
@@ -236,7 +237,7 @@
             // 
             this.lblPersonName.AutoSize = true;
             this.lblPersonName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPersonName.Location = new System.Drawing.Point(104, 420);
+            this.lblPersonName.Location = new System.Drawing.Point(104, 445);
             this.lblPersonName.Name = "lblPersonName";
             this.lblPersonName.Size = new System.Drawing.Size(63, 29);
             this.lblPersonName.TabIndex = 31;
@@ -246,7 +247,7 @@
             // 
             this.lblTrialCount.AutoSize = true;
             this.lblTrialCount.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTrialCount.Location = new System.Drawing.Point(88, 491);
+            this.lblTrialCount.Location = new System.Drawing.Point(88, 516);
             this.lblTrialCount.Name = "lblTrialCount";
             this.lblTrialCount.Size = new System.Drawing.Size(63, 29);
             this.lblTrialCount.TabIndex = 32;
@@ -256,7 +257,7 @@
             // 
             this.lblFees.AutoSize = true;
             this.lblFees.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblFees.Location = new System.Drawing.Point(94, 633);
+            this.lblFees.Location = new System.Drawing.Point(94, 658);
             this.lblFees.Name = "lblFees";
             this.lblFees.Size = new System.Drawing.Size(63, 29);
             this.lblFees.TabIndex = 34;
@@ -288,17 +289,29 @@
             // 
             this.dtpAppointment.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dtpAppointment.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpAppointment.Location = new System.Drawing.Point(89, 562);
+            this.dtpAppointment.Location = new System.Drawing.Point(89, 587);
             this.dtpAppointment.MinDate = new System.DateTime(2026, 2, 18, 0, 0, 0, 0);
             this.dtpAppointment.Name = "dtpAppointment";
             this.dtpAppointment.Size = new System.Drawing.Size(219, 30);
             this.dtpAppointment.TabIndex = 38;
+            // 
+            // lblAdditional
+            // 
+            this.lblAdditional.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblAdditional.ForeColor = System.Drawing.Color.Red;
+            this.lblAdditional.Location = new System.Drawing.Point(11, 264);
+            this.lblAdditional.Name = "lblAdditional";
+            this.lblAdditional.Size = new System.Drawing.Size(849, 32);
+            this.lblAdditional.TabIndex = 39;
+            this.lblAdditional.Text = "???";
+            this.lblAdditional.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // frmScheduleEditAppointment
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(870, 991);
+            this.Controls.Add(this.lblAdditional);
             this.Controls.Add(this.dtpAppointment);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.btnSave);
@@ -317,7 +330,7 @@
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.lblTestType);
             this.Name = "frmScheduleEditAppointment";
-            this.Text = "frmScheduleEditAppointment";
+            this.Text = "Schedule Appointment";
             this.Load += new System.EventHandler(this.frmScheduleEditAppointment_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.gbRetakeTest.ResumeLayout(false);
@@ -352,5 +365,6 @@
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.DateTimePicker dtpAppointment;
+        private System.Windows.Forms.Label lblAdditional;
     }
 }

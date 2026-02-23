@@ -343,7 +343,7 @@ namespace DVLD.PresentationLayer.Applications.LocalDrivingLicense
 
                 scheduleVisionTestToolStripMenuItem.Enabled = passedTests == 0;
                 scheduleWrittenTestToolStripMenuItem.Enabled = TestBusiness.HasPassedTest(ldlaId, 1) && !TestBusiness.HasPassedTest(ldlaId, 2);
-                scheduleStreetTestToolStripMenuItem.Enabled = TestBusiness.HasPassedTest(ldlaId, 2);
+                scheduleStreetTestToolStripMenuItem.Enabled = TestBusiness.HasPassedTest(ldlaId, 3);
             }
         }
 

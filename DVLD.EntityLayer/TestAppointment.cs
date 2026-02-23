@@ -15,14 +15,14 @@ namespace DVLD.EntityLayer
         public decimal PaidFees { get; set; }
         public int CreatedByUserId { get; set; }
         public bool IsLocked { get; set; }
-        public int? RetakeTestApplicationId { get; set; }
+        public int RetakeTestApplicationId { get; set; }
 
         public TestAppointment()
         {
 
         }
 
-        public TestAppointment(int id, int testTypeId, int localDrivingApplicationLicenseId, DateTime appointmentDate, decimal paidFees, int createdByUserId, bool isLocked, int? retakeTestApplicationId)
+        public TestAppointment(int id, int testTypeId, int localDrivingApplicationLicenseId, DateTime appointmentDate, decimal paidFees, int createdByUserId, bool isLocked, int retakeTestApplicationId)
         {
             this.Id = id;
             this.TestTypeId = testTypeId;

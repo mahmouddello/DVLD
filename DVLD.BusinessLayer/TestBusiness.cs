@@ -35,5 +35,20 @@ namespace DVLD.BusinessLayer
         {
             return TestData.GetTestTrialsCount(ldlaId, testTypeId);
         }
+
+        public static bool Save(Test test)
+        {
+            if (test.Id == -1)
+                return Add(test);
+
+            return false;
+        }
+
+        private static bool Add(Test test)
+        {
+            test.Id = TestData.InsertNew(test);
+
+            return test.Id != -1;
+        }
     }
 }

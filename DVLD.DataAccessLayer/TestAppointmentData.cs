@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -124,6 +125,23 @@ namespace DVLD.DataAccessLayer
             }
         }
 
+        public static bool UpdateLockStatus(int testAppointmentId, bool isLocked)
+        {
+            string query = @"UPDATE TestAppointments SET IsLocked = @IsLocked
+                             WHERE TestAppointmentID = @TestAppointmentID";
+
+            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                connection.Open();
+
+                command.Parameters.AddWithValue("@TestAppointmentID", testAppointmentId);
+                command.Parameters.AddWithValue("@IsLocked", isLocked);
+
+                return command.ExecuteNonQuery() > 0;
+            }
+        }
+
         private static TestAppointment Map(SqlDataReader reader)
         {
             if (!reader.Read())
@@ -139,6 +157,38 @@ namespace DVLD.DataAccessLayer
                 isLocked: Convert.ToBoolean(reader["IsLocked"]),
                 retakeTestApplicationId: reader["RetakeTestApplicationID"] != DBNull.Value ? Convert.ToInt32(reader["RetakeTestApplicationID"]) : -1
             );
+        }
+
+        public static int GetTestIdByAppointmentId(int appointmentId)
+        {
+            const string query = @"SELECT
+	                                    TOP 1 TestID 
+                                   FROM 
+	                                    Tests 
+                                   WHERE 
+	                                    TestAppointmentID = @TestAppointmentID
+                                   ORDER BY TestID DESC;";
+            int testId = -1;
+            
+            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@TestAppointmentID", appointmentId);
+                try
+                {
+                    connection.Open();
+                    var returnValue = command.ExecuteScalar();
+
+                    if (returnValue != null)
+                        testId = Convert.ToInt32(returnValue);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.ToString());
+                }
+
+                return testId;
+            }
         }
     }
 }

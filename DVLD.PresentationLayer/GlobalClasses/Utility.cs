@@ -85,5 +85,15 @@ namespace DVLD.PresentationLayer.GlobalClasses
 
             return false;
         }
+
+        public static void ShowErrorMessage(string message)
+        {
+            MessageBox.Show(message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+        public static void ShowSuccessMessage(string message)
+        {
+            MessageBox.Show(message, "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
     }
 }

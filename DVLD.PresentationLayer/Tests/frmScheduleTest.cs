@@ -111,24 +111,23 @@ namespace DVLD.PresentationLayer.Tests
         private void editToolStripMenuItem_Click(object sender, EventArgs e)
         {
             int appoitmentId = (int)dgvAppointments.CurrentRow.Cells[0].Value;
+            bool isLocked = (bool)dgvAppointments.CurrentRow.Cells["IsLocked"].Value;
 
-            frmScheduleEditAppointment frm = new frmScheduleEditAppointment(appoitmentId);
+            frmScheduleEditAppointment frm = new frmScheduleEditAppointment(appoitmentId, isLocked);
             frm.ShowDialog();
 
             LoadAndRefresh(); // In case of changes
         }
 
-        private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
+        private void takeTestToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            int appoitmentId = (int)dgvAppointments.CurrentRow.Cells[0].Value;
             bool isLocked = (bool)dgvAppointments.CurrentRow.Cells["IsLocked"].Value;
 
-            foreach (ToolStripItem item in contextMenuStrip1.Items)
-            {
-                if (isLocked)
-                    item.Enabled = false;
-                else 
-                    item.Enabled = true;
-            }
+            frmTakeTest form = new frmTakeTest(appoitmentId, isLocked);
+            form.ShowDialog();
+
+            LoadAndRefresh();
         }
     }
 }
