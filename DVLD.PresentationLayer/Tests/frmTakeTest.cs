@@ -133,7 +133,7 @@ namespace DVLD.PresentationLayer.Tests
 
         private void LoadNewMode()
         {
-            lblTestID.Text = "-1";
+            lblTestID.Text = "???";
             LoadAppointmentSharedData(testAppointment);
         }
 
@@ -193,7 +193,7 @@ namespace DVLD.PresentationLayer.Tests
 
             if (mode != enMode.AddNew)
             {
-                Utility.ShowErrorMessage("Saving mode is locked!");
+                Utility.ShowErrorMessage("Saving mode is locked, you can't edit the test!");
                 this.Close();
                 return;
             }

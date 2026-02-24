@@ -177,56 +177,78 @@ namespace DVLD.PresentationLayer.Tests.TestAppointments
             return TestAppointmentBusiness.Save(testAppointment);
         }
 
-        private void SaveTestAppointment()
+        private bool SaveTestAppointment()
         {
-            Application application = new Application();
-            
-
-            // if the mode is update, means we have an appointment, so we update only it's date (if changed)
+            // UPDATE MODE
             if (mode == Mode.Update)
+                return UpdateExistingAppointment();
+
+            // ADD MODE
+            return CreateNewAppointment();
+        }
+
+        private bool UpdateExistingAppointment()
+        {
+            testAppointment = TestAppointmentBusiness.Find(testApptId);
+
+            if (testAppointment == null)
             {
-                testAppointment = TestAppointmentBusiness.Find(testApptId);
-
-                if (!UpdateAppointmentDate())
-                {
-                    Utility.ShowErrorMessage($"Error finding the appointment wiht id: {testApptId}!");
-                    return;
-                }
-
-                Utility.ShowSuccessMessage("Updated the appointment successfully!");
-                return;
+                Utility.ShowErrorMessage($"Error finding appointment with id: {testApptId}!");
+                return false;
             }
 
-            // From here, the mode is add new
-            testAppointment = new TestAppointment();
-            MapTestAppointmentData(testAppointment); // map data (new appointment)
+            if (!UpdateAppointmentDate())
+            {
+                Utility.ShowErrorMessage("Error updating the appointment date!");
+                return false;
+            }
 
-            // if the person has failed this test before, we need to create application of type Retake test.
+            Utility.ShowSuccessMessage("Updated the appointment successfully!");
+            return true;
+        }
+
+        private bool CreateNewAppointment()
+        {
+            var testAppointment = new TestAppointment();
+            MapTestAppointmentData(testAppointment);
+
+            Application application = null;
+
             if (HasFailedTest)
             {
+                application = new Application();
+
                 if (!CreateAndSaveRetakeTestApplication(application))
                 {
                     Utility.ShowErrorMessage("Error saving retake test application. This form will be closed");
-                    return;
+                    this.Close();
+                    return false;
                 }
 
-                // Saved the retake, now map to the test appointment
                 testAppointment.RetakeTestApplicationId = application.Id;
             }
 
-            if (TestAppointmentBusiness.Save(testAppointment))
+            if (!TestAppointmentBusiness.Save(testAppointment))
             {
-                Utility.ShowSuccessMessage($"Saved the new appointment successfully with id: {testAppointment.Id}");
-                lblRetakeTestApplicationID.Text = testAppointment.RetakeTestApplicationId.ToString();
-                mode = Mode.Update;
-                return;
+                if (application != null)
+                    // Delete the retake test application incase of test appointment failed to save
+                    ApplicationBusiness.Delete(application); 
+
+                Utility.ShowErrorMessage("Error booking the new appointment!");
+                return false;
             }
 
-            // Handle save failure
-            if (HasFailedTest && application != null)
-                ApplicationBusiness.Delete(application);
+            // Success
+            Utility.ShowSuccessMessage($"Saved the new appointment successfully with id: {testAppointment.Id}");
+            testApptId = testAppointment.Id;
+            mode = Mode.Update;
 
-            Utility.ShowErrorMessage("Error booking the new appointment!");
+            if (testAppointment.RetakeTestApplicationId != -1)
+                lblRetakeTestApplicationID.Text = testAppointment.RetakeTestApplicationId.ToString();
+            else
+                lblRetakeTestApplicationID.Text = "";
+
+            return true;
         }
 
         private void btnSave_Click(object sender, EventArgs e)
