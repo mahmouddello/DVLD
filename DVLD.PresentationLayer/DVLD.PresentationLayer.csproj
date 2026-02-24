@@ -161,11 +161,11 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Settings.cs" />
-    <Compile Include="Tests\frmScheduleTest.cs">
+    <Compile Include="Tests\frmScheduleTestAppointment.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Tests\frmScheduleTest.Designer.cs">
-      <DependentUpon>frmScheduleTest.cs</DependentUpon>
+    <Compile Include="Tests\frmScheduleTestAppointment.Designer.cs">
+      <DependentUpon>frmScheduleTestAppointment.cs</DependentUpon>
     </Compile>
     <Compile Include="Tests\frmTakeTest.cs">
       <SubType>Form</SubType>
@@ -173,22 +173,22 @@
     <Compile Include="Tests\frmTakeTest.Designer.cs">
       <DependentUpon>frmTakeTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Tests\TestAppointments\frmScheduleEditAppointment.cs">
+    <Compile Include="TestAppointments\frmScheduleEditAppointment.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Tests\TestAppointments\frmScheduleEditAppointment.Designer.cs">
+    <Compile Include="TestAppointments\frmScheduleEditAppointment.Designer.cs">
       <DependentUpon>frmScheduleEditAppointment.cs</DependentUpon>
     </Compile>
-    <Compile Include="Tests\TestTypes\frmListTestTypes.cs">
+    <Compile Include="TestTypes\frmListTestTypes.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Tests\TestTypes\frmListTestTypes.Designer.cs">
+    <Compile Include="TestTypes\frmListTestTypes.Designer.cs">
       <DependentUpon>frmListTestTypes.cs</DependentUpon>
     </Compile>
-    <Compile Include="Tests\TestTypes\frmUpdateTestType.cs">
+    <Compile Include="TestTypes\frmUpdateTestType.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Tests\TestTypes\frmUpdateTestType.Designer.cs">
+    <Compile Include="TestTypes\frmUpdateTestType.Designer.cs">
       <DependentUpon>frmUpdateTestType.cs</DependentUpon>
     </Compile>
     <Compile Include="Users\ctrlUserLoginInfo.cs">
@@ -268,19 +268,19 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Tests\frmScheduleTest.resx">
-      <DependentUpon>frmScheduleTest.cs</DependentUpon>
+    <EmbeddedResource Include="Tests\frmScheduleTestAppointment.resx">
+      <DependentUpon>frmScheduleTestAppointment.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Tests\frmTakeTest.resx">
       <DependentUpon>frmTakeTest.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Tests\TestAppointments\frmScheduleEditAppointment.resx">
+    <EmbeddedResource Include="TestAppointments\frmScheduleEditAppointment.resx">
       <DependentUpon>frmScheduleEditAppointment.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Tests\TestTypes\frmListTestTypes.resx">
+    <EmbeddedResource Include="TestTypes\frmListTestTypes.resx">
       <DependentUpon>frmListTestTypes.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Tests\TestTypes\frmUpdateTestType.resx">
+    <EmbeddedResource Include="TestTypes\frmUpdateTestType.resx">
       <DependentUpon>frmUpdateTestType.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Users\ctrlUserLoginInfo.resx">

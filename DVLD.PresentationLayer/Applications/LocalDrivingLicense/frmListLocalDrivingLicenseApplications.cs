@@ -343,7 +343,7 @@ namespace DVLD.PresentationLayer.Applications.LocalDrivingLicense
 
                 scheduleVisionTestToolStripMenuItem.Enabled = passedTests == 0;
                 scheduleWrittenTestToolStripMenuItem.Enabled = TestBusiness.HasPassedTest(ldlaId, 1) && !TestBusiness.HasPassedTest(ldlaId, 2);
-                scheduleStreetTestToolStripMenuItem.Enabled = TestBusiness.HasPassedTest(ldlaId, 3);
+                scheduleStreetTestToolStripMenuItem.Enabled = TestBusiness.HasPassedTest(ldlaId, 2) && !TestBusiness.HasPassedTest(ldlaId, 3);
             }
         }
 
@@ -356,7 +356,7 @@ namespace DVLD.PresentationLayer.Applications.LocalDrivingLicense
         private void visionTestToolStripMenuItem_Click(object sender, EventArgs e)
         {
             int ldlaId = (int)dgvLDLA.CurrentRow.Cells[0].Value;
-            frmScheduleTest frm = new frmScheduleTest(ldlaId, 1);
+            frmScheduleTestAppointment frm = new frmScheduleTestAppointment(ldlaId, 1);
 
             frm.ShowDialog();
         }
@@ -364,7 +364,7 @@ namespace DVLD.PresentationLayer.Applications.LocalDrivingLicense
         private void scheduleVisionTestToolStripMenuItem_Click(object sender, EventArgs e)
         {
             int ldlaId = (int)dgvLDLA.CurrentRow.Cells[0].Value;
-            frmScheduleTest frm = new frmScheduleTest(ldlaId, 2);
+            frmScheduleTestAppointment frm = new frmScheduleTestAppointment(ldlaId, 2);
 
             frm.ShowDialog();
         }
@@ -372,7 +372,7 @@ namespace DVLD.PresentationLayer.Applications.LocalDrivingLicense
         private void scheduleVisionTestToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             int ldlaId = (int)dgvLDLA.CurrentRow.Cells[0].Value;
-            frmScheduleTest frm = new frmScheduleTest(ldlaId, 3);
+            frmScheduleTestAppointment frm = new frmScheduleTestAppointment(ldlaId, 3);
 
             frm.ShowDialog();
         }

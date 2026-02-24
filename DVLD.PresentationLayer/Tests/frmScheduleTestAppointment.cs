@@ -12,14 +12,14 @@ using System.Windows.Forms;
 
 namespace DVLD.PresentationLayer.Tests
 {
-    public partial class frmScheduleTest : Form
+    public partial class frmScheduleTestAppointment : Form
     {
         private int testTypeId;
         private int ldlaId;
 
         private DataTable appointmentsTable;
 
-        public frmScheduleTest(int ldlaId, int testTypeId)
+        public frmScheduleTestAppointment(int ldlaId, int testTypeId)
         {
             InitializeComponent();
             this.testTypeId = testTypeId;

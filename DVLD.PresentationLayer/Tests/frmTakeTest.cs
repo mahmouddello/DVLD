@@ -154,6 +154,7 @@ namespace DVLD.PresentationLayer.Tests
             lblAdditional.Text = "You can't change the result!";
 
             gbResult.Enabled = false;
+            txtNotes.Enabled = false;
             rbPass.Checked = Convert.ToBoolean(test.Result);
             rbFail.Checked = !rbPass.Checked;
 
