@@ -13,6 +13,9 @@ namespace DVLD.EntityLayer
         public int CreatedByUserId { get; set; } = -1;
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
+        // Composition
+        public Person PersonInfo { get; set; }
+
         // default constructor
         public clsDriver()
         {

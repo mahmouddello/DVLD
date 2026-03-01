@@ -76,6 +76,26 @@ namespace DVLD.DataAccessLayer
             return newLicenseID;
         }
 
+        public static clsLicense GetByApplicationId(int applicationId)
+        {
+            string query = @"SELECT * FROM Licenses WHERE ApplicationID = @ApplicationID";
+
+            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@ApplicationID", applicationId);
+                connection.Open();
+
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                        return MapReaderToObject(reader);
+                }
+            }
+
+            return null;
+        }
+
         public static int GetActiveLicenseCountByDriverId(int driverId)
         {
             string query = @"SELECT 
@@ -101,6 +121,8 @@ namespace DVLD.DataAccessLayer
 
         private static clsLicense MapReaderToObject(SqlDataReader reader)
         {
+            var notesIndex = reader.GetOrdinal("Notes");
+
             return new clsLicense(
                 id: reader.GetInt32(reader.GetOrdinal("LicenseID")),
                 applicationId: reader.GetInt32(reader.GetOrdinal("ApplicationID")),
@@ -108,7 +130,7 @@ namespace DVLD.DataAccessLayer
                 licenseClassID: reader.GetInt32(reader.GetOrdinal("LicenseClass")),
                 issueDate: reader.GetDateTime(reader.GetOrdinal("IssueDate")),
                 expirationDate: reader.GetDateTime(reader.GetOrdinal("ExpirationDate")),
-                notes: reader.GetString(reader.GetOrdinal("Notes")),
+                notes: reader.IsDBNull(notesIndex) ? null : reader.GetString(notesIndex),
                 paidFees: reader.GetDecimal(reader.GetOrdinal("PaidFees")),
                 isActive: reader.GetBoolean(reader.GetOrdinal("IsActive")),
                 issueReason: (enLicenseIssueReason)reader.GetInt32(reader.GetOrdinal("IssueReason")),

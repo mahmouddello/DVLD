@@ -61,7 +61,7 @@ namespace DVLD.DataAccessLayer
                 connection.Open();
                 using (SqlDataReader dataReader = command.ExecuteReader())
                 {
-                    if (dataReader.HasRows)
+                    if (dataReader.Read())
                         return MapReaderToObject(dataReader);
                 }
             }

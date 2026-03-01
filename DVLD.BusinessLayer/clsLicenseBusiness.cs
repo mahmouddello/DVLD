@@ -25,6 +25,14 @@ namespace DVLD.BusinessLayer
             return clsLicenseData.GetActiveLicenseCountByDriverId(driverId);
         }
 
+        public static clsLicense FindByApplicationId(int applicationId)
+        {
+            if (applicationId <= 0)
+                throw new Exception("Invalid application id!");
+
+            return clsLicenseData.GetByApplicationId(applicationId);
+        }
+
         public static bool Save(clsLicense license)
         {
             if (license.Id <= 0)

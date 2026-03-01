@@ -389,13 +389,11 @@ namespace DVLD.PresentationLayer.Applications.LocalDrivingLicense
 
         private void showLicenseInfoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show
-             (
-                 "This feature will be implemented in the future",
-                 "Stub",
-                 MessageBoxButtons.OK,
-                 MessageBoxIcon.Warning
-             );
+            int ldlaId = (int)dgvLDLA.CurrentRow.Cells[0].Value;
+
+            frmShowLicenseInfo form = new frmShowLicenseInfo(ldlaId);
+            form.ShowDialog();
+
         }
 
         private void showPersonLicenseHistoryToolStripMenuItem_Click(object sender, EventArgs e)

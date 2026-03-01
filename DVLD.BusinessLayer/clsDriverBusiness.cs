@@ -27,7 +27,12 @@ namespace DVLD.BusinessLayer
             if (driverId <= 0)
                 throw new Exception("Invalid Driver Id");
 
-            return clsDriverData.GetById(driverId);
+            clsDriver driver = clsDriverData.GetById(driverId);
+
+            if (driver != null)
+                driver.PersonInfo = PersonBusiness.Find(driver.PersonId);
+
+            return driver;
         }
 
         public static clsDriver FindByPersonId(int personId)
@@ -35,7 +40,12 @@ namespace DVLD.BusinessLayer
             if (personId <= 0)
                 throw new Exception("Person id is invalid!");
 
-            return clsDriverData.GetByPersonID(personId);
+            clsDriver driver = clsDriverData.GetByPersonID(personId);
+
+            if (driver != null)
+                driver.PersonInfo = PersonBusiness.Find(driver.PersonId);
+
+            return driver;
         }
 
         public static bool Delete(int driverId)
