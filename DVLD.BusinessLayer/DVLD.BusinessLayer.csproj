@@ -43,6 +43,8 @@
   <ItemGroup>
     <Compile Include="ApplicationBusiness.cs" />
     <Compile Include="ApplicationTypeBusiness.cs" />
+    <Compile Include="clsDriverBusiness.cs" />
+    <Compile Include="clsLicenseBusiness.cs" />
     <Compile Include="CountryBusiness.cs" />
     <Compile Include="LicenseClassBusiness.cs" />
     <Compile Include="LocalDrivingLicenseApplicationBusiness.cs" />

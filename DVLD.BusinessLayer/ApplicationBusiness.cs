@@ -92,6 +92,11 @@ namespace DVLD.BusinessLayer
             return ApplicationData.DeleteById(application.Id) && linkedLocalDeleted;
         }
 
+        public static bool MarkAsCompleted(Application application)
+        {
+            return ApplicationData.UpdateApplicationStatus(application.Id, Application.ApplicationStatus.Completed);
+        }
+
         public static bool HasSameClassApplication(int applicantId, int licenseClassId)
         {
             return ApplicationData.ExistsSameClassApplication(applicantId, licenseClassId);

@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using DVLD.PresentationLayer.Applications;
 using DVLD.PresentationLayer.Applications.LocalDrivingLicense;
 using DVLD.PresentationLayer.ApplicationTypes;
+using DVLD.PresentationLayer.Drivers;
 using DVLD.PresentationLayer.GlobalClasses;
 using DVLD.PresentationLayer.People;
 using DVLD.PresentationLayer.Tests.TestTypes;
@@ -26,13 +27,10 @@ namespace DVLD.PresentationLayer
 
         private void driversToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show
-            (
-                "This feature will be implemented in the future",
-                "Stub",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Warning
-            );
+            frmListDrivers form = new frmListDrivers();
+            form.MdiParent = this;
+
+            form.Show();
         }
 
         private void usersToolStripMenuItem_Click(object sender, EventArgs e)

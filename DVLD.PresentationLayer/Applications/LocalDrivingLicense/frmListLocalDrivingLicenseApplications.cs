@@ -1,6 +1,7 @@
 ﻿using DVLD.BusinessLayer;
 using DVLD.EntityLayer;
 using DVLD.PresentationLayer.GlobalClasses;
+using DVLD.PresentationLayer.Licenses;
 using DVLD.PresentationLayer.Tests;
 using System;
 using System.Collections.Generic;
@@ -379,13 +380,11 @@ namespace DVLD.PresentationLayer.Applications.LocalDrivingLicense
 
         private void issueDrivingLicenseFirstTimeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show
-             (
-                 "This feature will be implemented in the future",
-                 "Stub",
-                 MessageBoxButtons.OK,
-                 MessageBoxIcon.Warning
-             );
+            int ldlaId = (int)dgvLDLA.CurrentRow.Cells[0].Value;
+            frmIssueDrivingLicense form = new frmIssueDrivingLicense(ldlaId);
+
+            form.ShowDialog();
+            RefreshApplicationsList();
         }
 
         private void showLicenseInfoToolStripMenuItem_Click(object sender, EventArgs e)

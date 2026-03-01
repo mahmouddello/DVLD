@@ -127,6 +127,12 @@
   <data name="edit-application" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\edit-application.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="local-license" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\local-license.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="searchPersonIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\searchPersonIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="person-call" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\person-call.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -139,20 +145,11 @@
   <data name="people-list" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\people-list.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="manage-applications" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\manage-applications.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="new-license" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\new-license.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="contract" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\contract.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="document" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\document.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="driverFemale" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\driverFemale.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="delete-application" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\delete-application.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="drivers-list" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\drivers-list.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="person-user-delete" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\person-user-delete.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -172,17 +169,20 @@
   <data name="peopleGroup" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\peopleGroup.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="local-license" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\local-license.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="contract" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\contract.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="user-logout" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\user-logout.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="cancel-application" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\cancel-application.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="person-info" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\person-info.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="contact-list" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\contact-list.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dvld-login" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dvld-login.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="addPersonIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\addPersonIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -208,8 +208,11 @@
   <data name="people-list512" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\people-list512.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="dvld-wallpaper4" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\dvld-wallpaper4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="cancel-application" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cancel-application.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="appointment-add" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\appointment-add.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="driverMale" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\driverMale.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -223,8 +226,8 @@
   <data name="driver-license" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\driver-license.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="person-info" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\person-info.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="delete-application" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\delete-application.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="application-details" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\application-details.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -238,8 +241,8 @@
   <data name="users-list" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\users-list.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="new-license" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\new-license.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="dvld-wallpaper4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dvld-wallpaper4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="vision-test" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\vision-test.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -259,19 +262,19 @@
   <data name="person-add" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\person-add.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="drivers-list" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\drivers-list.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="document" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\document.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="dvld-login" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\dvld-login.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="driverFemale" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\driverFemale.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="user-list512" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\user-list512.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="searchPersonIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\searchPersonIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="manage-applications" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\manage-applications.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="appointment-add" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\appointment-add.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="drivers" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\drivers.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
