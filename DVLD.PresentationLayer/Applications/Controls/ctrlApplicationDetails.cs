@@ -1,5 +1,6 @@
 ﻿using DVLD.BusinessLayer;
 using DVLD.EntityLayer;
+using DVLD.PresentationLayer.Licenses;
 using DVLD.PresentationLayer.People;
 using System;
 using System.Collections.Generic;
@@ -79,13 +80,10 @@ namespace DVLD.PresentationLayer.Applications.Controls
 
         private void lnklblShowLicenseInfo_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            MessageBox.Show
-            (
-                "This feature will be implemented in the future",
-                "Stub",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Warning
-            );
+            int ldlaId = Convert.ToInt32(lblLdlaId.Text);
+
+            frmShowLicenseInfo form = new frmShowLicenseInfo(ldlaId);
+            form.ShowDialog();
         }
 
         private void lnklblShowPersonInfo_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

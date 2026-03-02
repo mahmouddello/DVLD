@@ -78,13 +78,13 @@ namespace DVLD.PresentationLayer
 
         private void localLicenseToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            frmLocalDrivingLicenseApplication frm = new frmLocalDrivingLicenseApplication();
+            frmAddEditLocalDLA frm = new frmAddEditLocalDLA();
             frm.ShowDialog();
         }
 
         private void localDrivingLicenseApplicationsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            frmListLocalDrivingLicenseApplications frm = new frmListLocalDrivingLicenseApplications();
+            frmListLocalDLA frm = new frmListLocalDLA();
             frm.ShowDialog();
         }
     }

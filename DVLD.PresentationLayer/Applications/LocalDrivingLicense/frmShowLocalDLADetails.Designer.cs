@@ -1,6 +1,6 @@
 ﻿namespace DVLD.PresentationLayer.Applications.LocalDrivingLicense
 {
-    partial class frmLocalDrivingLicenseApplicationDetails
+    partial class frmShowLocalDLADetails
     {
         /// <summary>
         /// Required designer variable.

@@ -78,7 +78,6 @@
             // lnklblShowLicenseInfo
             // 
             this.lnklblShowLicenseInfo.AutoSize = true;
-            this.lnklblShowLicenseInfo.Enabled = false;
             this.lnklblShowLicenseInfo.Location = new System.Drawing.Point(36, 108);
             this.lnklblShowLicenseInfo.Name = "lnklblShowLicenseInfo";
             this.lnklblShowLicenseInfo.Size = new System.Drawing.Size(172, 25);

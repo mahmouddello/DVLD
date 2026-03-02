@@ -16,7 +16,7 @@ using System.Windows.Forms;
 
 namespace DVLD.PresentationLayer.Applications.LocalDrivingLicense
 {
-    public partial class frmListLocalDrivingLicenseApplications : Form
+    public partial class frmListLocalDLA : Form
     {
         private enum Filter
         {
@@ -137,7 +137,7 @@ namespace DVLD.PresentationLayer.Applications.LocalDrivingLicense
             cbStatus.DataSource = Enum.GetValues(typeof(StatusFilter));
         }
 
-        public frmListLocalDrivingLicenseApplications()
+        public frmListLocalDLA()
         {
             InitializeComponent();
         }
@@ -249,7 +249,7 @@ namespace DVLD.PresentationLayer.Applications.LocalDrivingLicense
 
         private void btnNewLDLA_Click(object sender, EventArgs e)
         {
-            frmLocalDrivingLicenseApplication frm = new frmLocalDrivingLicenseApplication();
+            frmAddEditLocalDLA frm = new frmAddEditLocalDLA();
             frm.ShowDialog();
 
             ReloadAndRefresh(); // In Case of changes
@@ -411,7 +411,7 @@ namespace DVLD.PresentationLayer.Applications.LocalDrivingLicense
         {
             int ldlaId = (int)dgvLDLA.CurrentRow.Cells[0].Value;
 
-            frmLocalDrivingLicenseApplicationDetails frm = new frmLocalDrivingLicenseApplicationDetails(ldlaId);
+            frmShowLocalDLADetails frm = new frmShowLocalDLADetails(ldlaId);
             frm.ShowDialog();
         }
 
@@ -419,7 +419,7 @@ namespace DVLD.PresentationLayer.Applications.LocalDrivingLicense
         {
             int ldlaId = (int)dgvLDLA.CurrentRow.Cells[0].Value;
 
-            frmLocalDrivingLicenseApplication frm = new frmLocalDrivingLicenseApplication(ldlaId);
+            frmAddEditLocalDLA frm = new frmAddEditLocalDLA(ldlaId);
             frm.ShowDialog();
 
             ReloadAndRefresh();
