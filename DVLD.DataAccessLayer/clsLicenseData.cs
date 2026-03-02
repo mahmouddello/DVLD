@@ -1,6 +1,7 @@
 ﻿using DVLD.EntityLayer;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -10,23 +11,33 @@ namespace DVLD.DataAccessLayer
 {
     public static class clsLicenseData
     {
-        public static List<clsLicense> GetAllLicenses()
+        public static DataTable GetAllLicenses(int driverId)
         {
-            string query = @"SELECT * FROM Licenses";
-            var licenses = new List<clsLicense>();
+            string query = @"SELECT 
+	                            L.LicenseID,
+	                            L.ApplicationID,
+	                            LC.ClassName,
+	                            L.IssueDate,
+	                            L.ExpirationDate,
+	                            L.IsActive
+                            FROM 
+	                            Licenses AS L
+                            INNER JOIN 
+	                            LicenseClasses AS LC ON L.LicenseClass = LC.LicenseClassID
+                            WHERE L.DriverID = @DriverID";
+            DataTable dt = new DataTable();
 
             using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
             using (SqlCommand cmd = new SqlCommand(query, connection))
             {
                 connection.Open();
+                cmd.Parameters.AddWithValue(@"DriverID", driverId);
+
                 using (SqlDataReader reader = cmd.ExecuteReader())
-                {
-                    while (reader.Read())
-                        licenses.Add(MapReaderToObject(reader));
-                }
+                    dt.Load(reader);
             }
 
-            return licenses;
+            return dt;
         }
 
         public static int InsertNew(clsLicense license)
@@ -74,6 +85,26 @@ namespace DVLD.DataAccessLayer
             }
 
             return newLicenseID;
+        }
+
+        public static clsLicense GetById(int licenseId)
+        {
+            string query = @"SELECT * FROM Licenses WHERE LicenseID = @LicenseID";
+
+            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@LicenseID", licenseId);
+                connection.Open();
+
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                        return MapReaderToObject(reader);
+                }
+            }
+
+            return null;
         }
 
         public static clsLicense GetByApplicationId(int applicationId)

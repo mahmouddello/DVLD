@@ -25,7 +25,7 @@ namespace DVLD.PresentationLayer.Licenses.Controls
             InitializeComponent();
         }
 
-        public void LoadLicense(int ldlaId)
+        public void LoadLicenseByLocalAppId(int ldlaId)
         {
             // 1. fetch the main application id through the local application
             ldla = LocalDrivingLicenseApplicationBusiness.Find(ldlaId);
@@ -42,6 +42,30 @@ namespace DVLD.PresentationLayer.Licenses.Controls
             if (license == null)
             {
                 Utility.ShowErrorMessage("Failed to find the license that is associated with this application!");
+                return;
+            }
+
+            // 3. Display the info
+            FillFormInfo();
+        }
+
+        public void LoadLicenseByLicenseId(int licenseId)
+        {
+            // 1. fetch license
+            license = clsLicenseBusiness.FindByLicenseId(licenseId);
+
+            if (license == null)
+            {
+                Utility.ShowErrorMessage("Failed to find the license with id: " + licenseId);
+                return;
+            }
+
+            // 2. fetch the ldla that is associated with the license id
+            ldla = LocalDrivingLicenseApplicationBusiness.FindByMainApplicationId(license.ApplicationId);
+
+            if (ldla == null)
+            {
+                Utility.ShowErrorMessage("Failed to load the application that is associated with this license!");
                 return;
             }
 

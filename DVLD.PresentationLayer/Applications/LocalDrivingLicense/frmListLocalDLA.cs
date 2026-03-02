@@ -390,21 +390,16 @@ namespace DVLD.PresentationLayer.Applications.LocalDrivingLicense
         private void showLicenseInfoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             int ldlaId = (int)dgvLDLA.CurrentRow.Cells[0].Value;
-
-            frmShowLicenseInfo form = new frmShowLicenseInfo(ldlaId);
-            form.ShowDialog();
-
+            frmShowLicenseInfo.CreateByLdlaId(ldlaId).ShowDialog();
         }
 
         private void showPersonLicenseHistoryToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show
-             (
-                 "This feature will be implemented in the future",
-                 "Stub",
-                 MessageBoxButtons.OK,
-                 MessageBoxIcon.Warning
-             );
+            int ldlaId = (int)dgvLDLA.CurrentRow.Cells[0].Value;
+            var ldla = LocalDrivingLicenseApplicationBusiness.Find(ldlaId);
+
+            var form = new frmShowLicenseHistory(ldla.MainApplicationInfo.ApplicantPersonId);
+            form.ShowDialog();
         }
 
         private void showApplicationDetailsToolStripMenuItem_Click(object sender, EventArgs e)

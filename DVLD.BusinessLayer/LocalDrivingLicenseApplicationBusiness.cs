@@ -37,6 +37,18 @@ namespace DVLD.BusinessLayer
             return ldla;
         }
 
+        public static LocalDrivingLicenseApplication FindByMainApplicationId(int mainApplicationId)
+        {
+            if (mainApplicationId <= 0)
+                throw new Exception("Invallid application id!");
+
+            var ldla = LocalDrivingLicenseApplicationData.GetByMainApplicationId(mainApplicationId);
+            ldla.MainApplicationInfo = ApplicationBusiness.Find(ldla.MainApplicationId);
+            ldla.LicenseClassInfo = LicenseClassBusiness.Find(ldla.LicenseClassId);
+
+            return ldla;
+        }
+
         public static int GetPassedTestCountById(int ldlaId)
         {
             return LocalDrivingLicenseApplicationData.GetPassedTestCountById(ldlaId);

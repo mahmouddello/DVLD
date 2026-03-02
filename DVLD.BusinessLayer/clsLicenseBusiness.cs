@@ -2,19 +2,21 @@
 using DVLD.EntityLayer;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace DVLD.BusinessLayer
 {
     public static class clsLicenseBusiness
     {
-        public static List<clsLicense> GetAllLicenses()
+        public static DataTable GetDriverLicenseForDriver(int driverId)
         {
-            var licenses = clsLicenseData.GetAllLicenses();
+            var licenses = clsLicenseData.GetAllLicenses(driverId);
 
-            if (licenses.Count == 0)
+            if (licenses.Rows.Count == 0)
                 throw new Exception("There are no license records in the system.");
 
             return licenses;
@@ -23,6 +25,14 @@ namespace DVLD.BusinessLayer
         public static int GetActiveLicenseForDriver(int driverId)
         {
             return clsLicenseData.GetActiveLicenseCountByDriverId(driverId);
+        }
+
+        public static clsLicense FindByLicenseId(int licenseId)
+        {
+            if (licenseId <= 0)
+                throw new Exception("Invalid license id!");
+            
+            return clsLicenseData.GetById(licenseId);
         }
 
         public static clsLicense FindByApplicationId(int applicationId)

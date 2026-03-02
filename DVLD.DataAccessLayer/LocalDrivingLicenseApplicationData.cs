@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DVLD.EntityLayer;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -49,6 +50,26 @@ namespace DVLD.DataAccessLayer
             }
 
             return dataTable.Rows.Count > 0 ? dataTable.Rows[0] : null;
+        }
+
+        public static LocalDrivingLicenseApplication GetByMainApplicationId(int mainApplicationId)
+        {
+            string query = @"SELECT * FROM LocalDrivingLicenseApplications WHERE ApplicationID = @ID";
+
+            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@ID", mainApplicationId);
+                connection.Open();
+
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                       return MapReaderToObject(reader);
+                }
+            }
+
+            return null;
         }
 
         public static int GetPassedTestCountById(int ldlaId)
@@ -131,6 +152,18 @@ namespace DVLD.DataAccessLayer
 
                 return rowsAffected > 0;
             }
+        }
+
+        public static LocalDrivingLicenseApplication MapReaderToObject(SqlDataReader reader)
+        {
+            var ldla = new LocalDrivingLicenseApplication
+            (
+                id: (int)reader["LocalDrivingLicenseApplicationID"],
+                mainApplicationId: (int)reader["ApplicationID"],
+                licenseClassId: (int)reader["LicenseClassID"]
+            );
+
+            return ldla;
         }
     }
 }

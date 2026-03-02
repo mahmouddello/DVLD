@@ -81,9 +81,7 @@ namespace DVLD.PresentationLayer.Applications.Controls
         private void lnklblShowLicenseInfo_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             int ldlaId = Convert.ToInt32(lblLdlaId.Text);
-
-            frmShowLicenseInfo form = new frmShowLicenseInfo(ldlaId);
-            form.ShowDialog();
+            frmShowLicenseInfo.CreateByLdlaId(ldlaId).ShowDialog();
         }
 
         private void lnklblShowPersonInfo_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

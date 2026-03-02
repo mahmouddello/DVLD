@@ -13,15 +13,38 @@ namespace DVLD.PresentationLayer.Licenses
     public partial class frmShowLicenseInfo : Form
     {
         private int ldlaId;
-        public frmShowLicenseInfo(int ldlaId)
+        private int licenseId;
+
+        private enum OpenMode { ByLdlaId, ByLicenseId }
+        private OpenMode openMode;
+
+        private frmShowLicenseInfo()
         {
             InitializeComponent();
-            this.ldlaId = ldlaId;
+        }
+
+        public static frmShowLicenseInfo CreateByLdlaId(int ldlaId)
+        {
+            var form = new frmShowLicenseInfo();
+            form.ldlaId = ldlaId;
+            form.openMode = OpenMode.ByLdlaId;
+            return form;
+        }
+
+        public static frmShowLicenseInfo CreateByLicenseId(int licenseId)
+        {
+            var form = new frmShowLicenseInfo();
+            form.licenseId = licenseId;
+            form.openMode = OpenMode.ByLicenseId;
+            return form;
         }
 
         private void frmShowLicenseInfo_Load(object sender, EventArgs e)
         {
-            ctrlDriverLicenseInfo1.LoadLicense(ldlaId);
+            if (openMode == OpenMode.ByLdlaId)
+                ctrlDriverLicenseInfo1.LoadLicenseByLocalAppId(ldlaId);
+            else
+                ctrlDriverLicenseInfo1.LoadLicenseByLicenseId(licenseId);
         }
     }
 }
