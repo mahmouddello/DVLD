@@ -32,7 +32,7 @@ namespace DVLD.BusinessLayer
                 isActive: (bool)row["IsActive"]
             );
 
-            user.LinkedPerson = PersonBusiness.Find((int)row["PersonID"]);
+            user.LinkedPerson = PersonService.GetById((int)row["PersonID"]);
 
             return user;
         }
@@ -52,7 +52,7 @@ namespace DVLD.BusinessLayer
                 isActive: (bool)row["IsActive"]
             );
 
-            user.LinkedPerson = PersonBusiness.Find((int)row["PersonID"]);
+            user.LinkedPerson = PersonService.GetById((int)row["PersonID"]);
 
             return user;
         }

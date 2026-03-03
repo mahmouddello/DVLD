@@ -29,7 +29,7 @@ namespace DVLD.BusinessLayer
                 createdByUserId: Convert.ToInt32(row["CreatedByUserID"])
             );
 
-            application.ApplicantPersonInfo = PersonBusiness.Find(application.ApplicantPersonId);
+            application.ApplicantPersonInfo = PersonService.GetById(application.ApplicantPersonId);
             application.ApplicationTypeInfo = ApplicationTypeBusiness.Find
             (
                 (ApplicationType.enApplicationType)application.ApplicationTypeId
@@ -54,7 +54,7 @@ namespace DVLD.BusinessLayer
 
             if (application.Id != -1)
             {
-                application.ApplicantPersonInfo = PersonBusiness.Find(application.ApplicantPersonId);
+                application.ApplicantPersonInfo = PersonService.GetById(application.ApplicantPersonId);
                 application.ApplicationTypeInfo = ApplicationTypeBusiness.Find
                 (
                     (ApplicationType.enApplicationType)application.ApplicationTypeId
@@ -105,7 +105,7 @@ namespace DVLD.BusinessLayer
         public static bool MeetsMinimumAgeRequirement(int licenseClassId, int applicantId)
         {
             LicenseClass licenseClass = LicenseClassBusiness.Find(licenseClassId);
-            Person applicantPerson = PersonBusiness.Find(applicantId);
+            Person applicantPerson = PersonService.GetById(applicantId);
 
             int personAge = DateTime.Now.Year - applicantPerson.DateOfBirth.Year;
 

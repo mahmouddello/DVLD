@@ -96,7 +96,7 @@ namespace DVLD.PresentationLayer.Licenses.Controls
 
         private void FillFormInfo()
         {
-            enGender gender = ldla.MainApplicationInfo.ApplicantPersonInfo.Gender;
+            Gender gender = ldla.MainApplicationInfo.ApplicantPersonInfo.Gender;
             DateTime dob = ldla.MainApplicationInfo.ApplicantPersonInfo.DateOfBirth;
             var driver = clsDriverBusiness.FindByPersonId(ldla.MainApplicationInfo.ApplicantPersonId);
 
@@ -129,7 +129,7 @@ namespace DVLD.PresentationLayer.Licenses.Controls
                 return;
             }
 
-            if (person.Gender == enGender.Male)
+            if (person.Gender == Gender.Male)
                 pbImage.Image = Resources.driverMale;
             else
                 pbImage.Image = Resources.driverFemale;

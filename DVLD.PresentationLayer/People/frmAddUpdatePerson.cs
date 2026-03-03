@@ -58,10 +58,10 @@ namespace DVLD.PresentationLayer.People
         private void _LoadCountryCombobox()
         {
             cbCountry.Items.Add("None");
-            DataTable dt = CountryBusiness.GetCountries();
+            var countries = CountryService.GetAllCountries();
 
-            foreach (DataRow dr in dt.Rows)
-                cbCountry.Items.Add(dr["CountryName"]);
+            foreach (Country country in countries)
+                cbCountry.Items.Add(country.Name);
         }
 
         private void _SetDefaultValues()
@@ -82,7 +82,7 @@ namespace DVLD.PresentationLayer.People
 
         private void _LoadPersonData()
         {
-            _person = PersonBusiness.Find(_personID);
+            _person = PersonService.GetById(_personID);
 
             if (_person == null)
             {
@@ -105,7 +105,7 @@ namespace DVLD.PresentationLayer.People
             dtpDateOfBirth.Value = _person.DateOfBirth;
             cbCountry.SelectedIndex = _person.Nationality.Id;
 
-            if (_person.Gender == enGender.Male)
+            if (_person.Gender == Gender.Male)
                 rbMale.Checked = true;
             else
                 rbFemale.Checked = true;
@@ -226,40 +226,39 @@ namespace DVLD.PresentationLayer.People
             _person.ThirdName = txtThirdName.Text.Trim();
             _person.LastName = txtLastName.Text.Trim();
             _person.DateOfBirth = dtpDateOfBirth.Value;
-            _person.Gender = rbMale.Checked ? enGender.Male : enGender.Female;
+            _person.Gender = rbMale.Checked ? Gender.Male : Gender.Female;
             _person.Email = txtEmail.Text.Trim();
             _person.Phone = txtPhone.Text.Trim();
             _person.Address = txtAddress.Text.Trim();
             _person.Nationality = new Country
              (
-                countryId: cbCountry.SelectedIndex,
-                countryName: cbCountry.SelectedItem.ToString()
+                id: cbCountry.SelectedIndex,
+                name: cbCountry.SelectedItem.ToString()
              );
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            // This triggers ALL Validating events
             if (!this.ValidateChildren())
                 return;
-
             if (!ValidateRadioGroups())
                 return;
 
             MapPersonFields();
             HandleImage();
 
-            if (PersonBusiness.Save(_person))
-            {
-                MessageBox.Show($"Saved the person data sucessfully with id {_person.Id}!");
-                _mode = enMode.Update;
-                lblModeTitle.Text = "Edit Person Details";
+            PersonService service = new PersonService(_person);
 
-                // Trigger the event to send data back to the caller form.
+            if (service.Save())
+            {
+                Utility.ShowSuccessMessage($"Saved the person data successfully with id: {_person.Id}");
+                _mode = enMode.Update;
+
+                lblModeTitle.Text = "Edit Person Details";
                 DataBack?.Invoke(this, _person.Id);
             }
             else
-                MessageBox.Show("Failed to save person data to the database!");
+                Utility.ShowErrorMessage("Failed to save person data to the database");
         }
 
         private void btnClose_Click(object sender, EventArgs e)

@@ -44,7 +44,7 @@ namespace DVLD.PresentationLayer.People
 
         private void _LoadData()
         {
-            _peopleDataTable = PersonBusiness.GetPeople();
+            _peopleDataTable = PersonService.GetAllAsTable();
         }
 
         private void _RefreshPeopleList()
@@ -284,7 +284,7 @@ namespace DVLD.PresentationLayer.People
                 MessageBoxIcon.Warning
             ) == DialogResult.OK)
             {
-                if (PersonBusiness.Delete(currentRowPersonID))
+                if (PersonService.Delete(currentRowPersonID))
                 {
                     MessageBox.Show("Deleted Successfully!");
                     _LoadData();

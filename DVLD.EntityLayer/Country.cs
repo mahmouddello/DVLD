@@ -1,25 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DVLD.EntityLayer
 {
     public class Country
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
+        public int Id { get; private set; }
+        public string Name { get; private set; } = string.Empty;
 
-        public Country()
+        public Country() { }
+
+        public Country(int id, string name)
         {
-
-        }
-
-        public Country(int countryId, string countryName)
-        {
-            this.Id = countryId;
-            this.Name = countryName;
+            Id = id;
+            Name = name?.Trim() ?? string.Empty;
         }
     }
 }

@@ -20,7 +20,7 @@ namespace DVLD.PresentationLayer.GlobalClasses
 
         public static bool IsUniqueNationalNo(string nationalNo)
         {
-            return !PersonBusiness.Exists(nationalNo);
+            return !PersonService.ExistsByNationalNo(nationalNo);
         }
 
         public static bool DoPasswordsMatch(string password, string passwordConfirm)

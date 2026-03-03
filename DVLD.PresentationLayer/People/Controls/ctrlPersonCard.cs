@@ -11,20 +11,12 @@ namespace DVLD.PresentationLayer.People
     public partial class ctrlPersonCard : UserControl
     {
         private Person person;
-        private int personID = -1;
-        private string fullImagePath
-        {
-            get
-            {
-                if (person == null)
-                    return null;
 
-                return Path.Combine(Globals.ImagesRootDirectory, person.ImagePath);
-            }
-        }
+        public int PersonID => person?.Id ?? -1;
+        public Person SelectedPerson => person;
 
-        public int PersonID { get { return personID; } }
-        public Person SelectedPerson { get { return person; } }
+        private string fullImagePath =>
+            person == null ? null : Path.Combine(Globals.ImagesRootDirectory, person.ImagePath);
 
         public ctrlPersonCard()
         {
@@ -33,12 +25,12 @@ namespace DVLD.PresentationLayer.People
 
         public void LoadPersonInfo(int personID)
         {
-            person = PersonBusiness.Find(personID);
+            person = PersonService.GetById(personID);
 
             if (person == null)
             {
                 ResetPersonInfo();
-                MessageBox.Show("No Person with PersonID = " + personID.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Utility.ShowErrorMessage($"No person found with ID = {personID}");
                 return;
             }
 
@@ -47,12 +39,12 @@ namespace DVLD.PresentationLayer.People
 
         public void LoadPersonInfo(string nationalNo)
         {
-            person = PersonBusiness.Find(nationalNo);
+            person = PersonService.GetByNationalNo(nationalNo);
 
             if (person == null)
             {
                 ResetPersonInfo();
-                MessageBox.Show("No Person with national no = " + nationalNo.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Utility.ShowErrorMessage($"No person found with national no = {nationalNo}");
                 return;
             }
 
@@ -61,7 +53,7 @@ namespace DVLD.PresentationLayer.People
 
         public void ResetPersonInfo()
         {
-            personID = -1;
+            person = null;  // clear the object
             lblPersonID.Text = "[????]";
             lblNationalNo.Text = "[????]";
             lblName.Text = "[????]";
@@ -77,40 +69,33 @@ namespace DVLD.PresentationLayer.People
         private void FillPersonInfo()
         {
             llEditInfo.Enabled = true;
-            personID = person.Id;
             lblPersonID.Text = person.Id.ToString();
             lblNationalNo.Text = person.NationalNo;
             lblName.Text = person.FullName;
-            lblGender.Text = person.Gender == enGender.Male ? "Male" : "Female";
+            lblGender.Text = person.Gender == Gender.Male ? "Male" : "Female";
             lblEmail.Text = person.Email;
             lblPhone.Text = person.Phone;
             lblDateOfBirth.Text = person.DateOfBirth.ToShortDateString();
-            lblCountry.Text = CountryBusiness.Find(person.Nationality.Id).Name;
+            lblCountry.Text = person.Nationality.Name;
             lblAddress.Text = person.Address;
-
             LoadPersonImage();
         }
 
         private void LoadPersonImage()
         {
-            if (person.Gender == enGender.Male)
-                pbImage.Image = Resources.driverMale;
-            else
-                pbImage.Image = Resources.driverFemale;
-
+            pbImage.Image = person.Gender == Gender.Male
+                ? Resources.driverMale
+                : Resources.driverFemale;
 
             if (!string.IsNullOrWhiteSpace(fullImagePath) && File.Exists(fullImagePath))
-                pbImage.ImageLocation = fullImagePath;  
+                pbImage.ImageLocation = fullImagePath;
         }
 
         private void llEditInfo_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            int.TryParse(lblPersonID.Text, out int personID);
-
-            frmAddUpdatePerson form = new frmAddUpdatePerson(personID);
+            frmAddUpdatePerson form = new frmAddUpdatePerson(person.Id);
             form.ShowDialog();
-
-            LoadPersonInfo(personID); // refresh
+            LoadPersonInfo(person.Id); // refresh
         }
     }
 }

@@ -2,8 +2,7 @@
 
 namespace DVLD.EntityLayer
 {
-
-    public enum enGender : byte
+    public enum Gender : byte
     {
         Male = 0,
         Female = 1,
@@ -19,54 +18,50 @@ namespace DVLD.EntityLayer
         public string ThirdName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
         public DateTime DateOfBirth { get; set; } = DateTime.MinValue;
-        public enGender Gender { get; set; } = enGender.Unknown;
+        public Gender Gender { get; set; } = Gender.Unknown;
         public string Address { get; set; } = string.Empty;
         public string Phone { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public Country Nationality { get; set; }
         public string ImagePath { get; set; } = string.Empty;
-        public string FullName
-        {
-            get
-            {
-                return $"{FirstName} {SecondName} {ThirdName} {LastName}";
-            }
-        }
 
-        public Person()
-        {
+        public bool IsNew => Id == -1;
 
-        }
+        public string FullName =>
+            $"{FirstName} {SecondName} {ThirdName} {LastName}"
+            .Replace("  ", " ")
+            .Trim();
 
-        public Person (
-            int id, 
-            string nationalNo, 
-            string firstName, 
-            string secondName, 
-            string thirdName, 
+        public Person() { }
+
+        public Person(
+            int id,
+            string nationalNo,
+            string firstName,
+            string secondName,
+            string thirdName,
             string lastName,
             DateTime dateOfBirth,
-            enGender gender,
+            Gender gender,
             string address,
             string phone,
             string email,
             Country nationality,
-            string imagePath
-        )
+            string imagePath)
         {
-            this.Id = id;
-            this.NationalNo = nationalNo;
-            this.FirstName = firstName;
-            this.SecondName = secondName;
-            this.ThirdName = thirdName;
-            this.LastName = lastName;
-            this.DateOfBirth = dateOfBirth;
-            this.Gender = gender;
-            this.Address = address;
-            this.Phone = phone;
-            this.Email = email;
-            this.Nationality = nationality;
-            this.ImagePath = imagePath;
+            Id = id;
+            NationalNo = nationalNo?.Trim() ?? string.Empty;
+            FirstName = firstName?.Trim() ?? string.Empty;
+            SecondName = secondName?.Trim() ?? string.Empty;
+            ThirdName = thirdName?.Trim() ?? string.Empty;
+            LastName = lastName?.Trim() ?? string.Empty;
+            DateOfBirth = dateOfBirth;
+            Gender = gender;
+            Address = address?.Trim() ?? string.Empty;
+            Phone = phone?.Trim() ?? string.Empty;
+            Email = email?.Trim() ?? string.Empty;
+            Nationality = nationality;
+            ImagePath = imagePath?.Trim() ?? string.Empty;
         }
     }
 }

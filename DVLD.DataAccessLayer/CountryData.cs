@@ -1,16 +1,18 @@
-﻿using System;
+﻿using DVLD.EntityLayer;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
 
 namespace DVLD.DataAccessLayer
 {
     public class CountryData
     {
-        public static DataTable GetAllCountries()
+        public static List<Country> GetAllCountries()
         {
-            DataTable dt = new DataTable();
             string query = @"SELECT * FROM Countries";
+            List<Country> countries = new List<Country>();
 
             using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
             using (SqlCommand command = new SqlCommand(query, connection))
@@ -19,36 +21,43 @@ namespace DVLD.DataAccessLayer
 
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
-                    dt.Load(reader);
+                    while (reader.Read())
+                        countries.Add(MapToEntity(reader));
                 }
             }
 
-            return dt;
+            return countries;
         }
 
-        public static DataRow GetById(int countryID)
+        public static Country GetById(int countryId)
         {
-            DataTable dt = new DataTable();
-            string query = @"SELECT * FROM Countries WHERE CountryID = @CountryID";
+            string query = "SELECT * FROM Countries WHERE CountryID = @CountryID";
 
-            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
-            using (SqlCommand command = new SqlCommand(query, connection))
+            try
             {
-                command.Parameters.AddWithValue("@CountryID", countryID);
-                connection.Open();
-
-                using (SqlDataReader reader = command.ExecuteReader())
+                using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    dt.Load(reader);
+                    command.Parameters.AddWithValue("@CountryID", countryId);
+                    connection.Open();
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                            return MapToEntity(reader);
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error in CountryData.GetById: {ex.Message}");
+            }
 
-            return dt.Rows.Count > 0 ? dt.Rows[0] : null;
+            return null;
         }
 
-        public static DataRow GetByName(string countryName)
+        public static Country GetByName(string countryName)
         {
-            DataTable dt = new DataTable();
             string query = @"SELECT * FROM Countries WHERE CountryName = @CountryName";
 
             using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
@@ -59,11 +68,62 @@ namespace DVLD.DataAccessLayer
 
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
-                    dt.Load(reader);
+                    if (reader.Read())
+                        return MapToEntity(reader);
                 }
             }
 
-            return dt.Rows.Count > 0 ? dt.Rows[0] : null;
+            return null;
+        }
+
+        public static bool ExistsById(int id)
+        {
+            string query = "SELECT 1 FROM Countries WHERE CountryID = @Id";
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Id", id);
+                    connection.Open();
+                    return command.ExecuteScalar() != null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error in CountryData.ExistsById: {ex.Message}");
+                return false;
+            }
+        }
+
+        public static bool ExistsByName(string name)
+        {
+            string query = "SELECT 1 FROM Countries WHERE CountryName = @Name";
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Name", name);
+                    connection.Open();
+                    return command.ExecuteScalar() != null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error in CountryData.ExistsByName: {ex.Message}");
+                return false;
+            }
+        }
+
+        private static Country MapToEntity(SqlDataReader reader)
+        {
+            return new Country(
+                id: (int)reader["CountryID"],
+                name: (string)reader["CountryName"]
+            );
         }
     }
 }
