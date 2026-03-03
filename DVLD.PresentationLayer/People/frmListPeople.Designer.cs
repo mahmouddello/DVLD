@@ -84,7 +84,7 @@
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
             this.dgvAllPeople.RowsDefaultCellStyle = dataGridViewCellStyle3;
             this.dgvAllPeople.RowTemplate.Height = 28;
-            this.dgvAllPeople.Size = new System.Drawing.Size(1657, 466);
+            this.dgvAllPeople.Size = new System.Drawing.Size(1595, 466);
             this.dgvAllPeople.TabIndex = 0;
             // 
             // cmsOptions
@@ -163,7 +163,7 @@
             // btnCloseForm
             // 
             this.btnCloseForm.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCloseForm.Location = new System.Drawing.Point(1456, 811);
+            this.btnCloseForm.Location = new System.Drawing.Point(1429, 812);
             this.btnCloseForm.Name = "btnCloseForm";
             this.btnCloseForm.Size = new System.Drawing.Size(185, 50);
             this.btnCloseForm.TabIndex = 2;
@@ -177,7 +177,7 @@
             this.label1.ForeColor = System.Drawing.Color.Black;
             this.label1.Location = new System.Drawing.Point(19, 166);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(1657, 55);
+            this.label1.Size = new System.Drawing.Size(1595, 55);
             this.label1.TabIndex = 4;
             this.label1.Text = "Manage People";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -234,7 +234,7 @@
             this.btnAddNewPerson.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnAddNewPerson.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnAddNewPerson.Image = global::DVLD.PresentationLayer.Properties.Resources.person_add;
-            this.btnAddNewPerson.Location = new System.Drawing.Point(1598, 224);
+            this.btnAddNewPerson.Location = new System.Drawing.Point(1536, 224);
             this.btnAddNewPerson.Name = "btnAddNewPerson";
             this.btnAddNewPerson.Size = new System.Drawing.Size(78, 82);
             this.btnAddNewPerson.TabIndex = 8;
@@ -255,7 +255,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1688, 892);
+            this.ClientSize = new System.Drawing.Size(1624, 892);
             this.Controls.Add(this.btnAddNewPerson);
             this.Controls.Add(this.cbGender);
             this.Controls.Add(this.txtFilterQuery);

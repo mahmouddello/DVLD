@@ -235,7 +235,7 @@
             this.rbFemale.TabStop = true;
             this.rbFemale.Text = "Female";
             this.rbFemale.UseVisualStyleBackColor = true;
-            this.rbFemale.CheckedChanged += new System.EventHandler(this.rbFemale_CheckedChanged);
+            this.rbFemale.CheckedChanged += new System.EventHandler(this.rbGender_CheckedChanged);
             // 
             // rbMale
             // 
@@ -248,7 +248,7 @@
             this.rbMale.TabStop = true;
             this.rbMale.Text = "Male";
             this.rbMale.UseVisualStyleBackColor = true;
-            this.rbMale.CheckedChanged += new System.EventHandler(this.rbMale_CheckedChanged);
+            this.rbMale.CheckedChanged += new System.EventHandler(this.rbGender_CheckedChanged);
             // 
             // txtPhone
             // 
@@ -307,7 +307,6 @@
             this.cbCountry.Name = "cbCountry";
             this.cbCountry.Size = new System.Drawing.Size(219, 33);
             this.cbCountry.TabIndex = 9;
-            this.cbCountry.SelectedIndexChanged += new System.EventHandler(this.cbCountry_SelectedIndexChanged);
             this.cbCountry.Validating += new System.ComponentModel.CancelEventHandler(this.cbCountry_Validating);
             // 
             // label12

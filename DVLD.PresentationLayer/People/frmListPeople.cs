@@ -8,169 +8,97 @@ namespace DVLD.PresentationLayer.People
 {
     public partial class frmListPeople : Form
     {
-        private enum enFilter : byte
+        private enum FilterMode : byte
         {
-            None,
-            PersonID,
-            NationalNo,
-            FirstName,
-            SecondName,
-            ThirdName,
-            LastName,
-            Gender,
-            Nationality,
-            Phone,
-            Email
+            None, PersonID, NationalNo, FirstName,
+            SecondName, ThirdName, LastName,
+            Gender, Nationality, Phone, Email
         }
 
-        private enum enGender
+        private enum GenderFilter
         {
             All = -1,
-            Male = 0, 
+            Male = 0,
             Female = 1
         }
 
-        DataTable _peopleDataTable;
-
-        private enFilter filter;
-        private enGender genderType;
-
-        private bool _isInitializing;
+        private DataTable _peopleDataTable;
+        private FilterMode _filter;
+        private GenderFilter _genderFilter = GenderFilter.All;
 
         public frmListPeople()
         {
             InitializeComponent();
         }
 
-        private void _LoadData()
+        private void frmListPeople_Load(object sender, EventArgs e)
+        {
+            InitializeSettings();
+        }
+
+        private void InitializeSettings()
+        {
+            LoadData();
+            RefreshPeopleList();
+            ApplyDGVSettings();
+            BindGenderComboBox();
+            cbFilterBy.SelectedIndex = 0;
+        }
+
+        private void LoadData()
         {
             _peopleDataTable = PersonService.GetAllAsTable();
         }
 
-        private void _RefreshPeopleList()
+        private void RefreshPeopleList()
         {
             dgvAllPeople.DataSource = _peopleDataTable;
             lblRecordsCount.Text = $"Records: #{dgvAllPeople.Rows.Count}";
         }
 
-        private void ApplyViewSettings()
+        private void ReloadAndRefresh()
         {
-
-            dgvAllPeople.Columns[0].HeaderText = "Person ID";
-            dgvAllPeople.Columns[0].Width = 150;
-
-            dgvAllPeople.Columns[1].HeaderText = "N.No";
-            dgvAllPeople.Columns[1].Width = 80;
-
-            dgvAllPeople.Columns[2].HeaderText = "First Name";
-            dgvAllPeople.Columns[2].Width = 160;
-
-            dgvAllPeople.Columns[3].HeaderText = "Second Name";
-            dgvAllPeople.Columns[3].Width = 180;
-
-            dgvAllPeople.Columns[4].HeaderText = "Third Name";
-            dgvAllPeople.Columns[4].Width = 160;
-
-            dgvAllPeople.Columns[5].HeaderText = "Last Name";
-            dgvAllPeople.Columns[5].Width = 160;
-
-            dgvAllPeople.Columns[6].HeaderText = "Date Of Birth";
-            dgvAllPeople.Columns[6].Width = 150;
-
-            dgvAllPeople.Columns[7].HeaderText = "Gender";
-            dgvAllPeople.Columns[7].Width = 100;
-
-            dgvAllPeople.Columns[8].HeaderText = "Nationality";
-            dgvAllPeople.Columns[8].Width = 120;
-
-            dgvAllPeople.Columns[9].HeaderText = "Phone";
-            dgvAllPeople.Columns[9].Width = 120;
-
-            dgvAllPeople.Columns[10].HeaderText = "Email";
-            dgvAllPeople.Columns[10].Width = 200;
+            LoadData();
+            RefreshPeopleList();
         }
 
+        private void SetColumn(int index, string header,
+            DataGridViewAutoSizeColumnMode mode = DataGridViewAutoSizeColumnMode.AllCells)
+        {
+            dgvAllPeople.Columns[index].HeaderText = header.Trim();
+            dgvAllPeople.Columns[index].AutoSizeMode = mode;
+        }
+
+        private void ApplyDGVSettings()
+        {
+            if (dgvAllPeople.Columns.Count < 1) return;
+
+            SetColumn(0, "Person ID");
+            SetColumn(1, "National No");
+            SetColumn(2, "First Name");
+            SetColumn(3, "Second Name");
+            SetColumn(4, "Third Name");
+            SetColumn(5, "Last Name");
+            SetColumn(6, "Date Of Birth");
+            SetColumn(7, "Gender");
+            SetColumn(8, "Nationality");
+            SetColumn(9, "Phone");
+            SetColumn(10, "Email");
+        }
 
         private void BindGenderComboBox()
         {
-            _isInitializing = true;
-
-            cbGender.DataSource = Enum.GetValues(typeof(enGender));
-
-            _isInitializing = false;
+            cbGender.DataSource = Enum.GetValues(typeof(GenderFilter));
         }
 
-        private void frmListPeople_Load(object sender, EventArgs e)
-        {
-            _LoadData();
-            _RefreshPeopleList();
-            ApplyViewSettings();
-
-            BindGenderComboBox();
-            cbFilterBy.SelectedIndex = 0;
-        }
-
-        private void btnCloseForm_Click(object sender, EventArgs e)
-        {
-            this.Dispose();
-        }
-
-        private void showDetailsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            int currentRowPersonID = (int)dgvAllPeople.CurrentRow.Cells[0].Value;
-
-            frmPersonDetails form = new frmPersonDetails(currentRowPersonID);
-            form.ShowDialog();
-        }
-
-        private void cbFilterBy_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            filter = (enFilter)cbFilterBy.SelectedIndex;
-            txtFilterQuery.Visible = (filter != enFilter.Gender) && (filter != enFilter.None);
-            cbGender.Visible = filter == enFilter.Gender;
-
-            switch (filter)
-            {
-                case enFilter.None:
-                    _RefreshPeopleList();
-                    break;
-
-                case enFilter.Gender:
-                    cbGender.SelectedItem = enGender.All;
-                    break;
-                
-                // All other fields are text
-                default:
-                    _RefreshPeopleList();
-                    txtFilterQuery.Clear();
-                    break;
-            }
-        }
-
-        private void txtFilterQuery_TextChanged(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(txtFilterQuery.Text.Trim()))
-                _RefreshPeopleList();
-            else
-                _ApplyQueryFilter();
-        }
-
-        private void _ApplyQueryFilter()
+        private void ApplyQueryFilter()
         {
             string filterValue = txtFilterQuery.Text.Trim();
-
-            // If filter value is empty, show all records
-            if (string.IsNullOrEmpty(filterValue))
-            {
-                _RefreshPeopleList();
-                return;
-            }
-
             DataView dv = new DataView(_peopleDataTable);
 
             try
             {
-                if (filter == enFilter.PersonID)
+                if (_filter == FilterMode.PersonID)
                 {
                     if (!int.TryParse(filterValue, out int numericValue))
                     {
@@ -178,156 +106,143 @@ namespace DVLD.PresentationLayer.People
                         lblRecordsCount.Text = "Records: #0";
                         return;
                     }
-
                     dv.RowFilter = $"PersonID = {numericValue}";
                 }
                 else
-                    // For string columns: use LIKE with quotes
-                    dv.RowFilter = $"{filter.ToString()} LIKE '%{filterValue}%'";
+                    dv.RowFilter = $"{_filter} LIKE '%{filterValue}%'";
 
                 dgvAllPeople.DataSource = dv;
+                lblRecordsCount.Text = $"Records: #{dgvAllPeople.Rows.Count}";
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
-                MessageBox.Show($"Filter error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                _RefreshPeopleList();
+                MessageBox.Show($"Filter error: {ex.Message}", "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                RefreshPeopleList();
             }
-
-            lblRecordsCount.Text = $"Records: #{dgvAllPeople.Rows.Count}";
         }
 
-        private void cbGender_SelectedIndexChanged(object sender, EventArgs e)
+        private void ApplyGenderFilter()
         {
-            if (_isInitializing)
-                return;
-
-            genderType = (enGender)cbGender.SelectedItem;
-            _ApplyGenderFilter();
-        }
-
-        private void _ApplyGenderFilter()
-        {
-            // If "All" or similar option is selected
-            if (genderType == enGender.All)
+            if (_genderFilter == GenderFilter.All)
             {
-                _RefreshPeopleList();
+                RefreshPeopleList();
                 return;
             }
 
             DataView dv = new DataView(_peopleDataTable);
-
-            switch(genderType)
-            {
-                case enGender.Male:
-                    dv.RowFilter = "Gender = 'Male'";
-                    break;
-                case enGender.Female:
-                    dv.RowFilter = "Gender = 'Female'";
-                    break;
-                default:
-                    break;
-            }
+            dv.RowFilter = $"Gender = '{_genderFilter}'";
             dgvAllPeople.DataSource = dv;
             lblRecordsCount.Text = $"Records: #{dgvAllPeople.Rows.Count}";
         }
 
-        private void editToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            int currentRowPersonID = (int)dgvAllPeople.CurrentRow.Cells[0].Value;
-            frmAddUpdatePerson frm = new frmAddUpdatePerson(currentRowPersonID);
-            frm.ShowDialog();
+        // ── Event Handlers ──────────────────────────────────────
 
-            _LoadData(); 
-            _RefreshPeopleList();
-        }
+        private void btnCloseForm_Click(object sender, EventArgs e) => this.Close();
 
         private void btnAddNewPerson_Click(object sender, EventArgs e)
         {
             frmAddUpdatePerson frm = new frmAddUpdatePerson();
             frm.ShowDialog();
-
-            _LoadData();
-            _RefreshPeopleList();
+            ReloadAndRefresh();
         }
 
-        private void sendEmailToolStripMenuItem_Click(object sender, EventArgs e)
+        private void cbFilterBy_SelectedIndexChanged(object sender, EventArgs e)
         {
-            MessageBox.Show
-            (
-                "This feature will be implemented in the future",
-                "Stub",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Warning
-            );
+            _filter = (FilterMode)cbFilterBy.SelectedIndex;
+            txtFilterQuery.Visible = _filter != FilterMode.Gender && _filter != FilterMode.None;
+            cbGender.Visible = _filter == FilterMode.Gender;
+
+            switch (_filter)
+            {
+                case FilterMode.None:
+                    RefreshPeopleList();
+                    break;
+                case FilterMode.Gender:
+                    cbGender.SelectedItem = GenderFilter.All;
+                    break;
+                default:
+                    RefreshPeopleList();
+                    txtFilterQuery.Clear();
+                    break;
+            }
         }
 
-        private void sendSMSToolStripMenuItem_Click(object sender, EventArgs e)
+        private void txtFilterQuery_TextChanged(object sender, EventArgs e)
         {
-            MessageBox.Show
-            (
-                "This feature will be implemented in the future",
-                "Stub",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Warning
-            );
+            if (string.IsNullOrWhiteSpace(txtFilterQuery.Text))
+                RefreshPeopleList();
+            else
+                ApplyQueryFilter();
+        }
+
+        private void cbGender_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            _genderFilter = (GenderFilter)cbGender.SelectedItem;
+            ApplyGenderFilter();
+        }
+
+        private void showDetailsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int personId = (int)dgvAllPeople.CurrentRow.Cells[0].Value;
+            new frmPersonDetails(personId).ShowDialog();
+        }
+
+        private void editToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int personId = (int)dgvAllPeople.CurrentRow.Cells[0].Value;
+            new frmAddUpdatePerson(personId).ShowDialog();
+            ReloadAndRefresh();
         }
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            int currentRowPersonID = (int)dgvAllPeople.CurrentRow.Cells[0].Value;
+            int personId = (int)dgvAllPeople.CurrentRow.Cells[0].Value;
 
-            if (MessageBox.Show
-            (
+            if (MessageBox.Show(
                 "Are you sure you want to delete this person? This action can't be undone!",
-                $"Delete Person ID = {currentRowPersonID}",
+                $"Delete Person ID = {personId}",
                 MessageBoxButtons.OKCancel,
-                MessageBoxIcon.Warning
-            ) == DialogResult.OK)
+                MessageBoxIcon.Warning) == DialogResult.OK)
             {
-                if (PersonService.Delete(currentRowPersonID))
+                if (!PersonService.Delete(personId))
                 {
                     MessageBox.Show("Deleted Successfully!");
-                    _LoadData();
-                    _RefreshPeopleList();
+                    ReloadAndRefresh();
                 }
                 else
-                    MessageBox.Show(
-                        "Delete operation failed because of referential integrity error!",
-                        "Operation Failed",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Warning
-                    );
+                    Utility.ShowErrorMessage("Delete failed due to a referential integrity error!");
             }
         }
 
         private void txtFilterQuery_KeyPress(object sender, KeyPressEventArgs e)
         {
-            // The pressed key is : space, delete, backspace, ...etc. skips the checks.
             if (char.IsControl(e.KeyChar)) return;
 
-            switch (filter)
+            switch (_filter)
             {
-                // Numeric Fields: Only numbers allowed
-                case enFilter.PersonID:
-                case enFilter.Phone:
+                case FilterMode.PersonID:
+                case FilterMode.Phone:
                     if (!char.IsDigit(e.KeyChar))
                         Utility.HandleWrongKey(e);
                     break;
 
-                // String Only Fields : Only letters allowed
-                case enFilter.FirstName:
-                case enFilter.SecondName:
-                case enFilter.ThirdName:
-                case enFilter.LastName:
-                case enFilter.Nationality:
+                case FilterMode.FirstName:
+                case FilterMode.SecondName:
+                case FilterMode.ThirdName:
+                case FilterMode.LastName:
+                case FilterMode.Nationality:
                     if (!char.IsLetter(e.KeyChar))
                         Utility.HandleWrongKey(e);
                     break;
-
-                // String + Numeric Mix Fields (National No, Email): Don't do checks;
-                default:
-                    break;
             }
         }
+
+        private void sendEmailToolStripMenuItem_Click(object sender, EventArgs e) =>
+            Utility.ShowWarningMessage("This feature will be implemented in the future", "Stub");
+
+        private void sendSMSToolStripMenuItem_Click(object sender, EventArgs e) =>
+            Utility.ShowWarningMessage("This feature will be implemented in the future", "Stub");
+
     }
 }

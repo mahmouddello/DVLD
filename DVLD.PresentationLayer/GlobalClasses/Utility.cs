@@ -95,5 +95,11 @@ namespace DVLD.PresentationLayer.GlobalClasses
         {
             MessageBox.Show(message, "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
+
+        public static void ShowWarningMessage(string message, string title)
+        {
+            MessageBox.Show(message.Trim(), title.Trim(), MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
     }
 }
