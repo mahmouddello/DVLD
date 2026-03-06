@@ -41,7 +41,7 @@ namespace DVLD.PresentationLayer.People
             LoadData();
             RefreshPeopleList();
             ApplyDGVSettings();
-            BindGenderComboBox();
+            BindComboBoxes();
             cbFilterBy.SelectedIndex = 0;
         }
 
@@ -86,8 +86,9 @@ namespace DVLD.PresentationLayer.People
             SetColumn(10, "Email");
         }
 
-        private void BindGenderComboBox()
+        private void BindComboBoxes()
         {
+            cbFilterBy.DataSource = Enum.GetValues(typeof(FilterMode));
             cbGender.DataSource = Enum.GetValues(typeof(GenderFilter));
         }
 

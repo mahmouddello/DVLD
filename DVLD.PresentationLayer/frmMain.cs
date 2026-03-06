@@ -42,7 +42,7 @@ namespace DVLD.PresentationLayer
 
         private void currentUserInfoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            frmUserDetails frm = new frmUserDetails(Globals.CurrentUser);
+            var frm = frmUserDetails.CreateByUser(Globals.CurrentUser);
             frm.ShowDialog();
         }
 
@@ -60,8 +60,8 @@ namespace DVLD.PresentationLayer
 
         private void changePasswordToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            frmChangeUserPassword frm = new frmChangeUserPassword(Globals.CurrentUser);
-            frm.ShowDialog();
+            var form = frmChangeUserPassword.CreateForCurrentUser();
+            form.ShowDialog();
         }
 
         private void manageApplicationTypesToolStripMenuItem_Click(object sender, EventArgs e)

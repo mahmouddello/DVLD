@@ -34,7 +34,7 @@ namespace DVLD.BusinessLayer
             (
                 (ApplicationType.enApplicationType)application.ApplicationTypeId
             );
-            application.CreatorUserInfo = UserBusiness.Find(application.CreatedByUserId);
+            application.CreatorUserInfo = UserService.FindById(application.CreatedByUserId);
 
             return application;
         }
@@ -59,7 +59,7 @@ namespace DVLD.BusinessLayer
                 (
                     (ApplicationType.enApplicationType)application.ApplicationTypeId
                 );
-                application.CreatorUserInfo = UserBusiness.Find(application.CreatedByUserId);
+                application.CreatorUserInfo = UserService.FindById(application.CreatedByUserId);
 
                 return true;
             }

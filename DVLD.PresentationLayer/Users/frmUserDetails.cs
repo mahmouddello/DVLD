@@ -13,20 +13,35 @@ namespace DVLD.PresentationLayer.Users
 {
     public partial class frmUserDetails : Form
     {
-        public frmUserDetails(int userId)
+        private int _userId;
+        private User _user;
+
+        private frmUserDetails()
         {
             InitializeComponent();
-            ctrlUserLoginInfo1.LoadUserInfo(userId);
         }
 
-        public frmUserDetails(User user)
+        public static frmUserDetails CreateById(int userId)
         {
-            InitializeComponent();
-            ctrlUserLoginInfo1.LoadUserInfo(user);
+            var form = new frmUserDetails();
+            form._userId = userId;
+            return form;
+        }
+
+        public static frmUserDetails CreateByUser(User user)
+        {
+            var form = new frmUserDetails();
+            form._user = user;
+            return form;
         }
 
         private void frmUserDetails_Load(object sender, EventArgs e)
         {
+            if (_user != null)
+                ctrlUserLoginInfo1.LoadUserInfo(_user);
+            else
+                ctrlUserLoginInfo1.LoadUserInfo(_userId);
+
             ctrlPersonCard1.LoadPersonInfo(ctrlUserLoginInfo1.SelectedUser.PersonId);
         }
     }

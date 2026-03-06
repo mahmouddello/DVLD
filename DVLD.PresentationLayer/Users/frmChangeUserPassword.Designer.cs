@@ -164,6 +164,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "frmChangeUserPassword";
             this.Text = "frmChangeUserPassword";
+            this.Load += new System.EventHandler(this.frmChangeUserPassword_Load);
             ((System.ComponentModel.ISupportInitialize)(this.errProvider)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

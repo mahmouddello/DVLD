@@ -53,7 +53,7 @@
     <Compile Include="TestAppointmentBusiness.cs" />
     <Compile Include="TestBusiness.cs" />
     <Compile Include="TestTypeBusiness.cs" />
-    <Compile Include="UserBusiness.cs" />
+    <Compile Include="UserService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DVLD.DataAccessLayer\DVLD.DataAccessLayer.csproj">

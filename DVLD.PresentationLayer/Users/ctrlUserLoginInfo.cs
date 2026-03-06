@@ -1,25 +1,14 @@
-﻿using DVLD.BusinessLayer;
+﻿using System.Windows.Forms;
+using DVLD.BusinessLayer;
 using DVLD.EntityLayer;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+using DVLD.PresentationLayer.GlobalClasses;
 
 namespace DVLD.PresentationLayer.Users
 {
     public partial class ctrlUserLoginInfo : UserControl
     {
-        private User user;
-        private int userID = -1;
-
-        public int UserID { get { return userID; } }
-        public User SelectedUser { get { return user; } }
-
+        private User _user;
+        public User SelectedUser => _user;
 
         public ctrlUserLoginInfo()
         {
@@ -28,34 +17,33 @@ namespace DVLD.PresentationLayer.Users
 
         public void LoadUserInfo(int userId)
         {
-            user = UserBusiness.Find(userId);
+            _user = UserService.FindById(userId);
 
-            if (user == null)
+            if (_user == null)
             {
                 ResetUserInfo();
-                MessageBox.Show("No User with UserID = " + userID.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Utility.ShowErrorMessage($"No User with UserID = {userId}");
                 return;
             }
 
             FillUserInfo();
         }
 
-        public void LoadUserInfo(User userParam)
+        public void LoadUserInfo(User user)
         {
-            if (userParam == null)
+            if (user == null)
             {
                 ResetUserInfo();
-                MessageBox.Show("No User with UserID = " + userParam.Id.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Utility.ShowErrorMessage($"User isn't found!");
                 return;
             }
 
-            user = userParam;
+            _user = user;
             FillUserInfo();
         }
 
         private void ResetUserInfo()
         {
-            userID = -1; // not found
             lblUserID.Text = "???";
             lblUsername.Text = "???";
             lblIsActive.Text = "???";
@@ -63,10 +51,9 @@ namespace DVLD.PresentationLayer.Users
 
         private void FillUserInfo()
         {
-            userID = user.Id;
-            lblUserID.Text = userID.ToString();
-            lblUsername.Text = user.Username;
-            lblIsActive.Text = user.IsActive ? "Yes" : "No";
+            lblUserID.Text = _user.Id.ToString();
+            lblUsername.Text = _user.Username;
+            lblIsActive.Text = _user.IsActive ? "Active" : "Inactive";
         }
     }
 }

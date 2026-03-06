@@ -1,49 +1,66 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using DVLD.EntityLayer;
 
 namespace DVLD.DataAccessLayer
 {
-    public static class UserData
+    public class UserData
     {
-        public static DataTable GetAll()
+        public static DataTable GetAllAsTable()
         {
             DataTable dt = new DataTable();
-            string query = @"SELECT 
-                                U.UserID,
-                                U.PersonID,
-                                U.UserName,
-                                U.IsActive,
-                                CONCAT(
-                                    P.FirstName, ' ',
-                                    P.SecondName, ' ',
-                                    ISNULL(P.ThirdName + ' ', ''),
-                                    P.LastName
-                                ) AS FullName
-                            FROM Users U
-                            INNER JOIN People P ON U.PersonID = P.PersonID;";
+            string query = @"SELECT * FROM UsersDetails_View";
 
-            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
-            using (SqlCommand command = new SqlCommand(query, connection))
+            try
             {
-                connection.Open();
-                using (SqlDataReader reader = command.ExecuteReader())
+                using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    dt.Load(reader);
+                    connection.Open();
+                    using (SqlDataReader reader = command.ExecuteReader())
+                        dt.Load(reader);
                 }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error in PersonData.GetAllAsTable: {ex.Message}");
+                return new DataTable();
             }
 
             return dt;
         }
 
-        public static DataRow GetById(int userId)
+        public static int Add(User user)
         {
-            DataTable dt = new DataTable();
+            string query = @"INSERT INTO Users (PersonID, UserName, Password, IsActive)
+                            VALUES (@PersonID, @Username, @Password, @IsActive);
+                            SELECT SCOPE_IDENTITY();";
+            try
+            {
+
+                using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    AddSharedParameters(command, user);
+                    connection.Open();
+
+                    object result = command.ExecuteScalar();
+                    if (result != null && result != DBNull.Value)
+                        return Convert.ToInt32(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error in UserData.Add: {ex.Message}");
+            }
+
+            return -1;
+        }
+
+        public static User GetById(int userId)
+        {
             string query = @"SELECT * FROM Users WHERE UserID = @UserID";
 
             using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
@@ -53,17 +70,15 @@ namespace DVLD.DataAccessLayer
                 connection.Open();
 
                 using (SqlDataReader reader = command.ExecuteReader())
-                {
-                    dt.Load(reader);
-                }
+                    if (reader.Read())
+                        return MapToEntity(reader);
             }
 
-            return dt.Rows.Count > 0 ? dt.Rows[0] : null;
+            return null;
         }
 
-        public static DataRow GetByUsername(string username)
+        public static User GetByUsername(string username)
         {
-            DataTable dt = new DataTable();
             string query = @"SELECT * FROM Users WHERE UserName = @Username";
 
             using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
@@ -73,25 +88,32 @@ namespace DVLD.DataAccessLayer
                 connection.Open();
 
                 using (SqlDataReader reader = command.ExecuteReader())
-                {
-                    dt.Load(reader);
-                }
+                    if (reader.Read())
+                        return MapToEntity(reader);
             }
 
-            return dt.Rows.Count > 0 ? dt.Rows[0] : null;
+            return null;
         }
 
         public static bool ExistsById(int userId)
         {
             string query = @"SELECT 1 FROM Users WHERE UserID = @UserID";
 
-            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
-            using (SqlCommand command = new SqlCommand(query, connection))
+            try
             {
-                command.Parameters.AddWithValue("@UserID", userId);
-                connection.Open();
+                using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@UserID", userId);
+                    connection.Open();
 
-                return command.ExecuteScalar() != null;
+                    return command.ExecuteScalar() != null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error in UserData.ExistsById: {ex.Message}");
+                return false;
             }
         }
 
@@ -99,13 +121,21 @@ namespace DVLD.DataAccessLayer
         {
             string query = @"SELECT 1 FROM Users WHERE UserName = @Username";
 
-            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
-            using (SqlCommand command = new SqlCommand(query, connection))
+            try
             {
-                command.Parameters.AddWithValue("@Username", username);
-                connection.Open();
+                using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Username", username);
+                    connection.Open();
 
-                return command.ExecuteScalar() != null;
+                    return command.ExecuteScalar() != null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error in UserData.ExistsByUsername: {ex.Message}");
+                return false;
             }
         }
 
@@ -113,17 +143,70 @@ namespace DVLD.DataAccessLayer
         {
             string query = @"SELECT 1 FROM Users WHERE PersonID = @PersonID";
 
-            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
-            using (SqlCommand command = new SqlCommand(query, connection))
+            try
             {
-                command.Parameters.AddWithValue("@PersonID", personId);
-                connection.Open();
+                using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@PersonID", personId);
+                    connection.Open();
 
-                return command.ExecuteScalar() != null;
+                    return command.ExecuteScalar() != null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error in UserData.ExistsByPersonId: {ex.Message}");
+                return false;
             }
         }
 
-        public static bool DeleteById(int userId)
+        public static bool Update(User user)
+        {
+            string query = @"UPDATE Users SET
+                                 PersonID = @PersonID,
+                                 UserName = @Username,
+                                 Password = @Password,
+                                 IsActive = @IsActive
+                             WHERE 
+                                 UserID = @UserID";
+            try
+            {
+
+                using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    AddSharedParameters(command, user);
+                    command.Parameters.AddWithValue("@UserID", user.Id);
+                    connection.Open();
+
+                    return command.ExecuteNonQuery() > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error in UserData.Update: {ex.Message}");
+                return false;
+            }
+        }
+
+        public static bool UpdatePassword(int userId, string newPassword)
+        {
+            string query = @"UPDATE Users SET Password = @Password WHERE UserID = @UserID";
+
+            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                connection.Open();
+
+                command.Parameters.AddWithValue("@UserID", userId);
+                command.Parameters.AddWithValue("@Password", newPassword);
+
+                return command.ExecuteNonQuery() > 0;
+            }
+        }
+
+        public static bool Delete(int userId)
         {
             try
             {
@@ -145,82 +228,24 @@ namespace DVLD.DataAccessLayer
             }
         }
 
-        public static int InsertNew(int personId, string username, string password, bool isActive)
+        private static User MapToEntity(SqlDataReader reader)
         {
-            try
-            {
-                string query = @"INSERT INTO Users (PersonID, UserName, Password, IsActive)
-                         VALUES (@PersonID, @Username, @Password, @IsActive);
-                         SELECT SCOPE_IDENTITY();";
-
-                using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
-                using (SqlCommand command = new SqlCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@PersonID", personId);
-                    command.Parameters.AddWithValue("@Username", username);
-                    command.Parameters.AddWithValue("@Password", password);
-                    command.Parameters.AddWithValue("@IsActive", isActive);
-
-                    connection.Open();
-                    object result = command.ExecuteScalar();
-
-                    return result == null ? -1 : Convert.ToInt32(result);
-                }
-            }
-            catch
-            {
-                return -1;
-            }
+            return new User(
+                id: (int)reader["UserID"],
+                username: (string)reader["Username"],
+                password: (string)reader["Password"],
+                isActive: (bool)reader["IsActive"],
+                person: PersonData.GetById((int)reader["PersonID"])
+            );
         }
 
-        public static bool UpdateById(int userId, int personId, string username, string password, bool isActive)
+        private static void AddSharedParameters(SqlCommand command, User user)
         {
-            string query = @"UPDATE Users SET
-                                 PersonID = @PersonID,
-                                 UserName = @Username,
-                                 Password = @Password,
-                                 IsActive = @IsActive
-                             WHERE 
-                                 UserID = @UserID";
-            try
-            {
-
-                using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
-                using (SqlCommand command = new SqlCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@UserID", userId);
-                    command.Parameters.AddWithValue("@PersonID", personId);
-                    command.Parameters.AddWithValue("@Username", username);
-                    command.Parameters.AddWithValue("@Password", password);
-                    command.Parameters.AddWithValue("@IsActive", isActive);
-
-                    connection.Open();
-
-                    return command.ExecuteNonQuery() > 0;
-                }
-            }
-            catch (Exception ex)
-            {
-
-                Debug.WriteLine(ex.Message);
-                return false;
-            }
+            command.Parameters.AddWithValue("@PersonID", user.PersonId);
+            command.Parameters.AddWithValue("@Username", user.Username);
+            command.Parameters.AddWithValue("@Password", user.Password);
+            command.Parameters.AddWithValue("@IsActive", user.IsActive);
         }
 
-        public static bool UpdatePassword(int userId, string password)
-        {
-            string query = @"UPDATE Users SET Password = @Password WHERE UserID = @UserID";
-
-            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
-            using (SqlCommand command = new SqlCommand(query, connection))
-            {
-                connection.Open();
-
-                command.Parameters.AddWithValue("@UserID", userId);
-                command.Parameters.AddWithValue("@Password", password);
-
-                return command.ExecuteNonQuery() > 0;
-            }
-        }
     }
 }

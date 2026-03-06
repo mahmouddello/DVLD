@@ -1,37 +1,38 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using DVLD.BusinessLayer;
-using DVLD.EntityLayer;
 using DVLD.PresentationLayer.GlobalClasses;
 
 namespace DVLD.PresentationLayer.Users
 {
     public partial class frmChangeUserPassword : Form
     {
-        private User user;
+        private int _userId;
 
-        public frmChangeUserPassword(int userId)
+        private frmChangeUserPassword()
         {
             InitializeComponent();
-
-            ctrlUserLoginInfo1.LoadUserInfo(userId);
-            user = ctrlUserLoginInfo1.SelectedUser;
-
-            ctrlPersonCard1.LoadPersonInfo(user.PersonId);
         }
 
-        public frmChangeUserPassword(User user)
+        public static frmChangeUserPassword CreateForCurrentUser()
         {
-            InitializeComponent();
-            ctrlUserLoginInfo1.LoadUserInfo(user);
-            ctrlPersonCard1.LoadPersonInfo(user.PersonId);
+            var form = new frmChangeUserPassword();
+            form._userId = Globals.CurrentUser.Id;
+            return form;
+        }
+
+        public static frmChangeUserPassword CreateById(int userId)
+        {
+            var form = new frmChangeUserPassword();
+            form._userId = userId;
+            return form;
+        }
+
+        private void frmChangeUserPassword_Load(object sender, EventArgs e)
+        {
+            ctrlUserLoginInfo1.LoadUserInfo(_userId);
+            ctrlPersonCard1.LoadPersonInfo(ctrlUserLoginInfo1.SelectedUser.PersonId);
         }
 
         private void RequiredField_Validating(object sender, CancelEventArgs e)
@@ -44,16 +45,9 @@ namespace DVLD.PresentationLayer.Users
             string text = senderTextBox.Text.Trim();
 
             if (string.IsNullOrWhiteSpace(text))
-            {
-                e.Cancel = true; // prevent user from leaving textbox.
-                senderTextBox.Focus();
                 errProvider.SetError(senderTextBox, "This field is required");
-            }
             else
-            {
-                e.Cancel = false;
                 errProvider.SetError(senderTextBox, string.Empty);
-            }
         }
 
         private void ShowPasswordMismatchErrors()
@@ -73,10 +67,10 @@ namespace DVLD.PresentationLayer.Users
             if (!ValidateChildren())
                 return;
 
-            string newPass = txtNewPassword.Text.Trim();
-            string newPassConfirm = txtNewPasswordConfirmation.Text.Trim();
+            string newPassword = txtNewPassword.Text;
+            string newPasswordConfirm = txtNewPasswordConfirmation.Text;
 
-            if (!Validation.DoPasswordsMatch(newPass, newPassConfirm))
+            if (!Validation.DoPasswordsMatch(newPassword, newPasswordConfirm))
             {
                 ShowPasswordMismatchErrors();
                 return;
@@ -84,13 +78,13 @@ namespace DVLD.PresentationLayer.Users
 
             ClearPasswordErrors();
 
-            int currentUserId = Globals.CurrentUser.Id;
-            string currentPassword = txtCurrentPassword.Text.Trim();
+            string enteredCurrentPassword = txtCurrentPassword.Text;
+            var selectedUser = ctrlUserLoginInfo1.SelectedUser;
 
-            if (UserBusiness.ChangePassword(currentUserId, currentPassword, newPass))
-                MessageBox.Show("Updated password successfully!");
+            if (UserService.ChangePassword(selectedUser, enteredCurrentPassword, newPassword))
+                Utility.ShowSuccessMessage("Updated password successfully!");
             else
-                MessageBox.Show("Current password is incorrect!");
+                Utility.ShowErrorMessage("Current password is incorrect!");
         }
     }
 }

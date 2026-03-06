@@ -11,7 +11,7 @@ namespace DVLD.PresentationLayer.Users
 
         private DataTable dtAllUsers, dtUsersList;
 
-        private enum Filter
+        private enum FilterMode
         {
             None,
             UserID,
@@ -20,15 +20,16 @@ namespace DVLD.PresentationLayer.Users
             UserName,
             IsActive
         }
-        private static Filter filter;
+        private FilterMode _filterMode;
 
-        private enum ActiveApplicationStatus
+        private enum ApplicationActivityFilter
         {
             All,
-            Yes,
-            No
+            Active,
+            Inactive
         }
-        private static ActiveApplicationStatus activeApplicationStatusFilter;
+
+        private static ApplicationActivityFilter _activityFilter;
 
         public frmListUsers()
         {
@@ -37,7 +38,7 @@ namespace DVLD.PresentationLayer.Users
 
         private void LoadUsersFromDB()
         {
-            dtAllUsers = UserBusiness.GetUsers();
+            dtAllUsers = UserService.GetAllUsers();
         }
 
         private void RefreshUsersList()
@@ -47,30 +48,42 @@ namespace DVLD.PresentationLayer.Users
             lblRecordsCount.Text = $"Records: #{dgvUsers.Rows.Count}";
         }
 
-        private void ApplyViewSettings()
+        private void ApplyDGVSettings()
         {
-            dgvUsers.Columns[0].HeaderText = "User ID";
-            dgvUsers.Columns[0].Width = 120;
+            if (dgvUsers.Columns.Count > 0)
+            {
+                dgvUsers.Columns[0].HeaderText = "User ID";
+                dgvUsers.Columns[0].Width = 120;
 
-            dgvUsers.Columns[1].HeaderText = "Person ID";
-            dgvUsers.Columns[1].Width = 150;
+                dgvUsers.Columns[1].HeaderText = "Person ID";
+                dgvUsers.Columns[1].Width = 150;
 
-            dgvUsers.Columns[2].HeaderText = "Username";
-            dgvUsers.Columns[2].Width = 180;
+                dgvUsers.Columns[2].HeaderText = "Username";
+                dgvUsers.Columns[2].Width = 180;
 
-            dgvUsers.Columns[3].HeaderText = "Is Active";
-            dgvUsers.Columns[3].Width = 120;
+                dgvUsers.Columns[3].HeaderText = "Is Active";
+                dgvUsers.Columns[3].Width = 120;
 
-            dgvUsers.Columns[4].HeaderText = "Full Name";
-            dgvUsers.Columns[4].Width = 445;
+                dgvUsers.Columns[4].HeaderText = "Full Name";
+                dgvUsers.Columns[4].Width = 445;
+            }     
+        }
+
+        private void BindComboBoxes()
+        {
+            cbFilterBy.DataSource = Enum.GetValues(typeof(FilterMode));
+            cbIsActive.DataSource = Enum.GetValues(typeof(ApplicationActivityFilter));
         }
 
         private void frmListUsers_Load(object sender, EventArgs e)
         {
             LoadUsersFromDB();
             RefreshUsersList();
-            ApplyViewSettings();
-            cbFilterBy.SelectedIndex = 0; // default, None
+           
+            ApplyDGVSettings();
+            BindComboBoxes();
+
+            cbFilterBy.SelectedItem = FilterMode.None;
         }
 
         private void btnCloseForm_Click(object sender, EventArgs e)
@@ -80,16 +93,16 @@ namespace DVLD.PresentationLayer.Users
 
         private void cbFilterBy_SelectedIndexChanged(object sender, EventArgs e)
         {
-            filter = (Filter)cbFilterBy.SelectedIndex;
-            txtFilter.Visible = filter != Filter.None && filter != Filter.IsActive;
-            cbIsActive.Visible = filter == Filter.IsActive;
+            _filterMode = (FilterMode)cbFilterBy.SelectedIndex;
+            txtFilter.Visible = _filterMode != FilterMode.None && _filterMode != FilterMode.IsActive;
+            cbIsActive.Visible = _filterMode == FilterMode.IsActive;
 
-            switch(filter)
+            switch(_filterMode)
             {
-                case Filter.None:
+                case FilterMode.None:
                     RefreshUsersList();
                     break;
-                case Filter.IsActive:
+                case FilterMode.IsActive:
                     cbIsActive.SelectedIndex = 0;
                     ApplyActivityFilter();
                     break;
@@ -102,19 +115,19 @@ namespace DVLD.PresentationLayer.Users
 
         private void cbIsActive_SelectedIndexChanged(object sender, EventArgs e)
         {
-            activeApplicationStatusFilter = (ActiveApplicationStatus)cbIsActive.SelectedIndex;
+            _activityFilter = (ApplicationActivityFilter)cbIsActive.SelectedItem;
             ApplyActivityFilter();
         }
 
         private void ApplyActivityFilter()
         {
-            if (cbIsActive.SelectedIndex == -1 || cbIsActive.SelectedItem == null)
+            if (cbIsActive.SelectedItem == null)
             {
                 RefreshUsersList();
                 return;
             }
 
-            if (activeApplicationStatusFilter == ActiveApplicationStatus.All)
+            if (_activityFilter == ApplicationActivityFilter.All)
             {
                 RefreshUsersList();
                 return;
@@ -122,12 +135,12 @@ namespace DVLD.PresentationLayer.Users
 
             DataView dv = new DataView(dtAllUsers);
 
-            switch (activeApplicationStatusFilter)
+            switch (_activityFilter)
             {
-                case ActiveApplicationStatus.Yes:
+                case ApplicationActivityFilter.Active:
                     dv.RowFilter = "IsActive = 'true'";
                     break;
-                case ActiveApplicationStatus.No:
+                case ApplicationActivityFilter.Inactive:
                     dv.RowFilter = "IsActive = 'false'";
                     break;
                 default:
@@ -152,16 +165,16 @@ namespace DVLD.PresentationLayer.Users
             if (char.IsControl(e.KeyChar)) 
                 return;
 
-            switch (filter)
+            switch (_filterMode)
             {
                 // Only Numeric
-                case Filter.UserID:
-                case Filter.PersonID:
+                case FilterMode.UserID:
+                case FilterMode.PersonID:
                     if (!char.IsDigit(e.KeyChar))
                         Utility.HandleWrongKey(e);
                     break;
                 // Only Letters
-                case Filter.FullName:
+                case FilterMode.FullName:
                     if (!char.IsLetter(e.KeyChar) && e.KeyChar != ' ')
                         Utility.HandleWrongKey(e);
                     break;
@@ -218,18 +231,16 @@ namespace DVLD.PresentationLayer.Users
                 MessageBoxIcon.Warning
             ) == DialogResult.OK)
             {
-                if (UserBusiness.Delete(rowUserID))
+                if (UserService.Delete(rowUserID))
                 {
-                    MessageBox.Show("Deleted Successfully!");
+                    Utility.ShowSuccessMessage("Deleted Successfully!");
                     LoadUsersFromDB();
                     RefreshUsersList();
                 }
                 else
-                    MessageBox.Show(
+                    Utility.ShowWarningMessage(
                         "Delete operation failed because of referential integrity error!",
-                        "Operation Failed",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Warning
+                        "Operation Failed"
                     );
             }
         }
@@ -238,7 +249,7 @@ namespace DVLD.PresentationLayer.Users
         {
             int rowUserId = (int)dgvUsers.CurrentRow.Cells[0].Value;
 
-            frmUserDetails form = new frmUserDetails(rowUserId);
+            var form = frmUserDetails.CreateById(rowUserId);
             form.ShowDialog();
         }
 
@@ -263,26 +274,34 @@ namespace DVLD.PresentationLayer.Users
             RefreshUsersList();
         }
 
+        private void changePasswordToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int rowUserId = (int)dgvUsers.CurrentRow.Cells[0].Value;
+
+            var form = frmChangeUserPassword.CreateById(rowUserId);
+            form.ShowDialog();
+        }
+
         private void ApplyQueryFilter()
         {
             DataView dv = new DataView(dtAllUsers);
             string query = txtFilter.Text.Trim();
 
-            switch (filter)
+            switch (_filterMode)
             {
-                case Filter.PersonID:
-                case Filter.UserID:
+                case FilterMode.PersonID:
+                case FilterMode.UserID:
                     if (!int.TryParse(query, out int id))
                     {
                         dgvUsers.DataSource = dtAllUsers.Clone();
                         lblRecordsCount.Text = "Records: #0";
                         return;
                     }
-                    dv.RowFilter = $"{filter.ToString()} = {id}";
+                    dv.RowFilter = $"{_filterMode.ToString()} = {id}";
                     break;
                 default:
                     query = MakeQuerySafe(query);
-                    dv.RowFilter = $"{filter.ToString()} LIKE '%{query}%'";
+                    dv.RowFilter = $"{_filterMode.ToString()} LIKE '%{query}%'";
                     break;
             }
 

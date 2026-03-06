@@ -32,6 +32,37 @@ namespace DVLD.DataAccessLayer
             return dt;
         }
 
+        public static int Add(Person person)
+        {
+            string query = @"INSERT INTO People (NationalNo, FirstName, SecondName, 
+                            ThirdName, LastName, DateOfBirth, Gender, Address, Phone, 
+                            Email, NationalityCountryID, ImagePath)
+                            VALUES (@NationalNo, @FirstName, @SecondName, @ThirdName,
+                            @LastName, @DateOfBirth, @Gender, @Address, @Phone, 
+                            @Email, @CountryID, @ImagePath);
+                            SELECT SCOPE_IDENTITY();";
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    AddParameters(command, person);
+                    connection.Open();
+
+                    object result = command.ExecuteScalar();
+                    if (result != null && result != DBNull.Value)
+                        return Convert.ToInt32(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error in PersonData.Add: {ex.Message}");
+            }
+
+            return -1;
+        }
+
         public static Person GetById(int id)
         {
             string query = "SELECT * FROM PersonDetails_View WHERE PersonID = @Id";
@@ -86,35 +117,46 @@ namespace DVLD.DataAccessLayer
             return null;
         }
 
-        public static int Add(Person person)
+        public static bool ExistsById(int id)
         {
-            string query = @"INSERT INTO People (NationalNo, FirstName, SecondName, 
-                            ThirdName, LastName, DateOfBirth, Gender, Address, Phone, 
-                            Email, NationalityCountryID, ImagePath)
-                            VALUES (@NationalNo, @FirstName, @SecondName, @ThirdName,
-                            @LastName, @DateOfBirth, @Gender, @Address, @Phone, 
-                            @Email, @CountryID, @ImagePath);
-                            SELECT SCOPE_IDENTITY();";
+            string query = "SELECT 1 FROM People WHERE PersonID = @Id";
 
             try
             {
                 using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    AddParameters(command, person);
+                    command.Parameters.AddWithValue("@Id", id);
                     connection.Open();
-
-                    object result = command.ExecuteScalar();
-                    if (result != null && result != DBNull.Value)
-                        return Convert.ToInt32(result);
+                    return command.ExecuteScalar() != null;
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in PersonData.Add: {ex.Message}");
+                Debug.WriteLine($"Error in PersonData.ExistsById: {ex.Message}");
+                return false;
             }
+        }
 
-            return -1;
+        public static bool ExistsByNationalNo(string nationalNo)
+        {
+            string query = "SELECT 1 FROM People WHERE NationalNo = @NationalNo";
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@NationalNo", nationalNo);
+                    connection.Open();
+                    return command.ExecuteScalar() != null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error in PersonData.ExistsByNationalNo: {ex.Message}");
+                return false;
+            }
         }
 
         public static bool Update(Person person)
@@ -171,48 +213,6 @@ namespace DVLD.DataAccessLayer
             catch (Exception ex)
             {
                 Debug.WriteLine($"Error in PersonData.Delete: {ex.Message}");
-                return false;
-            }
-        }
-
-        public static bool ExistsById(int id)
-        {
-            string query = "SELECT 1 FROM People WHERE PersonID = @Id";
-
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
-                using (SqlCommand command = new SqlCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@Id", id);
-                    connection.Open();
-                    return command.ExecuteScalar() != null;
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"Error in PersonData.ExistsById: {ex.Message}");
-                return false;
-            }
-        }
-
-        public static bool ExistsByNationalNo(string nationalNo)
-        {
-            string query = "SELECT 1 FROM People WHERE NationalNo = @NationalNo";
-
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
-                using (SqlCommand command = new SqlCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@NationalNo", nationalNo);
-                    connection.Open();
-                    return command.ExecuteScalar() != null;
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"Error in PersonData.ExistsByNationalNo: {ex.Message}");
                 return false;
             }
         }

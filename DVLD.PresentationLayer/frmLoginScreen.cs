@@ -70,7 +70,7 @@ namespace DVLD.PresentationLayer
             string username = txtUsername.Text.Trim();
             string password = txtPassword.Text.Trim();
 
-            User user = UserBusiness.Login(username, password);
+            User user = UserService.Login(username, password);
 
             if (user == null)
             {

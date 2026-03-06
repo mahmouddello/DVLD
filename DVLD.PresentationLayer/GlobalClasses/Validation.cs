@@ -30,7 +30,7 @@ namespace DVLD.PresentationLayer.GlobalClasses
 
         public static bool IsUniqueUsername(string username)
         {
-            return !UserBusiness.Exists(username);
+            return !UserService.ExistsByUsername(username);
         }
     }
 }
