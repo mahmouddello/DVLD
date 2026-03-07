@@ -9,13 +9,15 @@ namespace DVLD.BusinessLayer
     {
         public ApplicationType Info { get; private set; }
 
-        public ApplicationTypeService(ApplicationType applicationType)
+        public ApplicationTypeService(ApplicationType appType)
         {
-            Info = applicationType ?? throw new ArgumentNullException(nameof(applicationType));
+            Info = appType ?? throw new ArgumentNullException(nameof(appType));
         }
 
         public static DataTable GetAllApplicationTypes() => ApplicationTypeData.GetAllAsTable();
+        public static ApplicationType FindById(int appTypeId) => ApplicationTypeData.GetById(appTypeId);
         public static ApplicationType FindByType(enApplicationType applicationType) => ApplicationTypeData.GetByType(applicationType);
+
 
         public bool Save()
         {

@@ -57,6 +57,11 @@ namespace DVLD.DataAccessLayer
             return null;
         }
 
+        public static ApplicationType GetById(int appTypeId)
+        {
+            return GetByType((enApplicationType)appTypeId); 
+        }
+
         public static bool Update(ApplicationType appType)
         {
             string query = @"UPDATE ApplicationTypes SET

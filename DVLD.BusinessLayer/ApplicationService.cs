@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DVLD.DataAccessLayer;
 using DVLD.EntityLayer;
 
@@ -37,7 +32,7 @@ namespace DVLD.BusinessLayer
         private static void ResolveNavigationProperties(Application app)
         {
             app.ApplicantPersonInfo = PersonService.FindById(app.ApplicantPersonId);
-            app.ApplicationTypeInfo = ApplicationTypeService.FindByType((enApplicationType)app.ApplicationTypeId);
+            app.ApplicationTypeInfo = ApplicationTypeService.FindById(app.ApplicationTypeId);
             app.CreatorUserInfo = UserService.FindById(app.CreatedByUserId);
         }
 

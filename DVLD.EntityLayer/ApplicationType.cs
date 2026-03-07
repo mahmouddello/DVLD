@@ -17,6 +17,7 @@ namespace DVLD.EntityLayer
     public class ApplicationType
     {
         public enApplicationType Type { get; set; } = enApplicationType.None;
+        public int Id => (int)Type;
         public string Title { get; set; } = string.Empty;
         public decimal Fees { get; set; } = 0;
 

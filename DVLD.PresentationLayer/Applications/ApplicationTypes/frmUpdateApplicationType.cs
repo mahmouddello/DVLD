@@ -49,7 +49,7 @@ namespace DVLD.PresentationLayer.Applications.ApplicationTypes
 
         private void FillApplicationInfo()
         {
-            lblID.Text = ((int)_applicationType.Type).ToString();
+            lblID.Text = _applicationType.Id.ToString();
             txtTitle.Text = _applicationType.Title;
             txtFees.Text = _applicationType.Fees.ToString();
         }
