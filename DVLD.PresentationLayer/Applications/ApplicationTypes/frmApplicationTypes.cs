@@ -66,9 +66,9 @@ namespace DVLD.PresentationLayer.ApplicationTypes
 
         private void editToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            int applicationId = (int)dgvApplicationTypes.CurrentRow.Cells[0].Value;
+            int appTypeId = (int)dgvApplicationTypes.CurrentRow.Cells[0].Value;
 
-            frmUpdateApplicationType frm = new frmUpdateApplicationType((ApplicationType.enApplicationType)applicationId);
+            frmUpdateApplicationType frm = new frmUpdateApplicationType((enApplicationType)appTypeId);
             frm.ShowDialog();
 
             ReloadAndRefresh(); // reload data and refresh the data grid view

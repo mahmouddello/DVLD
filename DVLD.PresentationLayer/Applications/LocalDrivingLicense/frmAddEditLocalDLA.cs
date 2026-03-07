@@ -20,9 +20,9 @@ namespace DVLD.PresentationLayer.Applications
         private enum Mode { AddNew = 0, Update = 1 }
         private Mode mode;
 
-        private ApplicationType.enApplicationType applicationType = ApplicationType.enApplicationType.NewLocalDrivingLicense;
+        private enApplicationType applicationType = enApplicationType.NewLocalDrivingLicense;
         private EntityLayer.Application application;
-        private EntityLayer.LocalDrivingLicenseApplication ldlaApplication;
+        private EntityLayer.LDLA ldlaApplication;
 
         public frmAddEditLocalDLA()
         {
@@ -59,7 +59,7 @@ namespace DVLD.PresentationLayer.Applications
                 lblTitle.Text = "New Local Driving License Application";
                 lblApplicationDate.Text = DateTime.Now.ToShortDateString();
                 this.application = new EntityLayer.Application();
-                this.ldlaApplication = new EntityLayer.LocalDrivingLicenseApplication();
+                this.ldlaApplication = new EntityLayer.LDLA();
                 return;
             }
         }
@@ -96,7 +96,7 @@ namespace DVLD.PresentationLayer.Applications
             lblApplicationId.Text = this.application.Id.ToString();
             lblApplicationFees.Text = this.application.PaidFees.ToString();
             lblCreatedBy.Text = this.application.CreatorUserInfo.Username;
-            lblApplicationDate.Text = this.application.Date.ToShortDateString();
+            lblApplicationDate.Text = this.application.ApplicationDate.ToShortDateString();
         }
 
         private void btnClose_Click(object sender, EventArgs e)
@@ -137,7 +137,7 @@ namespace DVLD.PresentationLayer.Applications
             if (mode == Mode.AddNew)
             {
                 this.application.Id = -1;
-                this.application.Date = DateTime.Now;
+                this.application.ApplicationDate = DateTime.Now;
                 this.application.LastStatusDate = DateTime.Now;
             }
             else
@@ -145,7 +145,7 @@ namespace DVLD.PresentationLayer.Applications
 
             this.application.ApplicantPersonId = personId;
             this.application.ApplicationTypeId = Convert.ToInt32(applicationType);
-            this.application.Status = EntityLayer.Application.ApplicationStatus.New;
+            this.application.Status = enApplicationStatus.New;
             this.application.PaidFees = (decimal)ApplicationTypeBusiness.Find(applicationType)?.Fees;
             this.application.CreatedByUserId = GlobalClasses.Globals.CurrentUser.Id;
         }
@@ -172,7 +172,7 @@ namespace DVLD.PresentationLayer.Applications
 
         private bool HasDuplicateApplication()
         {
-            if (!ApplicationBusiness.HasSameClassApplication(
+            if (!ApplicationService.HasSameClassApplication(
                     this.application.ApplicantPersonId,
                     cbLicenseClass.SelectedIndex))
                 return false;
@@ -190,7 +190,7 @@ namespace DVLD.PresentationLayer.Applications
         {
             int selectedLicenseClassId = cbLicenseClass.SelectedIndex;
 
-            if (ApplicationBusiness.MeetsMinimumAgeRequirement(selectedLicenseClassId, this.application.ApplicantPersonId))
+            if (ApplicationService.MeetsMinimumAgeRequirement(selectedLicenseClassId, this.application.ApplicantPersonId))
                 return true;
 
             MessageBox.Show(
@@ -204,7 +204,7 @@ namespace DVLD.PresentationLayer.Applications
 
         private bool SaveApplication()
         {
-            if (!ApplicationBusiness.Save(this.application))
+            if (!ApplicationService.Save(this.application))
             {
                 MessageBox.Show("Failed to save application!");
                 return false;
@@ -212,7 +212,7 @@ namespace DVLD.PresentationLayer.Applications
 
             MessageBox.Show($"Saved the application successfully with id {application.Id}");
 
-            this.application = ApplicationBusiness.Find(this.application.Id); // ensure reload
+            this.application = ApplicationService.FindById(this.application.Id); // ensure reload
 
             lblApplicationId.Text = application.Id.ToString();
             lblCreatedBy.Text = application.CreatorUserInfo.Username;

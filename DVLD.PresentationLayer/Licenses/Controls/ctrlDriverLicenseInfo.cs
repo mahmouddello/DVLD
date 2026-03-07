@@ -17,7 +17,7 @@ namespace DVLD.PresentationLayer.Licenses.Controls
 {
     public partial class ctrlDriverLicenseInfo : UserControl
     {
-        private LocalDrivingLicenseApplication ldla;
+        private LDLA ldla;
         private clsLicense license;
 
         public ctrlDriverLicenseInfo()

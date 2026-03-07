@@ -14,10 +14,10 @@ namespace DVLD.PresentationLayer.Applications.ApplicationTypes
 {
     public partial class frmUpdateApplicationType : Form
     {
-        private ApplicationType.enApplicationType _applicationTypeId;
+        private enApplicationType _applicationTypeId;
         private ApplicationType _applicationType;
 
-        public frmUpdateApplicationType(ApplicationType.enApplicationType applicationTypeId)
+        public frmUpdateApplicationType(enApplicationType applicationTypeId)
         {
             InitializeComponent();
             _applicationTypeId = applicationTypeId;

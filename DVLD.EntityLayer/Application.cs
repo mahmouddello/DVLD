@@ -1,44 +1,56 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DVLD.EntityLayer
 {
+    public enum enApplicationStatus : byte
+    {
+        None = 0,
+        New = 1,
+        Cancelled = 2,
+        Completed = 3
+    }
+
     public class Application
     {
-        public enum ApplicationStatus : int { None = 0, New = 1, Cancelled = 2, Completed = 3 }
-
         public int Id { get; set; } = -1;
         public int ApplicantPersonId { get; set; } = -1;
-        public DateTime Date { get; set; } = DateTime.MinValue;
         public int ApplicationTypeId { get; set; } = -1;
-        public ApplicationStatus Status { get; set; } = ApplicationStatus.None;
+        public int CreatedByUserId { get; set; } = -1;
+        public DateTime ApplicationDate { get; set; } = DateTime.MinValue;
+        public enApplicationStatus Status { get; set; } = enApplicationStatus.None;
         public DateTime LastStatusDate { get; set; } = DateTime.MinValue;
         public decimal PaidFees { get; set; } = decimal.Zero;
-        public int CreatedByUserId { get; set; } = -1;
 
-        // Composition
-        public Person ApplicantPersonInfo { get; set; } = null;
-        public ApplicationType ApplicationTypeInfo { get; set; } = null;
-        public User CreatorUserInfo { get; set; } = null;
+        // navigation properties — optional, loaded by BLL when needed
+        public Person ApplicantPersonInfo { get; set; }
+        public ApplicationType ApplicationTypeInfo { get; set; }
+        public User CreatorUserInfo { get; set; }
 
-        public Application()
-        {
+        // useful domain properties
+        public bool IsNew => Id == -1;
+        public bool IsCompleted => Status == enApplicationStatus.Completed;
+        public bool IsCancelled => Status == enApplicationStatus.Cancelled;
 
-        }
+        public Application() { }
 
-        public Application(int id, int applicantPersonId, DateTime date, int applicationTypeId, ApplicationStatus applicationstatus, DateTime lastApplicationStatusDate, decimal paidFees, int createdByUserId)
+        public Application(
+            int id,
+            int applicantPersonId,
+            int applicationTypeId,
+            int createdByUserId,
+            DateTime applicationDate,
+            enApplicationStatus status,
+            DateTime lastStatusDate,
+            decimal paidFees)
         {
             Id = id;
             ApplicantPersonId = applicantPersonId;
-            Date = date;
             ApplicationTypeId = applicationTypeId;
-            Status = applicationstatus;
-            LastStatusDate = lastApplicationStatusDate;
-            PaidFees = paidFees;
             CreatedByUserId = createdByUserId;
+            ApplicationDate = applicationDate;
+            Status = status;
+            LastStatusDate = lastStatusDate;
+            PaidFees = paidFees;
         }
     }
 }

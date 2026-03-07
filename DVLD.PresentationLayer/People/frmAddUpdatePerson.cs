@@ -82,7 +82,7 @@ namespace DVLD.PresentationLayer.People
 
         private void LoadPersonData()
         {
-            _person = PersonService.GetById(_personId);
+            _person = PersonService.FindById(_personId);
 
             if (_person == null)
             {

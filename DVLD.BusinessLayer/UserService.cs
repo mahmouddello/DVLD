@@ -26,6 +26,26 @@ namespace DVLD.BusinessLayer
         public static bool ExistsByUsername(string username) => UserData.ExistsByUsername(username);
         public static bool Delete(int userId) => UserData.Delete(userId);
         public static bool IsPersonLinkedToUser(int personId) => UserData.ExistsByPersonId(personId);
+       
+        public static User Login(string username, string password)
+        {
+            User user = FindByUsername(username);
+
+            if (user == null) return null;
+            if (!user.IsActive) return null;
+            if (user.Password != password) return null;
+
+            return user;
+        }
+        
+        public static bool ChangePassword(User user, string enteredCurrentPassword, string newPassword)
+        {
+            if (user == null) return false;
+            if (user.Password != enteredCurrentPassword) return false;
+
+            return UserData.UpdatePassword(user.Id, newPassword);
+        }
+        
         public bool Save()
         {
             if (string.IsNullOrWhiteSpace(Info.Username)) return false;
@@ -42,23 +62,5 @@ namespace DVLD.BusinessLayer
             return UserData.Update(Info);
         }
 
-        public static User Login(string username, string password)
-        {
-            User user = FindByUsername(username);
-
-            if (user == null) return null;
-            if (!user.IsActive) return null;
-            if (user.Password != password) return null;
-
-            return user;
-        }
-
-        public static bool ChangePassword(User user, string enteredCurrentPassword, string newPassword)
-        {
-            if (user == null) return false;
-            if (user.Password != enteredCurrentPassword) return false;
-
-            return UserData.UpdatePassword(user.Id, newPassword);
-        }
     }
 }

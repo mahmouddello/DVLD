@@ -100,11 +100,11 @@ namespace DVLD.PresentationLayer.Tests.TestAppointments
             }
         }
 
-        private void PopulateForm(LocalDrivingLicenseApplication localDla, int testTypeId)
+        private void PopulateForm(LDLA localDla, int testTypeId)
         {
             // Objects
             TestType testType = TestTypeBusiness.Find(testTypeId);
-            ApplicationType applicationType = ApplicationTypeBusiness.Find(ApplicationType.enApplicationType.RetakeTest);
+            ApplicationType applicationType = ApplicationTypeBusiness.Find(enApplicationType.RetakeTest);
 
             // application data
             lblLocalDla.Text = localDla.Id.ToString();
@@ -129,7 +129,7 @@ namespace DVLD.PresentationLayer.Tests.TestAppointments
 
         private void LoadNewAppointmentDefaults()
         {
-            LocalDrivingLicenseApplication localDla = LocalDrivingLicenseApplicationBusiness.Find(localDlaId);
+            LDLA localDla = LocalDrivingLicenseApplicationBusiness.Find(localDlaId);
 
             if (localDla == null)
             {
@@ -149,20 +149,20 @@ namespace DVLD.PresentationLayer.Tests.TestAppointments
 
         private bool CreateAndSaveRetakeTestApplication(Application application)
         {
-            LocalDrivingLicenseApplication localDla = LocalDrivingLicenseApplicationBusiness.Find(localDlaId);
-            ApplicationType applicationType = ApplicationTypeBusiness.Find(ApplicationType.enApplicationType.RetakeTest);
+            LDLA localDla = LocalDrivingLicenseApplicationBusiness.Find(localDlaId);
+            ApplicationType applicationType = ApplicationTypeBusiness.Find(enApplicationType.RetakeTest);
 
             // If failed a test, create an application of type retake test, save it and get back it's id.
             application.Id = -1;
             application.ApplicantPersonId = localDla.MainApplicationInfo.ApplicantPersonId;
-            application.Date = DateTime.Now;
+            application.ApplicationDate = DateTime.Now;
             application.ApplicationTypeId = (int)applicationType.Id;
-            application.Status = Application.ApplicationStatus.Completed;
+            application.Status = enApplicationStatus.Completed;
             application.LastStatusDate = DateTime.Now;
             application.PaidFees = applicationType.Fees;
             application.CreatedByUserId = GlobalClasses.Globals.CurrentUser.Id;
 
-            return ApplicationBusiness.Save(application);
+            return ApplicationService.Save(application);
         }
 
         private bool UpdateAppointmentDate()
@@ -232,7 +232,7 @@ namespace DVLD.PresentationLayer.Tests.TestAppointments
             {
                 if (application != null)
                     // Delete the retake test application incase of test appointment failed to save
-                    ApplicationBusiness.Delete(application); 
+                    ApplicationService.Delete(application); 
 
                 Utility.ShowErrorMessage("Error booking the new appointment!");
                 return false;

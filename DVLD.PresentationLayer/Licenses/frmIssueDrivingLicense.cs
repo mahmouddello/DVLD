@@ -49,7 +49,7 @@ namespace DVLD.PresentationLayer.Licenses
         }
         private void btnIssue_Click(object sender, EventArgs e)
         {
-            LocalDrivingLicenseApplication ldla = LocalDrivingLicenseApplicationBusiness.Find(ldlaId);
+            LDLA ldla = LocalDrivingLicenseApplicationBusiness.Find(ldlaId);
             clsDriver driver = GetOrCreateDriverRecord(ldla.MainApplicationInfo.ApplicantPersonId);
 
             if (driver == null)
@@ -82,9 +82,9 @@ namespace DVLD.PresentationLayer.Licenses
                 Utility.ShowSuccessMessage($"Issued the new license successfully with id: {license.Id}");
 
                 // update the main application status to completed
-               EntityLayer.Application application = ApplicationBusiness.Find(ldla.MainApplicationId);
+               EntityLayer.Application application = ApplicationService.FindById(ldla.MainApplicationId);
 
-                if (!(application != null && ApplicationBusiness.MarkAsCompleted(application)))
+                if (!(application != null && ApplicationService.MarkAsCompleted(application)))
                 {
                     Utility.ShowErrorMessage("Failed to update the status of the application!");
                     this.Close();

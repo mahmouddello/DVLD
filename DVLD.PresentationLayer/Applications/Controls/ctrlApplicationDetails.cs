@@ -16,7 +16,7 @@ namespace DVLD.PresentationLayer.Applications.Controls
 {
     public partial class ctrlApplicationDetails : UserControl
     {
-        private LocalDrivingLicenseApplication ldla;
+        private LDLA ldla;
 
         public ctrlApplicationDetails()
         {
@@ -53,7 +53,7 @@ namespace DVLD.PresentationLayer.Applications.Controls
             lblFees.Text = ldla.MainApplicationInfo.PaidFees.ToString();
             lblType.Text = ldla.MainApplicationInfo.ApplicationTypeInfo.Title;
             lblApplicant.Text = ldla.MainApplicationInfo.ApplicantPersonInfo.FullName;
-            lblDate.Text = ldla.MainApplicationInfo.Date.ToShortDateString();
+            lblDate.Text = ldla.MainApplicationInfo.ApplicationDate.ToShortDateString();
             lblLastStatusDate.Text = ldla.MainApplicationInfo.LastStatusDate.ToShortDateString();
             lblCreatedBy.Text = ldla.MainApplicationInfo.CreatorUserInfo.Username;
 

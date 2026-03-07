@@ -32,6 +32,8 @@ namespace DVLD.EntityLayer
             .Replace("  ", " ")
             .Trim();
 
+        public int Age => DateTime.Now.Year - DateOfBirth.Year;
+
         public Person() { }
 
         public Person(

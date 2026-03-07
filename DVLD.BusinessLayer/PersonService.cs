@@ -15,8 +15,8 @@ namespace DVLD.BusinessLayer
         }
 
         public static DataTable GetAllAsTable() => PersonData.GetAllAsTable();
-        public static Person GetById(int id) => PersonData.GetById(id);
-        public static Person GetByNationalNo(string nationalNo) => PersonData.GetByNationalNo(nationalNo);
+        public static Person FindById(int id) => PersonData.GetById(id);
+        public static Person FindByNationalNo(string nationalNo) => PersonData.GetByNationalNo(nationalNo);
         public static bool ExistsById(int id) => PersonData.ExistsById(id);
         public static bool ExistsByNationalNo(string nationalNo) => PersonData.ExistsByNationalNo(nationalNo);
         public static bool Delete(int id) => PersonData.Delete(id);

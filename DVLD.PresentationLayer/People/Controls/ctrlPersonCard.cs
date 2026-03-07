@@ -25,7 +25,7 @@ namespace DVLD.PresentationLayer.People
 
         public void LoadPersonInfo(int personID)
         {
-            person = PersonService.GetById(personID);
+            person = PersonService.FindById(personID);
 
             if (person == null)
             {
@@ -39,7 +39,7 @@ namespace DVLD.PresentationLayer.People
 
         public void LoadPersonInfo(string nationalNo)
         {
-            person = PersonService.GetByNationalNo(nationalNo);
+            person = PersonService.FindByNationalNo(nationalNo);
 
             if (person == null)
             {

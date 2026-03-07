@@ -16,7 +16,7 @@ namespace DVLD.BusinessLayer
             return ApplicationTypeData.GetAllApplicationTypes();
         }
 
-        public static ApplicationType Find(ApplicationType.enApplicationType applicationTypeId)
+        public static ApplicationType Find(enApplicationType applicationTypeId)
         {
             DataRow row = ApplicationTypeData.GetById((int)applicationTypeId);
 
@@ -24,7 +24,7 @@ namespace DVLD.BusinessLayer
                 return null;
 
             return new ApplicationType(
-                applicationTypeId: (ApplicationType.enApplicationType)row["ApplicationTypeID"],
+                applicationTypeId: (enApplicationType)row["ApplicationTypeID"],
                 title: (string)row["ApplicationTypeTitle"],
                 fees: (decimal)row["ApplicationFees"]);
         }

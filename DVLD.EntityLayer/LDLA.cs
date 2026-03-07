@@ -1,29 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DVLD.EntityLayer
 {
-    public class LocalDrivingLicenseApplication
+    public class LDLA
     {
         public int Id { get; set; } = -1;
-
-        // Foreign Keys
         public int MainApplicationId { get; set; } = -1;
         public int LicenseClassId { get; set; } = -1;
+
+        public bool IsNew => Id == -1;
 
         // Composition
         public Application MainApplicationInfo { get; set; } = null;
         public LicenseClass LicenseClassInfo { get; set; } = null;
 
-        public LocalDrivingLicenseApplication()
+        public LDLA()
         {
 
         }
 
-        public LocalDrivingLicenseApplication(int id, int mainApplicationId, int licenseClassId)
+        public LDLA(int id, int mainApplicationId, int licenseClassId)
         {
             Id = id;
             MainApplicationId = mainApplicationId;

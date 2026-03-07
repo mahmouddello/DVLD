@@ -260,7 +260,7 @@ namespace DVLD.PresentationLayer.Applications.LocalDrivingLicense
             if (dgvLDLA.CurrentRow == null) return;
 
             int ldlaId = (int)dgvLDLA.CurrentRow.Cells[0].Value;
-            LocalDrivingLicenseApplication ldla = LocalDrivingLicenseApplicationBusiness.Find(ldlaId);
+            LDLA ldla = LocalDrivingLicenseApplicationBusiness.Find(ldlaId);
 
             var result = MessageBox.Show("Are you sure you want to cancel this application?",
                                          "Cancel Application",
@@ -269,7 +269,7 @@ namespace DVLD.PresentationLayer.Applications.LocalDrivingLicense
 
             if (result == DialogResult.Yes && ldla.MainApplicationInfo != null)
             {
-                if (ApplicationBusiness.Cancel(ldla.MainApplicationInfo))
+                if (ApplicationService.Cancel(ldla.MainApplicationInfo))
                     MessageBox.Show("Cancelled the application succesfully!");
                 else
                     MessageBox.Show("User cancelled operation or Error occurd!");
@@ -285,7 +285,7 @@ namespace DVLD.PresentationLayer.Applications.LocalDrivingLicense
                 return;
 
             int ldlaId = (int)dgvLDLA.CurrentRow.Cells[0].Value;
-            LocalDrivingLicenseApplication ldla = LocalDrivingLicenseApplicationBusiness.Find(ldlaId);
+            LDLA ldla = LocalDrivingLicenseApplicationBusiness.Find(ldlaId);
 
             var result = MessageBox.Show("Are you sure you want to delete this application?",
                                          "Delete Application",
@@ -294,7 +294,7 @@ namespace DVLD.PresentationLayer.Applications.LocalDrivingLicense
 
             if (result == DialogResult.Yes && ldla.MainApplicationInfo != null)
             {
-                if (ApplicationBusiness.Delete(ldla.MainApplicationInfo))
+                if (ApplicationService.Delete(ldla.MainApplicationInfo))
                     MessageBox.Show("Deleted the application succesfully!");
                 else
                     MessageBox.Show("User cancelled operation or Error occurd!");

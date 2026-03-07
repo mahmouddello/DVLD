@@ -30,7 +30,7 @@ namespace DVLD.BusinessLayer
             clsDriver driver = clsDriverData.GetById(driverId);
 
             if (driver != null)
-                driver.PersonInfo = PersonService.GetById(driver.PersonId);
+                driver.PersonInfo = PersonService.FindById(driver.PersonId);
 
             return driver;
         }
@@ -43,7 +43,7 @@ namespace DVLD.BusinessLayer
             clsDriver driver = clsDriverData.GetByPersonID(personId);
 
             if (driver != null)
-                driver.PersonInfo = PersonService.GetById(driver.PersonId);
+                driver.PersonInfo = PersonService.FindById(driver.PersonId);
 
             return driver;
         }

@@ -41,13 +41,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApplicationBusiness.cs" />
+    <Compile Include="ApplicationService.cs" />
     <Compile Include="ApplicationTypeBusiness.cs" />
     <Compile Include="clsDriverBusiness.cs" />
     <Compile Include="clsLicenseBusiness.cs" />
     <Compile Include="CountryService.cs" />
+    <Compile Include="LDLAService.cs" />
     <Compile Include="LicenseClassBusiness.cs" />
-    <Compile Include="LocalDrivingLicenseApplicationBusiness.cs" />
     <Compile Include="PersonService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestAppointmentBusiness.cs" />
