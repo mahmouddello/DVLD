@@ -1,30 +1,24 @@
-﻿using DVLD.BusinessLayer;
+﻿using System;
+using System.Data;
+using System.Windows.Forms;
+using DVLD.BusinessLayer;
 using DVLD.EntityLayer;
 using DVLD.PresentationLayer.Applications.ApplicationTypes;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace DVLD.PresentationLayer.ApplicationTypes
 {
     public partial class frmApplicationTypes : Form
     {
-        private DataTable applicationTypes;
+        private DataTable applicationTypesTable;
 
         private void LoadRecordsFromDB()
         {
-            applicationTypes = ApplicationTypeBusiness.GetAll();
+            applicationTypesTable = ApplicationTypeService.GetAllApplicationTypes();
         }
 
         private void RefreshApplicationTypesList()
         {
-            dgvApplicationTypes.DataSource = applicationTypes;
+            dgvApplicationTypes.DataSource = applicationTypesTable;
             lblRecordsCount.Text = $"Records: #{dgvApplicationTypes.Rows.Count}";
         }
 
@@ -34,16 +28,19 @@ namespace DVLD.PresentationLayer.ApplicationTypes
             RefreshApplicationTypesList();
         }
 
-        private void ApplyViewSettings()
+        private void ApplyDGVSettings()
         {
-            dgvApplicationTypes.Columns[0].HeaderText = "ID";
-            dgvApplicationTypes.Columns[0].Width = 200;
+            if (dgvApplicationTypes.Columns.Count > 0)
+            {
+                dgvApplicationTypes.Columns[0].HeaderText = "ID";
+                dgvApplicationTypes.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
 
-            dgvApplicationTypes.Columns[1].HeaderText = "Title";
-            dgvApplicationTypes.Columns[1].Width = 520;
+                dgvApplicationTypes.Columns[1].HeaderText = "Title";
+                dgvApplicationTypes.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
-            dgvApplicationTypes.Columns[2].HeaderText = "Fees";
-            dgvApplicationTypes.Columns[2].Width = 200;
+                dgvApplicationTypes.Columns[2].HeaderText = "Fees";
+                dgvApplicationTypes.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            }
         }
 
         public frmApplicationTypes()
@@ -51,17 +48,12 @@ namespace DVLD.PresentationLayer.ApplicationTypes
             InitializeComponent();
         }
 
-        private void btnCloseForm_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
         private void frmApplicationTypes_Load(object sender, EventArgs e)
         {
-            LoadRecordsFromDB(); // loads application types
-
+            LoadRecordsFromDB();
             RefreshApplicationTypesList();
-            ApplyViewSettings();
+
+            ApplyDGVSettings();
         }
 
         private void editToolStripMenuItem_Click(object sender, EventArgs e)
@@ -72,6 +64,11 @@ namespace DVLD.PresentationLayer.ApplicationTypes
             frm.ShowDialog();
 
             ReloadAndRefresh(); // reload data and refresh the data grid view
+        }
+
+        private void btnCloseForm_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

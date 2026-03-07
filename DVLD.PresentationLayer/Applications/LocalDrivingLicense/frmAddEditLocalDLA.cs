@@ -142,7 +142,7 @@ namespace DVLD.PresentationLayer.Applications
             this.application.ApplicantPersonId = personId;
             this.application.ApplicationTypeId = Convert.ToInt32(applicationType);
             this.application.Status = enApplicationStatus.New;
-            this.application.PaidFees = (decimal)ApplicationTypeBusiness.Find(applicationType)?.Fees;
+            this.application.PaidFees = (decimal)ApplicationTypeService.FindByType(applicationType)?.Fees;
             this.application.CreatedByUserId = GlobalClasses.Globals.CurrentUser.Id;
         }
 

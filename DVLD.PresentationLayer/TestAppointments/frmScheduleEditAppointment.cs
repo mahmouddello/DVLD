@@ -95,7 +95,7 @@ namespace DVLD.PresentationLayer.Tests.TestAppointments
         {
             // Objects
             TestType testType = TestTypeBusiness.Find(testTypeId);
-            ApplicationType applicationType = ApplicationTypeBusiness.Find(enApplicationType.RetakeTest);
+            ApplicationType applicationType = ApplicationTypeService.FindByType(enApplicationType.RetakeTest);
 
             // application data
             lblLocalDla.Text = localDla.Id.ToString();
@@ -141,13 +141,13 @@ namespace DVLD.PresentationLayer.Tests.TestAppointments
         private bool CreateAndSaveRetakeTestApplication(Application application)
         {
             LDLA localDla = LDLAService.FindById(localDlaId);
-            ApplicationType applicationType = ApplicationTypeBusiness.Find(enApplicationType.RetakeTest);
+            ApplicationType applicationType = ApplicationTypeService.FindByType(enApplicationType.RetakeTest);
 
             // If failed a test, create an application of type retake test, save it and get back it's id.
             application.Id = -1;
             application.ApplicantPersonId = localDla.MainApplicationInfo.ApplicantPersonId;
             application.ApplicationDate = DateTime.Now;
-            application.ApplicationTypeId = (int)applicationType.Id;
+            application.ApplicationTypeId = (int)applicationType.Type;
             application.Status = enApplicationStatus.Completed;
             application.LastStatusDate = DateTime.Now;
             application.PaidFees = applicationType.Fees;

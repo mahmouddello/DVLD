@@ -37,7 +37,7 @@ namespace DVLD.BusinessLayer
         private static void ResolveNavigationProperties(Application app)
         {
             app.ApplicantPersonInfo = PersonService.FindById(app.ApplicantPersonId);
-            app.ApplicationTypeInfo = ApplicationTypeBusiness.Find((enApplicationType)app.ApplicationTypeId);
+            app.ApplicationTypeInfo = ApplicationTypeService.FindByType((enApplicationType)app.ApplicationTypeId);
             app.CreatorUserInfo = UserService.FindById(app.CreatedByUserId);
         }
 

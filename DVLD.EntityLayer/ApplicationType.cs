@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DVLD.EntityLayer
 {
@@ -20,15 +16,15 @@ namespace DVLD.EntityLayer
 
     public class ApplicationType
     {
-        public enApplicationType Id { get; } = enApplicationType.None;
+        public enApplicationType Type { get; set; } = enApplicationType.None;
         public string Title { get; set; } = string.Empty;
         public decimal Fees { get; set; } = 0;
 
-        public ApplicationType(enApplicationType applicationTypeId, string title, decimal fees)
+        public ApplicationType(enApplicationType type, string title, decimal fees)
         {
-            this.Id = applicationTypeId;
-            this.Title = title;
-            this.Fees = fees;
+            Type = type;
+            Title = title;
+            Fees = fees;
         }
     }
 }

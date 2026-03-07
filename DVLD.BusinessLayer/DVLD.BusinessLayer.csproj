@@ -42,7 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationService.cs" />
-    <Compile Include="ApplicationTypeBusiness.cs" />
+    <Compile Include="ApplicationTypeService.cs" />
     <Compile Include="clsDriverBusiness.cs" />
     <Compile Include="clsLicenseBusiness.cs" />
     <Compile Include="CountryService.cs" />

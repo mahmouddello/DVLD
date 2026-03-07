@@ -1,5 +1,6 @@
 ﻿using DVLD.BusinessLayer;
 using DVLD.EntityLayer;
+using DVLD.PresentationLayer.GlobalClasses;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,39 +15,13 @@ namespace DVLD.PresentationLayer.Applications.ApplicationTypes
 {
     public partial class frmUpdateApplicationType : Form
     {
-        private enApplicationType _applicationTypeId;
         private ApplicationType _applicationType;
+        private enApplicationType _appType;
 
-        public frmUpdateApplicationType(enApplicationType applicationTypeId)
+        public frmUpdateApplicationType(enApplicationType appType)
         {
             InitializeComponent();
-            _applicationTypeId = applicationTypeId;
-        }
-
-        private void btnClose_Click(object sender, EventArgs e)
-        {
-            this.Dispose();
-        }
-
-        private void btnSave_Click(object sender, EventArgs e)
-        {
-            if (!ValidateChildren())
-                return;
-
-            string applicationTypeTitle = txtTitle.Text.Trim();
-            if (!decimal.TryParse(txtFees.Text.Trim(), out decimal applicationFees))
-                return;
-
-            _applicationType.Title = applicationTypeTitle;
-            _applicationType.Fees = applicationFees;
-
-            if (ApplicationTypeBusiness.Save(_applicationType))
-            {
-                MessageBox.Show("Updated Successfully!");
-                FillApplicationInfo();
-            }
-            else
-                MessageBox.Show("Failed to save and update the application type!");
+            _appType = appType;
         }
 
         private void frmUpdateApplicationType_Load(object sender, EventArgs e)
@@ -56,7 +31,7 @@ namespace DVLD.PresentationLayer.Applications.ApplicationTypes
 
         private void LoadApplicationInfo()
         {
-            _applicationType = ApplicationTypeBusiness.Find(_applicationTypeId);
+            _applicationType = ApplicationTypeService.FindByType(_appType);
 
             if (_applicationType == null)
             {
@@ -74,41 +49,66 @@ namespace DVLD.PresentationLayer.Applications.ApplicationTypes
 
         private void FillApplicationInfo()
         {
-            lblID.Text = ((int)_applicationTypeId).ToString();
+            lblID.Text = ((int)_applicationType.Type).ToString();
             txtTitle.Text = _applicationType.Title;
             txtFees.Text = _applicationType.Fees.ToString();
         }
 
-        private bool ValidateRequireField(Control control, string message)
+        private bool ValidateRequiredField(TextBox textBox, string message)
         {
-            TextBox senderTextBox = (TextBox)control;
-
-            if (senderTextBox == null)
-                return false;
-
-            string text = senderTextBox.Text.Trim();
-
-            if (string.IsNullOrWhiteSpace(text))
+            if (string.IsNullOrWhiteSpace(textBox.Text.Trim()))
             {
-                errProvider.SetError(senderTextBox, message);
+                errProvider.SetError(textBox, message);
                 return false;
             }
-            else
-                errProvider.SetError(senderTextBox, string.Empty);
 
+            errProvider.SetError(textBox, string.Empty);
             return true;
         }
 
         private void txtTitle_Validating(object sender, CancelEventArgs e)
         {
-            if (!ValidateRequireField((TextBox)sender, "This field is required"))
+            if (!ValidateRequiredField((TextBox)sender, "This field is required"))
                 return;
         }
 
         private void txtFees_Validating(object sender, CancelEventArgs e)
         {
-            if (!ValidateRequireField((TextBox)sender, "This field is required"))
+            if (!ValidateRequiredField((TextBox)sender, "This field is required"))
                 return;
+
+            if (!decimal.TryParse(txtFees.Text.Trim(), out _))
+                errProvider.SetError(txtFees, "Please enter a valid decimal number.");
+            else
+                errProvider.SetError(txtFees, string.Empty);
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            if (!ValidateChildren())
+                return;
+
+            if (!decimal.TryParse(txtFees.Text.Trim(), out decimal applicationFees))
+                return;
+
+            _applicationType.Title = txtTitle.Text.Trim();
+            _applicationType.Fees = applicationFees;
+
+            var appTypeService = new ApplicationTypeService(_applicationType);
+
+            if (!appTypeService.Save())
+            {
+                Utility.ShowErrorMessage("Failed to update the application type");
+                return;
+            }
+
+            Utility.ShowSuccessMessage("Updated successfully");
+            FillApplicationInfo();
         }
     }
 }

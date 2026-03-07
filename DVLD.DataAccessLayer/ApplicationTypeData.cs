@@ -1,75 +1,101 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics;
 using DVLD.EntityLayer;
 
 namespace DVLD.DataAccessLayer
 {
-    public static class ApplicationTypeData
+    public class ApplicationTypeData
     {
-        public static DataTable GetAllApplicationTypes()
+        public static DataTable GetAllAsTable()
         {
             DataTable dt = new DataTable();
-            string query = "SELECT * FROM ApplicationTypes";
+            string query = @"SELECT * FROM ApplicationTypes";
 
-            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
-            using (SqlCommand command = new SqlCommand(query, connection))
+            try
             {
-                connection.Open();
-
-                using (SqlDataReader reader = command.ExecuteReader())
+                using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    dt.Load(reader);
+                    connection.Open();
+                    using (SqlDataReader reader = command.ExecuteReader())
+                        dt.Load(reader);
                 }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error in ApplicationTypeData.GetAllAsTable: {ex.Message}");
+                return new DataTable();
             }
 
             return dt;
         }
 
-        public static DataRow GetById(int applicationTypeId)
+        public static ApplicationType GetByType(enApplicationType appType)
         {
-            DataTable dt = new DataTable();
             string query = @"SELECT * FROM ApplicationTypes WHERE ApplicationTypeID = @ApplicationTypeID";
 
-            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
-            using (SqlCommand command = new SqlCommand(query, connection))
+            try
             {
-                command.Parameters.AddWithValue("@ApplicationTypeID", applicationTypeId);
-                connection.Open();
-
-                using (SqlDataReader reader = command.ExecuteReader())
+                using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    dt.Load(reader);
+                    command.Parameters.AddWithValue("@ApplicationTypeID", (int)appType);
+                    connection.Open();
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                        if (reader.Read())
+                            return MapToEntity(reader);
                 }
             }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error in ApplicationTypeData.GetByType: {ex.Message}");
+            }
 
-            return dt.Rows.Count > 0 ? dt.Rows[0] : null;
+            return null;
         }
 
-        public static bool UpdateById(int id, string title, decimal fees)
+        public static bool Update(ApplicationType appType)
         {
-            string query = @"UPDATE ApplicationTypes
-                             SET
-                                 ApplicationTypeTitle = @ApplicationTypeTitle,
-                                 ApplicationFees = @ApplicationFees
+            string query = @"UPDATE ApplicationTypes SET
+                                 ApplicationTypeTitle = @Title,
+                                 ApplicationFees = @Fees
                              WHERE
                                  ApplicationTypeID = @ApplicationTypeID";
-
-            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
-            using (SqlCommand command = new SqlCommand(query, connection))
+            try
             {
-                command.Parameters.AddWithValue("@ApplicationTypeID", id);
-                command.Parameters.AddWithValue("@ApplicationTypeTitle", title);
-                command.Parameters.AddWithValue("@ApplicationFees", fees);
+                using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@ApplicationTypeID", (int)appType.Type);
+                    AddSharedParameters(command, appType);
+                    connection.Open();
 
-                connection.Open();
-
-                return command.ExecuteNonQuery() > 0;
+                    return command.ExecuteNonQuery() > 0;
+                }
             }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error in ApplicationTypeData.Update: {ex.Message}");
+                return false;
+            }
+        }
+
+        private static void AddSharedParameters(SqlCommand command, ApplicationType appType)
+        {
+            command.Parameters.AddWithValue("@Title", appType.Title);
+            command.Parameters.AddWithValue("@Fees", appType.Fees);
+        }
+
+        private static ApplicationType MapToEntity(SqlDataReader reader)
+        {
+            return new ApplicationType(
+                type: (enApplicationType)reader["ApplicationTypeID"],
+                title: (string)reader["ApplicationTypeTitle"],
+                fees: (decimal)reader["ApplicationFees"]
+            );
         }
     }
 }
