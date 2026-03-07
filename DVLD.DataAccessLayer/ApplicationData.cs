@@ -15,7 +15,7 @@ namespace DVLD.DataAccessLayer
                                 ApplicantPersonID,
                                 ApplicationDate,
                                 ApplicationTypeID,
-                                enApplicationStatus,
+                                ApplicationStatus,
                                 LastStatusDate,
                                 PaidFees,
                                 CreatedByUserID
@@ -25,7 +25,7 @@ namespace DVLD.DataAccessLayer
                                 @ApplicantPersonID,
                                 @ApplicationDate,
                                 @ApplicationTypeID,
-                                @enApplicationStatus,
+                                @ApplicationStatus,
                                 @LastStatusDate,
                                 @PaidFees,
                                 @CreatedByUserID
@@ -93,7 +93,7 @@ namespace DVLD.DataAccessLayer
                             ApplicantPersonID = @ApplicantPersonId,
                             ApplicationDate   = @ApplicationDate,
                             ApplicationTypeID = @ApplicationTypeId,
-                            enApplicationStatus = @Status,
+                            ApplicationStatus = @Status,
                             LastStatusDate    = @LastStatusDate,
                             PaidFees          = @PaidFees,
                             CreatedByUserID   = @CreatedByUserId
@@ -121,7 +121,7 @@ namespace DVLD.DataAccessLayer
         public static bool UpdateStatus(int applicationId, enApplicationStatus status)
         {
             string query = @"UPDATE Applications SET
-                            enApplicationStatus = @Status,
+                            ApplicationStatus = @Status,
                             LastStatusDate    = @LastStatusDate
                             WHERE ApplicationID = @Id;";
 
@@ -176,7 +176,7 @@ namespace DVLD.DataAccessLayer
                                 WHERE
                                     A.ApplicantPersonID = @ApplicantPersonID
                                     AND LA.LicenseClassID = @LicenseClassID
-                                    AND A.enApplicationStatus IN (1, 3);";
+                                    AND A.ApplicationStatus IN (1, 3);";
 
 
             using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
@@ -197,7 +197,7 @@ namespace DVLD.DataAccessLayer
                 applicantPersonId: Convert.ToInt32(reader["ApplicantPersonID"]),
                 applicationDate: Convert.ToDateTime(reader["ApplicationDate"]),
                 applicationTypeId: Convert.ToInt32(reader["ApplicationTypeID"]),
-                status: (enApplicationStatus)Convert.ToInt32(reader["enApplicationStatus"]),
+                status: (enApplicationStatus)Convert.ToInt32(reader["ApplicationStatus"]),
                 lastStatusDate: Convert.ToDateTime(reader["LastStatusDate"]),
                 paidFees: Convert.ToDecimal(reader["PaidFees"]),
                 createdByUserId: Convert.ToInt32(reader["CreatedByUserID"])
@@ -209,7 +209,7 @@ namespace DVLD.DataAccessLayer
             command.Parameters.AddWithValue("@ApplicantPersonID", application.ApplicantPersonId);
             command.Parameters.AddWithValue("@ApplicationDate", application.ApplicationDate);
             command.Parameters.AddWithValue("@ApplicationTypeID", application.ApplicationTypeId);
-            command.Parameters.AddWithValue("@enApplicationStatus", (int)application.Status);
+            command.Parameters.AddWithValue("@ApplicationStatus", (int)application.Status);
             command.Parameters.AddWithValue("@LastStatusDate", application.LastStatusDate);
             command.Parameters.AddWithValue("@PaidFees", application.PaidFees);
             command.Parameters.AddWithValue("@CreatedByUserID", application.CreatedByUserId);

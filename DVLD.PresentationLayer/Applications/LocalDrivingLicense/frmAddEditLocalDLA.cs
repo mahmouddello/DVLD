@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using DVLD.BusinessLayer;
 using DVLD.EntityLayer;
-using DVLD.PresentationLayer.People;
+using DVLD.PresentationLayer.GlobalClasses;
+using Application = DVLD.EntityLayer.Application;
 
 namespace DVLD.PresentationLayer.Applications
 {
@@ -21,8 +17,8 @@ namespace DVLD.PresentationLayer.Applications
         private Mode mode;
 
         private enApplicationType applicationType = enApplicationType.NewLocalDrivingLicense;
-        private EntityLayer.Application application;
-        private EntityLayer.LDLA ldlaApplication;
+        private Application application;
+        private LDLA ldlaApplication;
 
         public frmAddEditLocalDLA()
         {
@@ -58,8 +54,8 @@ namespace DVLD.PresentationLayer.Applications
             {
                 lblTitle.Text = "New Local Driving License Application";
                 lblApplicationDate.Text = DateTime.Now.ToShortDateString();
-                this.application = new EntityLayer.Application();
-                this.ldlaApplication = new EntityLayer.LDLA();
+                this.application = new Application();
+                this.ldlaApplication = new LDLA();
                 return;
             }
         }
@@ -70,7 +66,7 @@ namespace DVLD.PresentationLayer.Applications
             btnNext.Enabled = true;
             btnSave.Enabled = true;
 
-            ldlaApplication = LocalDrivingLicenseApplicationBusiness.Find(this.localDrivingLicenseId);
+            ldlaApplication = LDLAService.FindById(this.localDrivingLicenseId);
 
             if (ldlaApplication == null)
             {
@@ -204,15 +200,16 @@ namespace DVLD.PresentationLayer.Applications
 
         private bool SaveApplication()
         {
-            if (!ApplicationService.Save(this.application))
+            var appService = new ApplicationService(application);
+
+            if (!appService.Save())
             {
-                MessageBox.Show("Failed to save application!");
+                Utility.ShowErrorMessage("Failed to save application!");
                 return false;
             }
 
-            MessageBox.Show($"Saved the application successfully with id {application.Id}");
-
-            this.application = ApplicationService.FindById(this.application.Id); // ensure reload
+            Utility.ShowSuccessMessage($"Saved the application successfully with id {application.Id}");
+            application = ApplicationService.FindById(application.Id); // load the full object
 
             lblApplicationId.Text = application.Id.ToString();
             lblCreatedBy.Text = application.CreatorUserInfo.Username;
@@ -222,11 +219,12 @@ namespace DVLD.PresentationLayer.Applications
         private void SaveLocalApplication()
         {
             MapLocalDrivingLicenseApplicationFields();
+            var ldlaService = new LDLAService(ldlaApplication);
 
-            if (LocalDrivingLicenseApplicationBusiness.Save(ldlaApplication))
-                MessageBox.Show($"Saved the local driving license application successfully!");
+            if (ldlaService.Save())
+                Utility.ShowSuccessMessage($"Saved the local driving license application successfully!");
             else
-                MessageBox.Show("Failed to save local application!");
+                Utility.ShowErrorMessage("Failed to save local application!");
         }
 
         private void btnSave_Click(object sender, EventArgs e)

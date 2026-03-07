@@ -1,18 +1,12 @@
-﻿using DVLD.BusinessLayer;
+﻿using System;
+using System.ComponentModel;
+using System.Data;
+using System.Windows.Forms;
+using DVLD.BusinessLayer;
 using DVLD.EntityLayer;
 using DVLD.PresentationLayer.GlobalClasses;
 using DVLD.PresentationLayer.Licenses;
 using DVLD.PresentationLayer.Tests;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Runtime.Remoting.Channels;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace DVLD.PresentationLayer.Applications.LocalDrivingLicense
 {
@@ -85,7 +79,7 @@ namespace DVLD.PresentationLayer.Applications.LocalDrivingLicense
 
         private void LoadFromDB()
         {
-            ldlaTable = LocalDrivingLicenseApplicationBusiness.GetAll();
+            ldlaTable = LDLAService.GetAllAsTable();
         }
 
         private void RefreshApplicationsList()
@@ -100,35 +94,39 @@ namespace DVLD.PresentationLayer.Applications.LocalDrivingLicense
             RefreshApplicationsList();
         }
 
-        private void ApplyViewSettings()
+        private void ApplyDGVSettings()
         {
+            if (dgvLDLA.Columns.Count > 0)
+            {
+                dgvLDLA.Columns[0].HeaderText = "LDLA ID";
+                dgvLDLA.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
 
-            dgvLDLA.Columns[0].HeaderText = "LDLA ID";
-            dgvLDLA.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+                dgvLDLA.Columns[1].HeaderText = "Class Name";
+                dgvLDLA.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
-            dgvLDLA.Columns[1].HeaderText = "Class Name";
-            dgvLDLA.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                dgvLDLA.Columns[2].HeaderText = "N.No";
+                dgvLDLA.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
 
-            dgvLDLA.Columns[2].HeaderText = "N.No";
-            dgvLDLA.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+                dgvLDLA.Columns[3].HeaderText = "Full Name";
+                dgvLDLA.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
-            dgvLDLA.Columns[3].HeaderText = "Full Name";
-            dgvLDLA.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                dgvLDLA.Columns[4].HeaderText = "Application Date";
+                dgvLDLA.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
 
-            dgvLDLA.Columns[4].HeaderText = "Application Date";
-            dgvLDLA.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+                dgvLDLA.Columns[5].HeaderText = "Passed Tests";
+                dgvLDLA.Columns[5].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
 
-            dgvLDLA.Columns[5].HeaderText = "Passed Tests";
-            dgvLDLA.Columns[5].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
-
-            dgvLDLA.Columns[6].HeaderText = "Status";
-            dgvLDLA.Columns[6].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+                dgvLDLA.Columns[6].HeaderText = "Status";
+                dgvLDLA.Columns[6].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            }
         }
 
         private void InitializeApplicationsView()
         {
-            ReloadAndRefresh();   // Load + bind
-            ApplyViewSettings();  // UI formatting
+            LoadFromDB();
+            RefreshApplicationsList();
+
+            ApplyDGVSettings();
         }
 
         private void InitializeFilters()
@@ -257,22 +255,27 @@ namespace DVLD.PresentationLayer.Applications.LocalDrivingLicense
 
         private void cancelApplicationToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (dgvLDLA.CurrentRow == null) return;
+            if (dgvLDLA.CurrentRow == null) 
+                return;
 
             int ldlaId = (int)dgvLDLA.CurrentRow.Cells[0].Value;
-            LDLA ldla = LocalDrivingLicenseApplicationBusiness.Find(ldlaId);
+            LDLA ldla = LDLAService.FindById(ldlaId);
 
-            var result = MessageBox.Show("Are you sure you want to cancel this application?",
-                                         "Cancel Application",
-                                         MessageBoxButtons.YesNo,
-                                         MessageBoxIcon.Warning);
+            var result = MessageBox.Show(
+                "Are you sure you want to cancel this application?",
+                "Cancel Application",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning
+            );
 
             if (result == DialogResult.Yes && ldla.MainApplicationInfo != null)
             {
-                if (ApplicationService.Cancel(ldla.MainApplicationInfo))
-                    MessageBox.Show("Cancelled the application succesfully!");
+                var service = new ApplicationService(ldla.MainApplicationInfo);
+
+                if (service.Cancel())
+                    Utility.ShowSuccessMessage("Cancelled the application succesfully!");
                 else
-                    MessageBox.Show("User cancelled operation or Error occurd!");
+                    Utility.ShowErrorMessage("User cancelled operation or Error occurd!");
             }
 
             cbFilter.SelectedIndex = 0;
@@ -285,16 +288,18 @@ namespace DVLD.PresentationLayer.Applications.LocalDrivingLicense
                 return;
 
             int ldlaId = (int)dgvLDLA.CurrentRow.Cells[0].Value;
-            LDLA ldla = LocalDrivingLicenseApplicationBusiness.Find(ldlaId);
+            LDLA ldla = LDLAService.FindById(ldlaId);
 
-            var result = MessageBox.Show("Are you sure you want to delete this application?",
-                                         "Delete Application",
-                                         MessageBoxButtons.YesNo,
-                                         MessageBoxIcon.Error);
+            var result = MessageBox.Show(
+                "Are you sure you want to delete this application?",
+                 "Delete Application",
+                 MessageBoxButtons.YesNo,
+                 MessageBoxIcon.Error
+            );
 
             if (result == DialogResult.Yes && ldla.MainApplicationInfo != null)
             {
-                if (ApplicationService.Delete(ldla.MainApplicationInfo))
+                if (ApplicationService.Delete(ldla.MainApplicationId))
                     MessageBox.Show("Deleted the application succesfully!");
                 else
                     MessageBox.Show("User cancelled operation or Error occurd!");
@@ -396,7 +401,7 @@ namespace DVLD.PresentationLayer.Applications.LocalDrivingLicense
         private void showPersonLicenseHistoryToolStripMenuItem_Click(object sender, EventArgs e)
         {
             int ldlaId = (int)dgvLDLA.CurrentRow.Cells[0].Value;
-            var ldla = LocalDrivingLicenseApplicationBusiness.Find(ldlaId);
+            var ldla = LDLAService.FindById(ldlaId);
 
             var form = new frmShowLicenseHistory(ldla.MainApplicationInfo.ApplicantPersonId);
             form.ShowDialog();

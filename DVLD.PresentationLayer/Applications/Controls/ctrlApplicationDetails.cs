@@ -25,7 +25,7 @@ namespace DVLD.PresentationLayer.Applications.Controls
 
         public void LoadApplicationInfo(int ldlaId)
         {
-            ldla = LocalDrivingLicenseApplicationBusiness.Find(ldlaId);
+            ldla = LDLAService.FindById(ldlaId);
 
             if (ldla == null)
             {
@@ -46,7 +46,7 @@ namespace DVLD.PresentationLayer.Applications.Controls
         {
             lblLdlaId.Text = ldla.Id.ToString();
             lblAppliedFor.Text = LicenseClassBusiness.Find(ldla.LicenseClassId)?.Name;
-            lblPassedTests.Text = $"{LocalDrivingLicenseApplicationBusiness.GetPassedTestCountById(ldla.Id)}/3";
+            lblPassedTests.Text = $"{LDLAService.GetPassedTestCount(ldla.Id)}/3";
 
             lblMainApplicationId.Text = ldla.MainApplicationId.ToString();
             lblStatus.Text = ldla.MainApplicationInfo.Status.ToString();

@@ -1,17 +1,8 @@
 ﻿using DVLD.BusinessLayer;
 using DVLD.EntityLayer;
-using DVLD.PresentationLayer.Applications.Controls;
 using DVLD.PresentationLayer.GlobalClasses;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static DVLD.EntityLayer.ApplicationType;
 using Application = DVLD.EntityLayer.Application;
 
 namespace DVLD.PresentationLayer.Tests.TestAppointments
@@ -129,7 +120,7 @@ namespace DVLD.PresentationLayer.Tests.TestAppointments
 
         private void LoadNewAppointmentDefaults()
         {
-            LDLA localDla = LocalDrivingLicenseApplicationBusiness.Find(localDlaId);
+            LDLA localDla = LDLAService.FindById(localDlaId);
 
             if (localDla == null)
             {
@@ -149,7 +140,7 @@ namespace DVLD.PresentationLayer.Tests.TestAppointments
 
         private bool CreateAndSaveRetakeTestApplication(Application application)
         {
-            LDLA localDla = LocalDrivingLicenseApplicationBusiness.Find(localDlaId);
+            LDLA localDla = LDLAService.FindById(localDlaId);
             ApplicationType applicationType = ApplicationTypeBusiness.Find(enApplicationType.RetakeTest);
 
             // If failed a test, create an application of type retake test, save it and get back it's id.
@@ -162,7 +153,9 @@ namespace DVLD.PresentationLayer.Tests.TestAppointments
             application.PaidFees = applicationType.Fees;
             application.CreatedByUserId = GlobalClasses.Globals.CurrentUser.Id;
 
-            return ApplicationService.Save(application);
+            var service = new ApplicationService(application);
+
+            return service.Save();
         }
 
         private bool UpdateAppointmentDate()
@@ -230,9 +223,9 @@ namespace DVLD.PresentationLayer.Tests.TestAppointments
 
             if (!TestAppointmentBusiness.Save(testAppointment))
             {
+                // Delete the retake test application incase of test appointment failed to save
                 if (application != null)
-                    // Delete the retake test application incase of test appointment failed to save
-                    ApplicationService.Delete(application); 
+                    ApplicationService.Delete(application.Id); 
 
                 Utility.ShowErrorMessage("Error booking the new appointment!");
                 return false;
@@ -278,7 +271,7 @@ namespace DVLD.PresentationLayer.Tests.TestAppointments
                 return;
             }
 
-            var localDla = LocalDrivingLicenseApplicationBusiness.Find(appointment.LocalDrivingLicenseApplicationId);
+            var localDla = LDLAService.FindById(appointment.LocalDrivingLicenseApplicationId);
             testTypeId = appointment.TestTypeId;
 
             if (localDla == null)

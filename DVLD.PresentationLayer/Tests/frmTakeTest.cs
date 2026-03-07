@@ -90,7 +90,7 @@ namespace DVLD.PresentationLayer.Tests
         private void LoadAppointmentSharedData(TestAppointment testAppointment)
         {
             int ldlaId = testAppointment.LocalDrivingLicenseApplicationId;
-            var localDla = LocalDrivingLicenseApplicationBusiness.Find(ldlaId);
+            var localDla = LDLAService.FindById(ldlaId);
 
             if (localDla == null)
             {
@@ -171,7 +171,7 @@ namespace DVLD.PresentationLayer.Tests
         private Test CreateAndMapTestObject()
         {
             int ldlaId = testAppointment.LocalDrivingLicenseApplicationId;
-            var localDla = LocalDrivingLicenseApplicationBusiness.Find(ldlaId);
+            var localDla = LDLAService.FindById(ldlaId);
 
             string notes = txtNotes.Text.Trim();
 

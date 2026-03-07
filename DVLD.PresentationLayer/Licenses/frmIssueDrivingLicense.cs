@@ -1,15 +1,9 @@
-﻿using DVLD.BusinessLayer;
+﻿using System;
+using System.Windows.Forms;
+using DVLD.BusinessLayer;
 using DVLD.EntityLayer;
 using DVLD.PresentationLayer.GlobalClasses;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+using Application = DVLD.EntityLayer.Application;
 
 namespace DVLD.PresentationLayer.Licenses
 {
@@ -49,7 +43,7 @@ namespace DVLD.PresentationLayer.Licenses
         }
         private void btnIssue_Click(object sender, EventArgs e)
         {
-            LDLA ldla = LocalDrivingLicenseApplicationBusiness.Find(ldlaId);
+            LDLA ldla = LDLAService.FindById(ldlaId);
             clsDriver driver = GetOrCreateDriverRecord(ldla.MainApplicationInfo.ApplicantPersonId);
 
             if (driver == null)
@@ -81,10 +75,9 @@ namespace DVLD.PresentationLayer.Licenses
             {
                 Utility.ShowSuccessMessage($"Issued the new license successfully with id: {license.Id}");
 
-                // update the main application status to completed
-               EntityLayer.Application application = ApplicationService.FindById(ldla.MainApplicationId);
+                var appService = new ApplicationService(ldla.MainApplicationInfo);
 
-                if (!(application != null && ApplicationService.MarkAsCompleted(application)))
+                if (!(ldla.MainApplicationInfo != null && appService.Complete()))
                 {
                     Utility.ShowErrorMessage("Failed to update the status of the application!");
                     this.Close();

@@ -28,7 +28,7 @@ namespace DVLD.PresentationLayer.Licenses.Controls
         public void LoadLicenseByLocalAppId(int ldlaId)
         {
             // 1. fetch the main application id through the local application
-            ldla = LocalDrivingLicenseApplicationBusiness.Find(ldlaId);
+            ldla = LDLAService.FindById(ldlaId);
 
             if (ldla == null)
             {
@@ -61,7 +61,7 @@ namespace DVLD.PresentationLayer.Licenses.Controls
             }
 
             // 2. fetch the ldla that is associated with the license id
-            ldla = LocalDrivingLicenseApplicationBusiness.FindByMainApplicationId(license.ApplicationId);
+            ldla = LDLAService.FindByMainApplicationId(license.ApplicationId);
 
             if (ldla == null)
             {

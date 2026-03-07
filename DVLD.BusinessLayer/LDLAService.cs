@@ -18,7 +18,7 @@ namespace DVLD.BusinessLayer
         public static DataTable GetAllAsTable() => LDLAData.GetAllAsTable();
         public static int GetPassedTestCount(int id) => LDLAData.GetPassedTestCount(id);
 
-        public static LDLA GetById(int id)
+        public static LDLA FindById(int id)
         {
             LDLA ldla = LDLAData.GetById(id);
             if (ldla == null) return null;
@@ -27,7 +27,7 @@ namespace DVLD.BusinessLayer
             return ldla;
         }
 
-        public static LDLA GetByMainApplicationId(int mainAppId)
+        public static LDLA FindByMainApplicationId(int mainAppId)
         {
             LDLA ldla = LDLAData.GetByMainApplicationId(mainAppId);
             if (ldla == null) return null;
