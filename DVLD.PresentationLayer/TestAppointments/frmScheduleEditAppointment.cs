@@ -94,7 +94,7 @@ namespace DVLD.PresentationLayer.Tests.TestAppointments
         private void PopulateForm(LDLA localDla, int testTypeId)
         {
             // Objects
-            TestType testType = TestTypeBusiness.Find(testTypeId);
+            TestType testType = TestTypeService.FindById(testTypeId);
             ApplicationType applicationType = ApplicationTypeService.FindByType(enApplicationType.RetakeTest);
 
             // application data
@@ -102,7 +102,7 @@ namespace DVLD.PresentationLayer.Tests.TestAppointments
             lblLicenseClass.Text = localDla.LicenseClassInfo.Name;
             lblPersonName.Text = localDla.MainApplicationInfo.ApplicantPersonInfo.FullName;
             lblTrialCount.Text = TestBusiness.GetTrialsCount(localDla.Id, testTypeId).ToString();
-            lblFees.Text = TestTypeBusiness.Find(testTypeId).Fees.ToString();
+            lblFees.Text = testType.Fees.ToString();
 
             // group box data
             gbRetakeTest.Enabled = HasFailedTest;
@@ -255,7 +255,7 @@ namespace DVLD.PresentationLayer.Tests.TestAppointments
             testAppointment.TestTypeId = testTypeId;
             testAppointment.LocalDrivingLicenseApplicationId = localDlaId;
             testAppointment.AppointmentDate = DateTime.Now;
-            testAppointment.PaidFees = TestTypeBusiness.Find(testTypeId).Fees;
+            testAppointment.PaidFees = TestTypeService.FindById(testTypeId).Fees;
             testAppointment.CreatedByUserId = GlobalClasses.Globals.CurrentUser.Id;
             testAppointment.IsLocked = false;
             testAppointment.RetakeTestApplicationId = -1;

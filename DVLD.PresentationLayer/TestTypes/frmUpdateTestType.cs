@@ -1,5 +1,6 @@
 ﻿using DVLD.BusinessLayer;
 using DVLD.EntityLayer;
+using DVLD.PresentationLayer.GlobalClasses;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -25,7 +26,7 @@ namespace DVLD.PresentationLayer.Tests.TestTypes
 
         private void frmUpdateTestType_Load(object sender, EventArgs e)
         {
-            this.testType = TestTypeBusiness.Find(this.testTypeId);
+            this.testType = TestTypeService.FindById(this.testTypeId);
 
             if (this.testType == null)
             {
@@ -71,10 +72,12 @@ namespace DVLD.PresentationLayer.Tests.TestTypes
             testType.Description = txtDescription.Text.Trim();
             testType.Fees = Convert.ToDecimal(txtFees.Text.Trim());
 
-            if (TestTypeBusiness.Save(testType))
-                MessageBox.Show("Updated the test type successfully!");
+            var testTypeService = new TestTypeService(testType);
+
+            if (testTypeService.Save())
+                Utility.ShowSuccessMessage("Updated the test type successfully!");
             else
-                MessageBox.Show("Failed to update the test type data!");
+                Utility.ShowErrorMessage("Failed to update the test type data!");
         }
 
         private void txtTitle_Validating(object sender, CancelEventArgs e)

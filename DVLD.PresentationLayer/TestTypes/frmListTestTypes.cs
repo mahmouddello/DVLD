@@ -44,7 +44,7 @@ namespace DVLD.PresentationLayer.Tests.TestTypes
 
         private void LoadRecordsFromDB()
         {
-            testTypes = TestTypeBusiness.GetAll();
+            testTypes = TestTypeService.GetAllTestTypes();
         }
 
         private void RefreshTestTypesList()

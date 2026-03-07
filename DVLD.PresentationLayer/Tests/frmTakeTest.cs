@@ -110,9 +110,7 @@ namespace DVLD.PresentationLayer.Tests
                 .ToString();
 
             lblDate.Text = testAppointment.AppointmentDate.ToShortDateString();
-            lblFees.Text = TestTypeBusiness
-                .Find(testAppointment.TestTypeId)
-                .Fees.ToString();
+            lblFees.Text = TestTypeService.FindById(testAppointment.TestTypeId).Fees.ToString();
         }
 
         private void FillTestInfo()

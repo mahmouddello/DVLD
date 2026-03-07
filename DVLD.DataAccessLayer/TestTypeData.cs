@@ -1,76 +1,104 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using DVLD.EntityLayer;
+using System;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace DVLD.DataAccessLayer
 {
     public static class TestTypeData
     {
-        public static DataTable GetAllTestTypes()
+        public static DataTable GetAllAsTable()
         {
             DataTable dt = new DataTable();
-            string query = "SELECT * FROM TestTypes";
+            string query = @"SELECT * FROM TestTypes";
 
-            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
-            using (SqlCommand command = new SqlCommand(query, connection))
+            try
             {
-                connection.Open();
-
-                using (SqlDataReader reader = command.ExecuteReader())
+                using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    dt.Load(reader);
+                    connection.Open();
+                    using (SqlDataReader reader = command.ExecuteReader())
+                        dt.Load(reader);
                 }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error in TestTypeData.GetAllAsTable: {ex.Message}");
+                return new DataTable();
             }
 
             return dt;
         }
 
-        public static DataRow GetById(int testTypeId)
+        public static TestType GetById(int testTypeId)
         {
-            DataTable dt = new DataTable();
             string query = @"SELECT * FROM TestTypes WHERE TestTypeID = @TestTypeID";
 
-            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
-            using (SqlCommand command = new SqlCommand(query, connection))
+            try
             {
-                command.Parameters.AddWithValue("@TestTypeID", testTypeId);
-                connection.Open();
-
-                using (SqlDataReader reader = command.ExecuteReader())
+                using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    dt.Load(reader);
+                    command.Parameters.AddWithValue("@TestTypeID", testTypeId);
+                    connection.Open();
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                        if (reader.Read())
+                            return MapToEntity(reader);
                 }
             }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error in TestTypeData.GetById: {ex.Message}");
+            }
 
-            return dt.Rows.Count > 0 ? dt.Rows[0] : null;
+            return null;
         }
 
-        public static bool UpdateById(int id, string title, string description, decimal fees)
+        public static bool Update(TestType testType)
         {
-            string query = @"UPDATE TestTypes
-                             SET
-                                 TestTypeTitle = @TestTypeTitle,
-                                 TestTypeDescription = @TestTypeDescription,
-                                 TestTypeFees = @TestTypeFees
+            string query = @"UPDATE TestTypes SET
+                                 TestTypeTitle       = @Title,
+                                 TestTypeDescription = @Description,
+                                 TestTypeFees        = @Fees
                              WHERE
                                  TestTypeID = @TestTypeID";
-
-            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
-            using (SqlCommand command = new SqlCommand(query, connection))
+            try
             {
-                command.Parameters.AddWithValue("@TestTypeID", id);
-                command.Parameters.AddWithValue("@TestTypeTitle", title);
-                command.Parameters.AddWithValue("@TestTypeDescription", description);
-                command.Parameters.AddWithValue("@TestTypeFees", fees);
+                using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    AddSharedParameters(command, testType);
+                    command.Parameters.AddWithValue("@TestTypeID", testType.Id);
+                    connection.Open();
 
-                connection.Open();
-
-                return command.ExecuteNonQuery() > 0;
+                    return command.ExecuteNonQuery() > 0;
+                }
             }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error in TestTypeData.Update: {ex.Message}");
+                return false;
+            }
+        }
+
+        private static TestType MapToEntity(SqlDataReader reader)
+        {
+            return new TestType(
+               type: (enTestType)reader["TestTypeID"],
+               title: (string)reader["TestTypeTitle"],
+               description: (string)reader["TestTypeDescription"],
+               fees: (decimal)reader["TestTypeFees"]
+           );
+        }
+
+        private static void AddSharedParameters(SqlCommand command, TestType testType)
+        {
+            command.Parameters.AddWithValue("@Title", testType.Title);
+            command.Parameters.AddWithValue("@Description", testType.Description);
+            command.Parameters.AddWithValue("@Fees", testType.Fees);
         }
     }
 }
