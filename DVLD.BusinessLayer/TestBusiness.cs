@@ -50,5 +50,10 @@ namespace DVLD.BusinessLayer
 
             return test.Id != -1;
         }
+
+        public static int GetAssociatedTestId(int testAppointmentId)
+        {
+            return TestData.GetTestIdByAppointmentId(testAppointmentId);
+        }
     }
 }

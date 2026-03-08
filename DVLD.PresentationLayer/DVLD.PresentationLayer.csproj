@@ -197,11 +197,11 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Settings.cs" />
-    <Compile Include="Tests\frmScheduleTestAppointment.cs">
+    <Compile Include="TestAppointments\frmTestAppointments.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Tests\frmScheduleTestAppointment.Designer.cs">
-      <DependentUpon>frmScheduleTestAppointment.cs</DependentUpon>
+    <Compile Include="TestAppointments\frmTestAppointments.Designer.cs">
+      <DependentUpon>frmTestAppointments.cs</DependentUpon>
     </Compile>
     <Compile Include="Tests\frmTakeTest.cs">
       <SubType>Form</SubType>
@@ -322,8 +322,8 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Tests\frmScheduleTestAppointment.resx">
-      <DependentUpon>frmScheduleTestAppointment.cs</DependentUpon>
+    <EmbeddedResource Include="TestAppointments\frmTestAppointments.resx">
+      <DependentUpon>frmTestAppointments.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Tests\frmTakeTest.resx">
       <DependentUpon>frmTakeTest.cs</DependentUpon>

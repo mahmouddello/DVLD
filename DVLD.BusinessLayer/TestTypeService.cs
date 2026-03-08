@@ -16,7 +16,13 @@ namespace DVLD.BusinessLayer
 
         public static DataTable GetAllTestTypes() => TestTypeData.GetAllAsTable();
 
-        public static TestType FindById(int testTypeId) => TestTypeData.GetById(testTypeId);
+        public static TestType FindById(int testTypeId)
+        {
+            if (testTypeId <= 0 || testTypeId > 3)
+                return null;
+
+            return TestTypeData.GetById(testTypeId);
+        }
 
         public bool Save()
         {

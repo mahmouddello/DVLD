@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -191,5 +192,38 @@ namespace DVLD.DataAccessLayer
                 return result == null ? -1 : Convert.ToInt32(result);
             }
         }
+
+        public static int GetTestIdByAppointmentId(int appointmentId)
+        {
+            const string query = @"SELECT
+	                                    TOP 1 TestID 
+                                   FROM 
+	                                    Tests 
+                                   WHERE 
+	                                    TestAppointmentID = @TestAppointmentID
+                                   ORDER BY TestID DESC;";
+            int testId = -1;
+
+            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@TestAppointmentID", appointmentId);
+                try
+                {
+                    connection.Open();
+                    var returnValue = command.ExecuteScalar();
+
+                    if (returnValue != null)
+                        testId = Convert.ToInt32(returnValue);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.ToString());
+                }
+
+                return testId;
+            }
+        }
+
     }
 }

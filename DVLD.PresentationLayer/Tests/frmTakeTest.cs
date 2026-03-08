@@ -68,7 +68,7 @@ namespace DVLD.PresentationLayer.Tests
 
         private void frmTakeTest_Load(object sender, EventArgs e)
         {
-            testAppointment = TestAppointmentBusiness.Find(testAppointmentId);
+            testAppointment = TestAppointmentService.FindById(testAppointmentId);
 
             if (testAppointment == null)
             {
@@ -89,7 +89,7 @@ namespace DVLD.PresentationLayer.Tests
 
         private void LoadAppointmentSharedData(TestAppointment testAppointment)
         {
-            int ldlaId = testAppointment.LocalDrivingLicenseApplicationId;
+            int ldlaId = testAppointment.LdlaId;
             var localDla = LDLAService.FindById(ldlaId);
 
             if (localDla == null)
@@ -137,7 +137,7 @@ namespace DVLD.PresentationLayer.Tests
 
         private void LoadLockedMode()
         {
-            int associatedTestId = TestAppointmentBusiness.GetAssociatedTestId(testAppointmentId);
+            int associatedTestId = TestBusiness.GetAssociatedTestId(testAppointmentId);
             Test test = TestBusiness.Find(associatedTestId);
 
             if (test == null)
@@ -168,7 +168,7 @@ namespace DVLD.PresentationLayer.Tests
 
         private Test CreateAndMapTestObject()
         {
-            int ldlaId = testAppointment.LocalDrivingLicenseApplicationId;
+            int ldlaId = testAppointment.LdlaId;
             var localDla = LDLAService.FindById(ldlaId);
 
             string notes = txtNotes.Text.Trim();
@@ -207,7 +207,9 @@ namespace DVLD.PresentationLayer.Tests
 
             lblTestID.Text = test.Id.ToString();
             Utility.ShowSuccessMessage($"Saved the test record with id: {test.Id}");
-            TestAppointmentBusiness.UpdateAppointmentLockStatus(testAppointmentId, true);
+
+            var testAppointmentService = new TestAppointmentService(testAppointment);
+            testAppointmentService.Lock();
 
             mode = enMode.Locked; // switch mode after adding
         }

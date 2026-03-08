@@ -1,42 +1,75 @@
-﻿using DVLD.EntityLayer;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using DVLD.EntityLayer;
 
 namespace DVLD.DataAccessLayer
 {
-    public static class TestAppointmentData
+    public class TestAppointmentData
     {
-        public static DataTable GetAllTestAppointments(int ldlaId, int testTypeId)
+        public static int Add(TestAppointment testAppointment)
+        {
+            string query = @"INSERT INTO TestAppointments
+                             (TestTypeID, LocalDrivingLicenseApplicationID, AppointmentDate,
+                              PaidFees, CreatedByUserID, IsLocked, RetakeTestApplicationID)
+                             VALUES
+                             (@TestTypeID, @LocalDrivingLicenseApplicationID, @AppointmentDate,
+                              @PaidFees, @CreatedByUserID, @IsLocked, @RetakeTestApplicationID);
+                             SELECT SCOPE_IDENTITY();";
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    AddSharedParameters(command, testAppointment);
+                    connection.Open();
+
+                    object result = command.ExecuteScalar();
+                    if (result != null && result != DBNull.Value)
+                        return Convert.ToInt32(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error in TestAppointmentData.Add: {ex.Message}");
+            }
+
+            return -1;
+        }
+        
+        public static DataTable GetAllAsTable(int ldlaId, int testTypeId)
         {
             DataTable dt = new DataTable();
             string query = @"SELECT
-	                            TestAppointmentID,
-	                            AppointmentDate,
-	                            PaidFees,
-	                            IsLocked
+                                TestAppointmentID,
+                                AppointmentDate,
+                                PaidFees,
+                                IsLocked
                             FROM
-	                            TestAppointments
-                            WHERE 
-                                 LocalDrivingLicenseApplicationID = @LocalDrivingLicenseApplicationID
-                                 AND
-                                 TestTypeID = @TestTypeID";
+                                TestAppointments
+                            WHERE
+                                LocalDrivingLicenseApplicationID = @ldlaId
+                                AND TestTypeID = @TestTypeID";
 
-            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
-            using (SqlCommand command = new SqlCommand(query, connection))
+            try
             {
-                connection.Open();
-                command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", ldlaId);
-                command.Parameters.AddWithValue("@TestTypeID", testTypeId);
+                using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@ldlaId", ldlaId);
+                    command.Parameters.AddWithValue("@TestTypeID", testTypeId);
+                    connection.Open();
 
-                using (SqlDataReader reader = command.ExecuteReader())
-                    if (reader.HasRows)
+                    using (SqlDataReader reader = command.ExecuteReader())
                         dt.Load(reader);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error in TestAppointmentData.GetAllAsTable: {ex.Message}");
+                return new DataTable();
             }
 
             return dt;
@@ -46,149 +79,134 @@ namespace DVLD.DataAccessLayer
         {
             string query = "SELECT * FROM TestAppointments WHERE TestAppointmentID = @TestAppointmentID";
 
-            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
-            using (SqlCommand command = new SqlCommand(query, connection))
+            try
             {
-                connection.Open();
-                command.Parameters.AddWithValue("@TestAppointmentID", testAppointmentId);
+                using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@TestAppointmentID", testAppointmentId);
+                    connection.Open();
 
-                using (SqlDataReader reader = command.ExecuteReader())
-                    return Map(reader);
+                    using (SqlDataReader reader = command.ExecuteReader())
+                        if (reader.Read())
+                            return MapToEntity(reader);
+                }
             }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error in TestAppointmentData.GetById: {ex.Message}");
+            }
+
+            return null;
         }
 
-        public static bool ExistsActiveAppointmentByTestType(int ldlaId, int testTypeId)
+        public static bool ExistsPendingAppointment(int ldlaId, int testTypeId)
         {
             string query = @"SELECT 1
                             FROM TestAppointments
                             WHERE
                                 LocalDrivingLicenseApplicationID = @LocalDrivingLicenseApplicationID
                                 AND TestTypeID = @TestTypeID
-                                AND IsLocked = 0;";
+                                AND IsLocked = 0";
 
-            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
-            using (SqlCommand command = new SqlCommand(query, connection))
+            try
             {
-                connection.Open();
-                command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", ldlaId);
-                command.Parameters.AddWithValue("@TestTypeID", testTypeId);
+                using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", ldlaId);
+                    command.Parameters.AddWithValue("@TestTypeID", testTypeId);
+                    connection.Open();
 
-                return command.ExecuteScalar() != null;
+                    return command.ExecuteScalar() != null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error in TestAppointmentData.ExistsActiveAppointment: {ex.Message}");
+                return false;
             }
         }
 
-        public static int InsertNew(TestAppointment testAppointment)
+        public static bool UpdateAppointmentDate(int testAppointmentId, DateTime newAppointmentDate)
         {
-            string query = @"INSERT INTO TestAppointments 
-                             VALUES (@TestTypeID, @LocalDrivingLicenseApplicationID, @AppointmentDate,
-                                     @PaidFees, @CreatedByUserID, @IsLocked, @RetakeTestApplicationID);
-                             SELECT SCOPE_IDENTITY()";
-
-            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
-            using (SqlCommand command = new SqlCommand(query, connection))
-            {
-                connection.Open();
-
-                command.Parameters.AddWithValue("@TestTypeID", testAppointment.TestTypeId);
-                command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", testAppointment.LocalDrivingLicenseApplicationId);
-                command.Parameters.AddWithValue("@AppointmentDate", testAppointment.AppointmentDate);
-                command.Parameters.AddWithValue("@PaidFees", testAppointment.PaidFees);
-                command.Parameters.AddWithValue("@CreatedByUserID", testAppointment.CreatedByUserId);
-                command.Parameters.AddWithValue("@IsLocked", testAppointment.IsLocked);
-                var param = command.Parameters.Add("@RetakeTestApplicationID", SqlDbType.Int);
-
-                if (testAppointment.RetakeTestApplicationId == -1)
-                    param.Value = DBNull.Value;
-                else
-                    param.Value = testAppointment.RetakeTestApplicationId;
-
-                object result = command.ExecuteScalar();
-
-                return result == null ? -1 : Convert.ToInt32(result);
-            }
-        }
-
-        public static bool UpdateById(int testAppointmentId, DateTime newAppointmentDate)
-        {
-            string query = @"UPDATE TestAppointments SET AppointmentDate = @AppointmentDate
+            string query = @"UPDATE TestAppointments
+                             SET AppointmentDate = @AppointmentDate
                              WHERE TestAppointmentID = @TestAppointmentID";
 
-            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
-            using (SqlCommand command = new SqlCommand(query, connection))
+            try
             {
-                connection.Open();
+                using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@TestAppointmentID", testAppointmentId);
+                    command.Parameters.AddWithValue("@AppointmentDate", newAppointmentDate);
+                    connection.Open();
 
-                command.Parameters.AddWithValue("@TestAppointmentID", testAppointmentId);
-                command.Parameters.AddWithValue("@AppointmentDate", newAppointmentDate);
-
-                return command.ExecuteNonQuery() > 0;
+                    return command.ExecuteNonQuery() > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error in TestAppointmentData.Update: {ex.Message}");
+                return false;
             }
         }
 
         public static bool UpdateLockStatus(int testAppointmentId, bool isLocked)
         {
-            string query = @"UPDATE TestAppointments SET IsLocked = @IsLocked
+            string query = @"UPDATE TestAppointments
+                             SET IsLocked = @IsLocked
                              WHERE TestAppointmentID = @TestAppointmentID";
 
-            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
-            using (SqlCommand command = new SqlCommand(query, connection))
+            try
             {
-                connection.Open();
+                using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@TestAppointmentID", testAppointmentId);
+                    command.Parameters.AddWithValue("@IsLocked", isLocked);
+                    connection.Open();
 
-                command.Parameters.AddWithValue("@TestAppointmentID", testAppointmentId);
-                command.Parameters.AddWithValue("@IsLocked", isLocked);
-
-                return command.ExecuteNonQuery() > 0;
+                    return command.ExecuteNonQuery() > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error in TestAppointmentData.UpdateLockStatus: {ex.Message}");
+                return false;
             }
         }
 
-        private static TestAppointment Map(SqlDataReader reader)
+        private static TestAppointment MapToEntity(SqlDataReader reader)
         {
-            if (!reader.Read())
-                return null;
-
             return new TestAppointment(
                 id: Convert.ToInt32(reader["TestAppointmentID"]),
                 testTypeId: Convert.ToInt32(reader["TestTypeID"]),
-                localDrivingApplicationLicenseId: Convert.ToInt32(reader["LocalDrivingLicenseApplicationID"]),
+                ldlaId: Convert.ToInt32(reader["LocalDrivingLicenseApplicationID"]),
                 appointmentDate: Convert.ToDateTime(reader["AppointmentDate"]),
                 paidFees: Convert.ToDecimal(reader["PaidFees"]),
                 createdByUserId: Convert.ToInt32(reader["CreatedByUserID"]),
                 isLocked: Convert.ToBoolean(reader["IsLocked"]),
-                retakeTestApplicationId: reader["RetakeTestApplicationID"] != DBNull.Value ? Convert.ToInt32(reader["RetakeTestApplicationID"]) : -1
+                retakeTestApplicationId: reader["RetakeTestApplicationID"] != DBNull.Value
+                    ? Convert.ToInt32(reader["RetakeTestApplicationID"])
+                    : -1
             );
         }
 
-        public static int GetTestIdByAppointmentId(int appointmentId)
+        private static void AddSharedParameters(SqlCommand command, TestAppointment testAppointment)
         {
-            const string query = @"SELECT
-	                                    TOP 1 TestID 
-                                   FROM 
-	                                    Tests 
-                                   WHERE 
-	                                    TestAppointmentID = @TestAppointmentID
-                                   ORDER BY TestID DESC;";
-            int testId = -1;
-            
-            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
-            using (SqlCommand command = new SqlCommand(query, connection))
-            {
-                command.Parameters.AddWithValue("@TestAppointmentID", appointmentId);
-                try
-                {
-                    connection.Open();
-                    var returnValue = command.ExecuteScalar();
+            command.Parameters.AddWithValue("@TestTypeID", testAppointment.TestTypeId);
+            command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", testAppointment.LdlaId);
+            command.Parameters.AddWithValue("@AppointmentDate", testAppointment.AppointmentDate);
+            command.Parameters.AddWithValue("@PaidFees", testAppointment.PaidFees);
+            command.Parameters.AddWithValue("@CreatedByUserID", testAppointment.CreatedByUserId);
+            command.Parameters.AddWithValue("@IsLocked", testAppointment.IsLocked);
 
-                    if (returnValue != null)
-                        testId = Convert.ToInt32(returnValue);
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine(ex.ToString());
-                }
-
-                return testId;
-            }
+            var retakeParam = command.Parameters.Add("@RetakeTestApplicationID", SqlDbType.Int);
+            retakeParam.Value = testAppointment.HasRetakeApplication
+                ? (object)testAppointment.RetakeTestApplicationId
+                : DBNull.Value;
         }
     }
 }

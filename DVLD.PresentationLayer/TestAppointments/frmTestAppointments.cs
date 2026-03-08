@@ -12,14 +12,14 @@ using System.Windows.Forms;
 
 namespace DVLD.PresentationLayer.Tests
 {
-    public partial class frmScheduleTestAppointment : Form
+    public partial class frmTestAppointments : Form
     {
         private int testTypeId;
         private int ldlaId;
 
         private DataTable appointmentsTable;
 
-        public frmScheduleTestAppointment(int ldlaId, int testTypeId)
+        public frmTestAppointments(int ldlaId, int testTypeId)
         {
             InitializeComponent();
             this.testTypeId = testTypeId;
@@ -28,25 +28,25 @@ namespace DVLD.PresentationLayer.Tests
 
         private void ApplyViewSettings()
         {
-            if (dgvAppointments.Rows.Count > 0)
+            if (dgvAppointments.Columns.Count > 0)
             {
                 dgvAppointments.Columns[0].HeaderText = "Appointment ID";
-                dgvAppointments.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+                dgvAppointments.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
                 dgvAppointments.Columns[1].HeaderText = "Appointment Date";
                 dgvAppointments.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
                 dgvAppointments.Columns[2].HeaderText = "Paid Fees";
-                dgvAppointments.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+                dgvAppointments.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
                 dgvAppointments.Columns[3].HeaderText = "Is Locked";
-                dgvAppointments.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+                dgvAppointments.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             }
         }
 
         private void LoadAndRefresh()
         {
-            appointmentsTable = TestAppointmentBusiness.GetAll(this.ldlaId, this.testTypeId);
+            appointmentsTable = TestAppointmentService.GetAllAsTable(this.ldlaId, this.testTypeId);
             dgvAppointments.DataSource = appointmentsTable;
             lblRecords.Text = $"Records: #{dgvAppointments.Rows.Count}";
         }
@@ -88,7 +88,7 @@ namespace DVLD.PresentationLayer.Tests
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (!TestAppointmentBusiness.CanScheduleTest(this.ldlaId, this.testTypeId))
+            if (!TestAppointmentService.CanSchedule(this.ldlaId, this.testTypeId))
             {
                 MessageBox.Show
                 (

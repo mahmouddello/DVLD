@@ -1,6 +1,6 @@
 ﻿namespace DVLD.PresentationLayer.Tests
 {
-    partial class frmScheduleTestAppointment
+    partial class frmTestAppointments
     {
         /// <summary>
         /// Required designer variable.

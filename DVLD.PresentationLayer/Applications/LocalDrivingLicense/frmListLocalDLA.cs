@@ -362,7 +362,7 @@ namespace DVLD.PresentationLayer.Applications.LocalDrivingLicense
         private void visionTestToolStripMenuItem_Click(object sender, EventArgs e)
         {
             int ldlaId = (int)dgvLDLA.CurrentRow.Cells[0].Value;
-            frmScheduleTestAppointment frm = new frmScheduleTestAppointment(ldlaId, 1);
+            frmTestAppointments frm = new frmTestAppointments(ldlaId, 1);
 
             frm.ShowDialog();
         }
@@ -370,7 +370,7 @@ namespace DVLD.PresentationLayer.Applications.LocalDrivingLicense
         private void scheduleVisionTestToolStripMenuItem_Click(object sender, EventArgs e)
         {
             int ldlaId = (int)dgvLDLA.CurrentRow.Cells[0].Value;
-            frmScheduleTestAppointment frm = new frmScheduleTestAppointment(ldlaId, 2);
+            frmTestAppointments frm = new frmTestAppointments(ldlaId, 2);
 
             frm.ShowDialog();
         }
@@ -378,7 +378,7 @@ namespace DVLD.PresentationLayer.Applications.LocalDrivingLicense
         private void scheduleVisionTestToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             int ldlaId = (int)dgvLDLA.CurrentRow.Cells[0].Value;
-            frmScheduleTestAppointment frm = new frmScheduleTestAppointment(ldlaId, 3);
+            frmTestAppointments frm = new frmTestAppointments(ldlaId, 3);
 
             frm.ShowDialog();
         }

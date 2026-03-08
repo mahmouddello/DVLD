@@ -1,16 +1,9 @@
-﻿using DVLD.BusinessLayer;
+﻿using DVLD.PresentationLayer.People;
+using System;
+using System.Windows.Forms;
+using DVLD.BusinessLayer;
 using DVLD.EntityLayer;
 using DVLD.PresentationLayer.Licenses;
-using DVLD.PresentationLayer.People;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace DVLD.PresentationLayer.Applications.Controls
 {
@@ -46,7 +39,9 @@ namespace DVLD.PresentationLayer.Applications.Controls
         {
             lblLdlaId.Text = ldla.Id.ToString();
             lblAppliedFor.Text = LicenseClassBusiness.Find(ldla.LicenseClassId)?.Name;
-            lblPassedTests.Text = $"{LDLAService.GetPassedTestCount(ldla.Id)}/3";
+
+            int passedTests = LDLAService.GetPassedTestCount(ldla.Id);
+            lblPassedTests.Text = $"{passedTests}/3";
 
             lblMainApplicationId.Text = ldla.MainApplicationId.ToString();
             lblStatus.Text = ldla.MainApplicationInfo.Status.ToString();
@@ -57,7 +52,8 @@ namespace DVLD.PresentationLayer.Applications.Controls
             lblLastStatusDate.Text = ldla.MainApplicationInfo.LastStatusDate.ToShortDateString();
             lblCreatedBy.Text = ldla.MainApplicationInfo.CreatorUserInfo.Username;
 
-            lnklblShowPersonInfo.Enabled = true;
+            var associatedLicense = clsLicenseBusiness.FindByApplicationId(ldla.MainApplicationId);
+            lnklblShowLicenseInfo.Enabled = associatedLicense != null;
         }
 
         private void ResetApplicationInfo()
