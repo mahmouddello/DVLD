@@ -1,36 +1,36 @@
-﻿using DVLD.BusinessLayer;
+﻿using System;
+using System.ComponentModel;
+using System.Windows.Forms;
+using DVLD.BusinessLayer;
 using DVLD.EntityLayer;
 using DVLD.PresentationLayer.GlobalClasses;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace DVLD.PresentationLayer.Tests.TestTypes
 {
     public partial class frmUpdateTestType : Form
     {
-        private int testTypeId;
-        private TestType testType;
+        private int _testTypeId;
+        private TestType _testType;
 
         public frmUpdateTestType(int testTypeId)
         {
             InitializeComponent();
-            this.testTypeId = testTypeId;
+            _testTypeId= testTypeId;
         }
 
         private void frmUpdateTestType_Load(object sender, EventArgs e)
         {
-            this.testType = TestTypeService.FindById(this.testTypeId);
+            InitializeForm();
+        }
 
-            if (this.testType == null)
+        private void InitializeForm()
+        {
+            _testType = TestTypeService.FindById(_testTypeId);
+
+            if (_testType == null)
             {
-                MessageBox.Show($"A test type with id {this.testTypeId} wasn't found, the form will be closed!");
+                Utility.ShowErrorMessage($"A test type with id {_testTypeId} wasn't found, the form will get closed");
+                this.Close();
                 return;
             }
 
@@ -39,10 +39,10 @@ namespace DVLD.PresentationLayer.Tests.TestTypes
 
         private void LoadTestTypeInfo()
         {
-            lblID.Text = this.testType.Id.ToString();
-            txtTitle.Text = this.testType.Title;
-            txtDescription.Text = this.testType.Description;
-            txtFees.Text = this.testType.Fees.ToString();
+            lblID.Text = _testType.Id.ToString();
+            txtTitle.Text = _testType.Title;
+            txtDescription.Text = _testType.Description;
+            txtFees.Text = _testType.Fees.ToString();
         }
 
         private bool ValidateRequireField(TextBox textBox, string message = "This field is required")
@@ -100,7 +100,7 @@ namespace DVLD.PresentationLayer.Tests.TestTypes
 
         private void btnClose_Click(object sender, EventArgs e)
         {
-            this.Dispose();
+            this.Close();
         }
     }
 }

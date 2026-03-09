@@ -1,14 +1,7 @@
-﻿using DVLD.BusinessLayer;
-using DVLD.EntityLayer;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using DVLD.BusinessLayer;
 
 namespace DVLD.PresentationLayer.Tests.TestTypes
 {
@@ -23,7 +16,7 @@ namespace DVLD.PresentationLayer.Tests.TestTypes
 
         private void ApplyViewSettings()
         {
-            dgvTestTypes.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;
+            dgvTestTypes.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
 
             if (dgvTestTypes.Rows.Count > 0)
             {
@@ -31,14 +24,14 @@ namespace DVLD.PresentationLayer.Tests.TestTypes
                 dgvTestTypes.Columns[0].Width = 120;
 
                 dgvTestTypes.Columns[1].HeaderText = "Title";
-                dgvTestTypes.Columns[1].Width = 300;
+                dgvTestTypes.Columns[1].Width = 250;
 
                 dgvTestTypes.Columns[2].HeaderText = "Description";
                 dgvTestTypes.Columns[2].Width = 800;
                 dgvTestTypes.Columns[2].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
 
                 dgvTestTypes.Columns[3].HeaderText = "Fees";
-                dgvTestTypes.Columns[3].Width = 120;
+                dgvTestTypes.Columns[3].Width = 200;
             }
         }
 

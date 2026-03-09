@@ -39,7 +39,7 @@
             this.takeTestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btnCloseForm = new System.Windows.Forms.Button();
             this.lblRecords = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnBookAppointment = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.ctrlApplicationDetails1 = new DVLD.PresentationLayer.Applications.Controls.ctrlApplicationDetails();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAppointments)).BeginInit();
@@ -101,19 +101,19 @@
             this.editToolStripMenuItem,
             this.takeTestToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(241, 101);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(154, 68);
             // 
             // editToolStripMenuItem
             // 
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
-            this.editToolStripMenuItem.Size = new System.Drawing.Size(240, 32);
+            this.editToolStripMenuItem.Size = new System.Drawing.Size(153, 32);
             this.editToolStripMenuItem.Text = "Edit";
             this.editToolStripMenuItem.Click += new System.EventHandler(this.editToolStripMenuItem_Click);
             // 
             // takeTestToolStripMenuItem
             // 
             this.takeTestToolStripMenuItem.Name = "takeTestToolStripMenuItem";
-            this.takeTestToolStripMenuItem.Size = new System.Drawing.Size(240, 32);
+            this.takeTestToolStripMenuItem.Size = new System.Drawing.Size(153, 32);
             this.takeTestToolStripMenuItem.Text = "Take Test";
             this.takeTestToolStripMenuItem.Click += new System.EventHandler(this.takeTestToolStripMenuItem_Click);
             // 
@@ -139,16 +139,16 @@
             this.lblRecords.Text = "???";
             this.lblRecords.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // button1
+            // btnBookAppointment
             // 
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Image = global::DVLD.PresentationLayer.Properties.Resources.appointment_add;
-            this.button1.Location = new System.Drawing.Point(973, 800);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(72, 56);
-            this.button1.TabIndex = 20;
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnBookAppointment.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnBookAppointment.Image = global::DVLD.PresentationLayer.Properties.Resources.appointment_add;
+            this.btnBookAppointment.Location = new System.Drawing.Point(973, 800);
+            this.btnBookAppointment.Name = "btnBookAppointment";
+            this.btnBookAppointment.Size = new System.Drawing.Size(72, 56);
+            this.btnBookAppointment.TabIndex = 20;
+            this.btnBookAppointment.UseVisualStyleBackColor = true;
+            this.btnBookAppointment.Click += new System.EventHandler(this.btnBookAppointment_Click);
             // 
             // pictureBox1
             // 
@@ -166,12 +166,12 @@
             this.ctrlApplicationDetails1.Size = new System.Drawing.Size(1040, 505);
             this.ctrlApplicationDetails1.TabIndex = 14;
             // 
-            // frmScheduleTest
+            // frmTestAppointments
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1053, 1141);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnBookAppointment);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.lblRecords);
             this.Controls.Add(this.btnCloseForm);
@@ -179,7 +179,7 @@
             this.Controls.Add(this.lblAppointments);
             this.Controls.Add(this.ctrlApplicationDetails1);
             this.Controls.Add(this.lblTestType);
-            this.Name = "frmScheduleTest";
+            this.Name = "frmTestAppointments";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "frmScheduleTest";
             this.Load += new System.EventHandler(this.frmScheduleTest_Load);
@@ -199,7 +199,7 @@
         private System.Windows.Forms.Button btnCloseForm;
         private System.Windows.Forms.Label lblRecords;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnBookAppointment;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem takeTestToolStripMenuItem;

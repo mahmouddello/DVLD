@@ -1,15 +1,9 @@
-﻿using DVLD.BusinessLayer;
+﻿using System;
+using System.Linq;
+using System.Windows.Forms;
+using DVLD.BusinessLayer;
 using DVLD.EntityLayer;
 using DVLD.PresentationLayer.GlobalClasses;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace DVLD.PresentationLayer.Tests
 {
