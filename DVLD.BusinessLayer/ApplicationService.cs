@@ -86,7 +86,7 @@ namespace DVLD.BusinessLayer
 
         public static bool MeetsMinimumAgeRequirement(int licenseClassId, int applicantId)
         {
-            LicenseClass licenseClass = LicenseClassBusiness.Find(licenseClassId);
+            LicenseClass licenseClass = LicenseClassService.FindById(licenseClassId);
             Person applicantPerson = PersonService.FindById(applicantId);
 
             if (licenseClass == null || applicantPerson == null)

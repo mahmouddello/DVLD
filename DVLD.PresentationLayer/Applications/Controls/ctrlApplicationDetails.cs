@@ -38,7 +38,7 @@ namespace DVLD.PresentationLayer.Applications.Controls
         private void FillApplicationInfo()
         {
             lblLdlaId.Text = ldla.Id.ToString();
-            lblAppliedFor.Text = LicenseClassBusiness.Find(ldla.LicenseClassId)?.Name;
+            lblAppliedFor.Text = LicenseClassService.FindById(ldla.LicenseClassId)?.Name;
 
             int passedTests = LDLAService.GetPassedTestCount(ldla.Id);
             lblPassedTests.Text = $"{passedTests}/3";

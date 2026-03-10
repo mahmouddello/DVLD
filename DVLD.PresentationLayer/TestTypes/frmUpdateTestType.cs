@@ -68,11 +68,11 @@ namespace DVLD.PresentationLayer.Tests.TestTypes
             if (!ValidateChildren())
                 return;
 
-            testType.Title = txtTitle.Text.Trim();
-            testType.Description = txtDescription.Text.Trim();
-            testType.Fees = Convert.ToDecimal(txtFees.Text.Trim());
+            _testType.Title = txtTitle.Text.Trim();
+            _testType.Description = txtDescription.Text.Trim();
+            _testType.Fees = Convert.ToDecimal(txtFees.Text.Trim());
 
-            var testTypeService = new TestTypeService(testType);
+            var testTypeService = new TestTypeService(_testType);
 
             if (testTypeService.Save())
                 Utility.ShowSuccessMessage("Updated the test type successfully!");

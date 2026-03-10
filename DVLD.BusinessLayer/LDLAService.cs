@@ -38,6 +38,12 @@ namespace DVLD.BusinessLayer
 
         public static bool Delete(int id) => LDLAData.Delete(id);
 
+        private static void ResolveNavigationProperties(LDLA ldla)
+        {
+            ldla.MainApplicationInfo = ApplicationService.FindById(ldla.MainApplicationId);
+            ldla.LicenseClassInfo = LicenseClassService.FindById(ldla.LicenseClassId);
+        }
+
         // ── Instance Methods ──────────────────────────────
         public bool Save()
         {
@@ -53,10 +59,5 @@ namespace DVLD.BusinessLayer
             return LDLAData.UpdateLicenseClass(Info.Id, Info.LicenseClassId);
         }
 
-        private static void ResolveNavigationProperties(LDLA ldla)
-        {
-            ldla.MainApplicationInfo = ApplicationService.FindById(ldla.MainApplicationId);
-            ldla.LicenseClassInfo = LicenseClassBusiness.Find(ldla.LicenseClassId);
-        }
     }
 }

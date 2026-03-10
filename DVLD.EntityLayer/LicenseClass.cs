@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DVLD.EntityLayer
 {
@@ -15,11 +11,19 @@ namespace DVLD.EntityLayer
         public int DefaultValidityLength { get; set; } = -1;
         public decimal Fees { get; set; } = decimal.Zero;
 
-        public LicenseClass(int id, string name, string description, int minimumAllowedAge, int defaultValidityLength, decimal fees)
+        public LicenseClass() { }
+
+        public LicenseClass(
+            int id,
+            string name,
+            string description,
+            int minimumAllowedAge,
+            int defaultValidityLength,
+            decimal fees)
         {
             Id = id;
-            Name = name;
-            Description = description;
+            Name = name?.Trim() ?? string.Empty;
+            Description = description?.Trim() ?? string.Empty;
             MinimumAllowedAge = minimumAllowedAge;
             DefaultValidityLength = defaultValidityLength;
             Fees = fees;

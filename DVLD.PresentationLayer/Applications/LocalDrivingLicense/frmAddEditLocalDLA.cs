@@ -37,7 +37,7 @@ namespace DVLD.PresentationLayer.Applications
         private void LoadLicenseClassesToComboBox()
         {
             cbLicenseClass.Items.Add("None");
-            DataTable dt = LicenseClassBusiness.GetAll();
+            DataTable dt = LicenseClassService.GetAll();
 
             foreach(DataRow row in dt.Rows)
                 cbLicenseClass.Items.Add(row["ClassName"]);
