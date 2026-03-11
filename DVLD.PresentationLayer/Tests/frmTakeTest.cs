@@ -99,7 +99,7 @@ namespace DVLD.PresentationLayer.Tests
             lblLocalDla.Text = localDla.Id.ToString();
             lblLicenseClass.Text = localDla.LicenseClassInfo.Name;
             lblPersonName.Text = localDla.MainApplicationInfo.ApplicantPersonInfo.FullName;
-            lblTrialCount.Text = TestBusiness
+            lblTrialCount.Text = TestService
                 .GetTrialsCount(localDla.Id, testAppointment.TestTypeId)
                 .ToString();
 
@@ -131,8 +131,7 @@ namespace DVLD.PresentationLayer.Tests
 
         private void LoadLockedMode()
         {
-            int associatedTestId = TestBusiness.GetAssociatedTestId(testAppointmentId);
-            Test test = TestBusiness.Find(associatedTestId);
+            Test test = TestService.FindByAppointmentId(testAppointmentId);
 
             if (test == null)
             {
@@ -142,7 +141,7 @@ namespace DVLD.PresentationLayer.Tests
             }
 
             txtNotes.Text = test.Notes;
-            lblTestID.Text = associatedTestId.ToString();
+            lblTestID.Text = test.Id.ToString();
             lblAdditional.Text = "You can't change the result!";
 
             gbResult.Enabled = false;
@@ -151,13 +150,6 @@ namespace DVLD.PresentationLayer.Tests
             rbFail.Checked = !rbPass.Checked;
 
             LoadAppointmentSharedData(testAppointment);
-        }
-
-        private bool SaveTestRecord()
-        {
-            test = CreateAndMapTestObject();
-
-            return TestBusiness.Save(test);
         }
 
         private Test CreateAndMapTestObject()
@@ -190,9 +182,11 @@ namespace DVLD.PresentationLayer.Tests
                 this.Close();
                 return;
             }
-                
 
-            if (!SaveTestRecord())
+            test = CreateAndMapTestObject();
+            var testService = new TestService(test);
+
+            if (!testService.Save())
             {
                 Utility.ShowErrorMessage("Failed to save the test record!");
                 this.Close();

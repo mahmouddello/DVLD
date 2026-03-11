@@ -39,7 +39,7 @@ namespace DVLD.BusinessLayer
             if (TestAppointmentData.ExistsPendingAppointment(ldlaId, testTypeId))
                 return false;
 
-            if (TestData.HasTestPassedRecord(ldlaId, testTypeId))
+            if (TestService.HasPassedTest(ldlaId, testTypeId))
                 return false;
 
             return true;

@@ -348,8 +348,8 @@ namespace DVLD.PresentationLayer.Applications.LocalDrivingLicense
                 showLicenseInfoToolStripMenuItem.Enabled = false; // Usually not available for new apps
 
                 scheduleVisionTestToolStripMenuItem.Enabled = passedTests == 0;
-                scheduleWrittenTestToolStripMenuItem.Enabled = TestBusiness.HasPassedTest(ldlaId, 1) && !TestBusiness.HasPassedTest(ldlaId, 2);
-                scheduleStreetTestToolStripMenuItem.Enabled = TestBusiness.HasPassedTest(ldlaId, 2) && !TestBusiness.HasPassedTest(ldlaId, 3);
+                scheduleWrittenTestToolStripMenuItem.Enabled = TestService.HasPassedTest(ldlaId, 1) && !TestService.HasPassedTest(ldlaId, 2);
+                scheduleStreetTestToolStripMenuItem.Enabled = TestService.HasPassedTest(ldlaId, 2) && !TestService.HasPassedTest(ldlaId, 3);
             }
         }
 

@@ -1,30 +1,58 @@
-﻿using DVLD.EntityLayer;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using DVLD.EntityLayer;
 
 namespace DVLD.DataAccessLayer
 {
-    public static class TestData
+    public class TestData
     {
-        public static DataTable GetAllTests()
+        public static int Add(Test test)
+        {
+            string query = @"INSERT INTO Tests VALUES 
+                            (@TestAppointmentID, @TestResult, @Notes, @CreatedByUserID);
+                            SELECT SCOPE_IDENTITY();";
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    AddSharedParameters(command, test);
+                    connection.Open();
+
+                    object result = command.ExecuteScalar();
+
+                    return result != null ? Convert.ToInt32(result) : -1;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error in TestData.Add: {ex.Message}");
+            }
+
+            return -1;
+        }
+
+        public static DataTable GetAllAsTable()
         {
             DataTable dt = new DataTable();
-            string query = "SELECT * FROM Tests";
+            string query = @"SELECT * FROM Tests";
 
-            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
-            using (SqlCommand command = new SqlCommand(query, connection))
+            try
             {
-                connection.Open();
-
-                using (SqlDataReader reader = command.ExecuteReader())
-                    if (reader.HasRows)
+                using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    connection.Open();
+                    using (SqlDataReader reader = command.ExecuteReader())
                         dt.Load(reader);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error in TestData.GetAllAsTable: {ex.Message}");
+                return new DataTable();
             }
 
             return dt;
@@ -34,131 +62,50 @@ namespace DVLD.DataAccessLayer
         {
             string query = "SELECT * FROM Tests WHERE TestID = @TestID";
 
-            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
-            using (SqlCommand command = new SqlCommand(query, connection))
+            try
             {
-                connection.Open();
-                command.Parameters.AddWithValue("@TestID", testId);
-
-                using (SqlDataReader reader = command.ExecuteReader())
-                    return Map(reader);
-            }
-        }
-
-        public static int InsertNew(Test test)
-        {
-            const string query = @"INSERT INTO Tests VALUES (@TestAppointmentID, @TestResult, @Notes, @CreatedByUserID);
-                                   SELECT SCOPE_IDENTITY();";
-            int newTestId = -1;
-
-            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
-            using (SqlCommand command = new SqlCommand(query, connection))
-            {
-                command.Parameters.AddWithValue("@TestAppointmentID", test.TestAppointmentId);
-                command.Parameters.AddWithValue("@TestResult", (int)test.Result);
-                command.Parameters.AddWithValue("@CreatedByUserID", test.CreatedByUserId);
-                var param = command.Parameters.Add("@Notes", SqlDbType.NVarChar);
-
-                if (string.IsNullOrWhiteSpace(test.Notes))
-                    param.Value = DBNull.Value;
-                else
-                    param.Value = test.Notes;
-
-                try
+                using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
+                    command.Parameters.AddWithValue("@TestID", testId);
                     connection.Open();
-                    object result = command.ExecuteScalar();
 
-                    if (result != DBNull.Value)
-                        newTestId = Convert.ToInt32(result);
+                    using (SqlDataReader reader = command.ExecuteReader())
+                        if (reader.Read())
+                            return MapToEntity(reader);
                 }
-                catch
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error in TestData.GetById: {ex.Message}");
+            }
+
+            return null;
+        }
+
+        public static Test GetTestByAppointmentId(int appointmentId)
+        {
+            string query = @"SELECT * FROM Tests WHERE TestAppointmentID = @TestAppointmentID";
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    // handle exception
+                    command.Parameters.AddWithValue("@TestAppointmentID", appointmentId);
+                    connection.Open();
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                        if (reader.Read())
+                            return MapToEntity(reader);
                 }
             }
-
-            return newTestId;
-        }
-
-        private static Test Map(SqlDataReader reader)
-        {
-            if (!reader.Read())
-                return null;
-
-            return new Test(
-                id: (int)reader["TestID"],
-                testAppointmentId: (int)reader["TestAppointmentID"],
-                testResult: (TestResult)Convert.ToInt32(reader["TestResult"]),
-                notes: reader["Notes"] == DBNull.Value ? "" : (string)reader["Notes"],
-                createdByUserId: (int)reader["CreatedByUserID"]
-            );
-        }
-
-        public static bool HasTestPassedRecord(int ldlaId, int testTypeId)
-        {
-            string query = @"SELECT 
-	                            1
-                            FROM 
-	                            Tests
-                            WHERE TestAppointmentID IN 
-                            (
-	                            SELECT 
-			                            TestAppointmentID
-		                            FROM 
-			                            TestAppointments
-	                            WHERE
-		                            LocalDrivingLicenseApplicationID = @LocalDrivingLicenseApplicationID
-		                            AND
-		                            TestTypeID = @TestTypeID
-		                            AND
-		                            IsLocked = 1
-                            ) AND 
-	                            TestResult = 1;";
-
-            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
-            using (SqlCommand command = new SqlCommand(query, connection))
+            catch (Exception ex)
             {
-                connection.Open();
-
-                command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", ldlaId);
-                command.Parameters.AddWithValue("@TestTypeID", testTypeId);
-
-                object result = command.ExecuteScalar();
-                return Convert.ToBoolean(result);
+                Debug.WriteLine($"Error in TestData.GetTestByAppointmentId: {ex.Message}");
             }
-        }
-        
-        public static bool HasTestFailedRecord(int ldlaId, int testTypeId)
-        {
-            string query = @"SELECT 
-	                            1
-                            FROM 
-	                            Tests
-                            WHERE TestAppointmentID IN 
-                            (
-	                            SELECT 
-			                            TestAppointmentID
-		                            FROM 
-			                            TestAppointments
-	                            WHERE
-		                            LocalDrivingLicenseApplicationID = @LocalDrivingLicenseApplicationID
-		                            AND
-		                            TestTypeID = @TestTypeID
-                            ) AND 
-	                            TestResult = 0;";
 
-            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
-            using (SqlCommand command = new SqlCommand(query, connection))
-            {
-                connection.Open();
-
-                command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", ldlaId);
-                command.Parameters.AddWithValue("@TestTypeID", testTypeId);
-
-                object result = command.ExecuteScalar();
-                return Convert.ToBoolean(result);
-            }
+            return null;
         }
 
         public static int GetTestTrialsCount(int ldlaId, int testTypeId)
@@ -178,52 +125,96 @@ namespace DVLD.DataAccessLayer
                                     AND
                                     TestTypeID = @TestTypeID
                             )";
-
-            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
-            using (SqlCommand command = new SqlCommand(query, connection))
+            try
             {
-                connection.Open();
-
-                command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", ldlaId);
-                command.Parameters.AddWithValue("@TestTypeID", testTypeId);
-
-                object result = command.ExecuteScalar();
-
-                return result == null ? -1 : Convert.ToInt32(result);
-            }
-        }
-
-        public static int GetTestIdByAppointmentId(int appointmentId)
-        {
-            const string query = @"SELECT
-	                                    TOP 1 TestID 
-                                   FROM 
-	                                    Tests 
-                                   WHERE 
-	                                    TestAppointmentID = @TestAppointmentID
-                                   ORDER BY TestID DESC;";
-            int testId = -1;
-
-            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
-            using (SqlCommand command = new SqlCommand(query, connection))
-            {
-                command.Parameters.AddWithValue("@TestAppointmentID", appointmentId);
-                try
+                using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
+                    command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", ldlaId);
+                    command.Parameters.AddWithValue("@TestTypeID", testTypeId);
+
                     connection.Open();
-                    var returnValue = command.ExecuteScalar();
 
-                    if (returnValue != null)
-                        testId = Convert.ToInt32(returnValue);
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine(ex.ToString());
-                }
 
-                return testId;
+                    object result = command.ExecuteScalar();
+
+                    return result == null ? -1 : Convert.ToInt32(result);
+                }
             }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error in TestData.GetTestTrainsCount: {ex.Message}");
+            }
+
+            return -1;
         }
 
+        public static bool HasTestRecord(int ldlaId, int testTypeId, bool isPassed)
+        {
+            string query = @"SELECT 
+	                            1
+                            FROM 
+	                            Tests
+                            WHERE TestAppointmentID IN 
+                            (
+	                            SELECT 
+			                            TestAppointmentID
+		                            FROM 
+			                            TestAppointments
+	                            WHERE
+		                            LocalDrivingLicenseApplicationID = @LocalDrivingLicenseApplicationID
+		                            AND
+		                            TestTypeID = @TestTypeID
+		                            AND
+		                            IsLocked = 1
+                            ) AND 
+	                            TestResult = @TestResult;";
+            try
+            {
+
+                using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", ldlaId);
+                    command.Parameters.AddWithValue("@TestTypeID", testTypeId);
+                    command.Parameters.AddWithValue("@TestResult", isPassed ? 1 : 0);
+
+                    connection.Open();
+                    object result = command.ExecuteScalar();
+
+                    return Convert.ToBoolean(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error in TestData.HasTestRecord: {ex.Message}");
+            }
+
+            return false;
+        }
+
+        private static Test MapToEntity(SqlDataReader reader)
+        {
+            return new Test(
+                id: (int)reader["TestID"],
+                testAppointmentId: (int)reader["TestAppointmentID"],
+                testResult: (TestResult)Convert.ToInt32(reader["TestResult"]),
+                notes: reader["Notes"] == DBNull.Value ? "" : (string)reader["Notes"],
+                createdByUserId: (int)reader["CreatedByUserID"]
+            );
+        }
+
+        private static void AddSharedParameters(SqlCommand command, Test test)
+        {
+            command.Parameters.AddWithValue("@TestAppointmentID", test.TestAppointmentId);
+            command.Parameters.AddWithValue("@TestResult", (int)test.Result);
+            command.Parameters.AddWithValue("@CreatedByUserID", test.CreatedByUserId);
+            var param = command.Parameters.Add("@Notes", SqlDbType.NVarChar);
+
+            if (string.IsNullOrWhiteSpace(test.Notes))
+                param.Value = DBNull.Value;
+            else
+                param.Value = test.Notes;
+        }
     }
 }

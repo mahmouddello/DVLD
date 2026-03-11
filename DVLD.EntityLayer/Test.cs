@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DVLD.EntityLayer
 {
@@ -10,12 +6,16 @@ namespace DVLD.EntityLayer
 
     public class Test
     {
+        public int Id { get; set; } = -1;
+        public int TestAppointmentId { get; set; } = -1;
+        public TestResult Result { get; set; } = TestResult.Failed;
+        public string Notes { get; set; } = string.Empty;
+        public int CreatedByUserId { get; set; } = -1;
 
-        public int Id { get; set; }
-        public int TestAppointmentId { get; set; }
-        public TestResult Result { get; set; }
-        public string Notes { get; set; }
-        public int CreatedByUserId { get; set; }
+        public bool IsNew => Id == -1;
+
+        // Navigation
+        public User CreatorUserInfo { get; set; } = null;
 
         public Test()
         {

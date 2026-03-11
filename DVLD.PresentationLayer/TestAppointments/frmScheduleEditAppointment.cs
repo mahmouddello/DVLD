@@ -50,7 +50,7 @@ namespace DVLD.PresentationLayer.Tests.TestAppointments
                 }
 
                 _testType = TestTypeService.FindById(_testTypeId);
-                _hasFailedTest = TestBusiness.HasFailedTest(_localDlaId, _testTypeId);
+                _hasFailedTest = TestService.HasFailedTest(_localDlaId, _testTypeId);
 
                 dtpAppointment.Value = DateTime.Today;
                 dtpAppointment.MinDate = DateTime.Today;
@@ -68,7 +68,7 @@ namespace DVLD.PresentationLayer.Tests.TestAppointments
                 _localDla = _testAppointment.LdlaInfo;
                 _testType = _testAppointment.TestTypeInfo;
 
-                _hasFailedTest = TestBusiness.HasFailedTest(_testAppointment.LdlaId, _testAppointment.TestTypeId);
+                _hasFailedTest = TestService.HasFailedTest(_testAppointment.LdlaId, _testAppointment.TestTypeId);
                 dtpAppointment.Value = _testAppointment.AppointmentDate;
                 dtpAppointment.MinDate = DateTime.Now < _testAppointment.AppointmentDate
                     ? DateTime.Now
@@ -113,7 +113,7 @@ namespace DVLD.PresentationLayer.Tests.TestAppointments
             lblLocalDla.Text = _localDla.Id.ToString();
             lblLicenseClass.Text = _localDla.LicenseClassInfo.Name;
             lblPersonName.Text = _localDla.MainApplicationInfo.ApplicantPersonInfo.FullName;
-            lblTrialCount.Text = TestBusiness.GetTrialsCount(_localDla.Id, _testType.Id).ToString();
+            lblTrialCount.Text = TestService.GetTrialsCount(_localDla.Id, _testType.Id).ToString();
             lblFees.Text = _testType.Fees.ToString();
 
             // groupbox
