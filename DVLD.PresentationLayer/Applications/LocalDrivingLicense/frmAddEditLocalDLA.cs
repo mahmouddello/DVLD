@@ -54,6 +54,9 @@ namespace DVLD.PresentationLayer.Applications
             {
                 lblTitle.Text = "New Local Driving License Application";
                 lblApplicationDate.Text = DateTime.Now.ToShortDateString();
+                lblApplicationFees.Text = ApplicationTypeService.FindByType(enApplicationType.NewLocalDrivingLicense)?.Fees.ToString();
+                lblCreatedBy.Text = Globals.CurrentUser.Username;
+
                 this.application = new Application();
                 this.ldlaApplication = new LDLA();
                 return;
