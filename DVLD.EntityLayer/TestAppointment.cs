@@ -27,7 +27,7 @@ namespace DVLD.EntityLayer
         public TestAppointment(
             int id,
             int testTypeId,
-            int ldlaId,
+            int _ldlaId,
             DateTime appointmentDate,
             decimal paidFees,
             int createdByUserId,
@@ -36,7 +36,7 @@ namespace DVLD.EntityLayer
         {
             Id = id;
             TestTypeId = testTypeId;
-            LdlaId = ldlaId;
+            LdlaId = _ldlaId;
             AppointmentDate = appointmentDate;
             PaidFees = paidFees;
             CreatedByUserId = createdByUserId;

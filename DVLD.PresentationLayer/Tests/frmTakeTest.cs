@@ -83,12 +83,12 @@ namespace DVLD.PresentationLayer.Tests
 
         private void LoadAppointmentSharedData(TestAppointment testAppointment)
         {
-            int ldlaId = testAppointment.LdlaId;
-            var localDla = LDLAService.FindById(ldlaId);
+            int _ldlaId = testAppointment.LdlaId;
+            var localDla = LDLAService.FindById(_ldlaId);
 
             if (localDla == null)
             {
-                Utility.ShowErrorMessage($"Local Application with id: {ldlaId} not found!");
+                Utility.ShowErrorMessage($"Local Application with id: {_ldlaId} not found!");
                 this.Close();
                 return;
             }
@@ -154,8 +154,8 @@ namespace DVLD.PresentationLayer.Tests
 
         private Test CreateAndMapTestObject()
         {
-            int ldlaId = testAppointment.LdlaId;
-            var localDla = LDLAService.FindById(ldlaId);
+            int _ldlaId = testAppointment.LdlaId;
+            var localDla = LDLAService.FindById(_ldlaId);
 
             string notes = txtNotes.Text.Trim();
 

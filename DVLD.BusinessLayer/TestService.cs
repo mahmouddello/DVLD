@@ -46,11 +46,11 @@ namespace DVLD.BusinessLayer
             return test;
         }
 
-        public static int GetTrialsCount(int ldlaId, int testTypeId) => TestData.GetTestTrialsCount(ldlaId, testTypeId);
+        public static int GetTrialsCount(int _ldlaId, int testTypeId) => TestData.GetTestTrialsCount(_ldlaId, testTypeId);
 
-        public static bool HasPassedTest(int ldlaId, int testTypeId) => TestData.HasTestRecord(ldlaId, testTypeId, true);
+        public static bool HasPassedTest(int _ldlaId, int testTypeId) => TestData.HasTestRecord(_ldlaId, testTypeId, true);
 
-        public static bool HasFailedTest(int ldlaId, int testTypeId) => TestData.HasTestRecord(ldlaId, testTypeId, false);
+        public static bool HasFailedTest(int _ldlaId, int testTypeId) => TestData.HasTestRecord(_ldlaId, testTypeId, false);
 
         private static void ResolveNavigationProperties(Test test)
         {

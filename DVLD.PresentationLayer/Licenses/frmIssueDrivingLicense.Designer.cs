@@ -99,6 +99,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "frmIssueDrivingLicense";
             this.Text = "Issue Driving License (First Time)";
+            this.Load += new System.EventHandler(this.frmIssueDrivingLicense_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

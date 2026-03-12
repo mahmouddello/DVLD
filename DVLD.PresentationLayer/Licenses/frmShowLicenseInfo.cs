@@ -12,7 +12,7 @@ namespace DVLD.PresentationLayer.Licenses
 {
     public partial class frmShowLicenseInfo : Form
     {
-        private int ldlaId;
+        private int _ldlaId;
         private int licenseId;
 
         private enum OpenMode { ByLdlaId, ByLicenseId }
@@ -23,10 +23,10 @@ namespace DVLD.PresentationLayer.Licenses
             InitializeComponent();
         }
 
-        public static frmShowLicenseInfo CreateByLdlaId(int ldlaId)
+        public static frmShowLicenseInfo CreateByLdlaId(int _ldlaId)
         {
             var form = new frmShowLicenseInfo();
-            form.ldlaId = ldlaId;
+            form._ldlaId = _ldlaId;
             form.openMode = OpenMode.ByLdlaId;
             return form;
         }
@@ -42,7 +42,7 @@ namespace DVLD.PresentationLayer.Licenses
         private void frmShowLicenseInfo_Load(object sender, EventArgs e)
         {
             if (openMode == OpenMode.ByLdlaId)
-                ctrlDriverLicenseInfo1.LoadLicenseByLocalAppId(ldlaId);
+                ctrlDriverLicenseInfo1.LoadLicenseByLocalAppId(_ldlaId);
             else
                 ctrlDriverLicenseInfo1.LoadLicenseByLicenseId(licenseId);
         }

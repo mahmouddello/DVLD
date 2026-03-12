@@ -26,11 +26,11 @@ namespace DVLD.PresentationLayer.Applications
             mode = Mode.AddNew;
         }
 
-        public frmAddEditLocalDLA(int ldlaId)
+        public frmAddEditLocalDLA(int _ldlaId)
         {
             InitializeComponent();
 
-            this.localDrivingLicenseId = ldlaId;
+            this.localDrivingLicenseId = _ldlaId;
             mode = Mode.Update;
         }
 

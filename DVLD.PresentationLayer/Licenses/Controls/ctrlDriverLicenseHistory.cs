@@ -15,7 +15,7 @@ namespace DVLD.PresentationLayer.Licenses.Controls
 {
     public partial class ctrlDriverLicenseHistory : UserControl
     {
-        private clsDriver driver;
+        private clsDriver _driver;
         private DataTable localLicensesTable;
         private DataTable internationalLicensesTable;
 
@@ -26,7 +26,7 @@ namespace DVLD.PresentationLayer.Licenses.Controls
 
         private DataTable GetLocalLicenses(int driverId)
         {
-           return clsLicenseBusiness.GetDriverLicenseForDriver(driverId);
+           return LicenseService.GetAllLicensesAsTable(driverId);
         }
 
         private void ApplyLocalDGVSettings()
@@ -52,16 +52,16 @@ namespace DVLD.PresentationLayer.Licenses.Controls
 
         private void LoadLocalLicenses()
         {
-            localLicensesTable = GetLocalLicenses(driver.Id);
+            localLicensesTable = GetLocalLicenses(_driver.Id);
             dgvLocalLicenses.DataSource = localLicensesTable;
             ApplyLocalDGVSettings();
         }
 
         public void LoadDataByPersonId(int personId)
         {
-            driver = clsDriverBusiness.FindByPersonId(personId);
+            _driver = clsDriverBusiness.FindByPersonId(personId);
 
-            if (driver == null)
+            if (_driver == null)
             {
                 Utility.ShowErrorMessage("Driver wasn't found!");
                 return;

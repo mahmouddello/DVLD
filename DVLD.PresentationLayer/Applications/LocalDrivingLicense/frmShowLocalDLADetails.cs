@@ -4,10 +4,10 @@ namespace DVLD.PresentationLayer.Applications.LocalDrivingLicense
 {
     public partial class frmShowLocalDLADetails : Form
     {
-        public frmShowLocalDLADetails(int ldlaId)
+        public frmShowLocalDLADetails(int _ldlaId)
         {
             InitializeComponent();
-            ctrlApplicationDetails1.LoadApplicationInfo(ldlaId);
+            ctrlApplicationDetails1.LoadApplicationInfo(_ldlaId);
         }
     }
 }

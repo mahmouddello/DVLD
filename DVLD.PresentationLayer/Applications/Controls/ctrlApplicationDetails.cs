@@ -16,15 +16,15 @@ namespace DVLD.PresentationLayer.Applications.Controls
             InitializeComponent();
         }
 
-        public void LoadApplicationInfo(int ldlaId)
+        public void LoadApplicationInfo(int _ldlaId)
         {
-            ldla = LDLAService.FindById(ldlaId);
+            ldla = LDLAService.FindById(_ldlaId);
 
             if (ldla == null)
             {
                 ResetApplicationInfo();
                 MessageBox.Show(
-                    "No details found for ldla id = " + ldlaId.ToString(),
+                    "No details found for ldla id = " + _ldlaId.ToString(),
                     "Error",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error
@@ -52,7 +52,7 @@ namespace DVLD.PresentationLayer.Applications.Controls
             lblLastStatusDate.Text = ldla.MainApplicationInfo.LastStatusDate.ToShortDateString();
             lblCreatedBy.Text = ldla.MainApplicationInfo.CreatorUserInfo.Username;
 
-            var associatedLicense = clsLicenseBusiness.FindByApplicationId(ldla.MainApplicationId);
+            var associatedLicense = LicenseService.FindByApplicationId(ldla.MainApplicationId);
             lnklblShowLicenseInfo.Enabled = associatedLicense != null;
         }
 
@@ -76,8 +76,8 @@ namespace DVLD.PresentationLayer.Applications.Controls
 
         private void lnklblShowLicenseInfo_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            int ldlaId = Convert.ToInt32(lblLdlaId.Text);
-            frmShowLicenseInfo.CreateByLdlaId(ldlaId).ShowDialog();
+            int _ldlaId = Convert.ToInt32(lblLdlaId.Text);
+            frmShowLicenseInfo.CreateByLdlaId(_ldlaId).ShowDialog();
         }
 
         private void lnklblShowPersonInfo_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

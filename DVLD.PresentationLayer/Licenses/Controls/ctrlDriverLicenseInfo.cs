@@ -18,17 +18,17 @@ namespace DVLD.PresentationLayer.Licenses.Controls
     public partial class ctrlDriverLicenseInfo : UserControl
     {
         private LDLA ldla;
-        private clsLicense license;
+        private EntityLayer.License license;
 
         public ctrlDriverLicenseInfo()
         {
             InitializeComponent();
         }
 
-        public void LoadLicenseByLocalAppId(int ldlaId)
+        public void LoadLicenseByLocalAppId(int _ldlaId)
         {
             // 1. fetch the main application id through the local application
-            ldla = LDLAService.FindById(ldlaId);
+            ldla = LDLAService.FindById(_ldlaId);
 
             if (ldla == null)
             {
@@ -37,7 +37,7 @@ namespace DVLD.PresentationLayer.Licenses.Controls
             }
 
             // 2. fetch the license id that is associated with the main application id
-            license = clsLicenseBusiness.FindByApplicationId(ldla.MainApplicationId);
+            license = LicenseService.FindByApplicationId(ldla.MainApplicationId);
 
             if (license == null)
             {
@@ -52,7 +52,7 @@ namespace DVLD.PresentationLayer.Licenses.Controls
         public void LoadLicenseByLicenseId(int licenseId)
         {
             // 1. fetch license
-            license = clsLicenseBusiness.FindByLicenseId(licenseId);
+            license = LicenseService.FindById(licenseId);
 
             if (license == null)
             {
@@ -98,7 +98,7 @@ namespace DVLD.PresentationLayer.Licenses.Controls
         {
             Gender gender = ldla.MainApplicationInfo.ApplicantPersonInfo.Gender;
             DateTime dob = ldla.MainApplicationInfo.ApplicantPersonInfo.DateOfBirth;
-            var driver = clsDriverBusiness.FindByPersonId(ldla.MainApplicationInfo.ApplicantPersonId);
+            var _driver = clsDriverBusiness.FindByPersonId(ldla.MainApplicationInfo.ApplicantPersonId);
 
             lblClass.Text = ldla.LicenseClassInfo.Name;
             lblName.Text = ldla.MainApplicationInfo.ApplicantPersonInfo.FullName;
@@ -112,7 +112,7 @@ namespace DVLD.PresentationLayer.Licenses.Controls
             lblIsActive.Text = license.IsActive ? "Yes" : "No";
             lblDateOfBirth.Text = dob.ToShortDateString();
             lblExpirationDate.Text = license.ExpirationDate.ToShortDateString();
-            lblDriverID.Text = driver.Id.ToString();
+            lblDriverID.Text = _driver.Id.ToString();
             // implement is detained
 
             LoadPersonImage();

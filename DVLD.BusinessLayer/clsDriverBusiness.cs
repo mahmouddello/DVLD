@@ -27,12 +27,12 @@ namespace DVLD.BusinessLayer
             if (driverId <= 0)
                 throw new Exception("Invalid Driver Id");
 
-            clsDriver driver = clsDriverData.GetById(driverId);
+            clsDriver _driver = clsDriverData.GetById(driverId);
 
-            if (driver != null)
-                driver.PersonInfo = PersonService.FindById(driver.PersonId);
+            if (_driver != null)
+                _driver.PersonInfo = PersonService.FindById(_driver.PersonId);
 
-            return driver;
+            return _driver;
         }
 
         public static clsDriver FindByPersonId(int personId)
@@ -40,12 +40,12 @@ namespace DVLD.BusinessLayer
             if (personId <= 0)
                 throw new Exception("Person id is invalid!");
 
-            clsDriver driver = clsDriverData.GetByPersonID(personId);
+            clsDriver _driver = clsDriverData.GetByPersonID(personId);
 
-            if (driver != null)
-                driver.PersonInfo = PersonService.FindById(driver.PersonId);
+            if (_driver != null)
+                _driver.PersonInfo = PersonService.FindById(_driver.PersonId);
 
-            return driver;
+            return _driver;
         }
 
         public static bool Delete(int driverId)
@@ -53,19 +53,19 @@ namespace DVLD.BusinessLayer
             return clsDriverData.DeleteById(driverId);
         }
 
-        public static bool Save(clsDriver driver)
+        public static bool Save(clsDriver _driver)
         {
-            if (driver.Id == -1)
-                return Add(driver);
+            if (_driver.Id == -1)
+                return Add(_driver);
 
             return false;
         }
 
-        private static bool Add(clsDriver driver)
+        private static bool Add(clsDriver _driver)
         {
-            driver.Id = clsDriverData.InsertNew(driver.PersonId, driver.CreatedByUserId, driver.CreatedAt);
+            _driver.Id = clsDriverData.InsertNew(_driver.PersonId, _driver.CreatedByUserId, _driver.CreatedAt);
 
-            return driver.Id != -1;
+            return _driver.Id != -1;
         }
     }
 }

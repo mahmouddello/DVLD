@@ -16,6 +16,7 @@ namespace DVLD.BusinessLayer
 
         // ── Static Lookups ────────────────────────────────
         public static DataTable GetAllAsTable() => LDLAData.GetAllAsTable();
+
         public static int GetPassedTestCount(int id) => LDLAData.GetPassedTestCount(id);
 
         public static LDLA FindById(int id)

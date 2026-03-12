@@ -15,7 +15,7 @@ namespace DVLD.BusinessLayer
         }
 
         // ── Static Lookups ────────────────────────────────
-        public static DataTable GetAllAsTable(int ldlaId, int testTypeId) => TestAppointmentData.GetAllAsTable(ldlaId, testTypeId);
+        public static DataTable GetAllAsTable(int _ldlaId, int testTypeId) => TestAppointmentData.GetAllAsTable(_ldlaId, testTypeId);
 
         public static TestAppointment FindById(int testAppointmentId)
         {
@@ -34,12 +34,12 @@ namespace DVLD.BusinessLayer
             testAppointment.CreatedByUserInfo = UserService.FindById(testAppointment.CreatedByUserId);
         }
 
-        public static bool CanSchedule(int ldlaId, int testTypeId)
+        public static bool CanSchedule(int _ldlaId, int testTypeId)
         {
-            if (TestAppointmentData.ExistsPendingAppointment(ldlaId, testTypeId))
+            if (TestAppointmentData.ExistsPendingAppointment(_ldlaId, testTypeId))
                 return false;
 
-            if (TestService.HasPassedTest(ldlaId, testTypeId))
+            if (TestService.HasPassedTest(_ldlaId, testTypeId))
                 return false;
 
             return true;

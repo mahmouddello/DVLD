@@ -39,7 +39,7 @@ namespace DVLD.DataAccessLayer
             return -1;
         }
         
-        public static DataTable GetAllAsTable(int ldlaId, int testTypeId)
+        public static DataTable GetAllAsTable(int _ldlaId, int testTypeId)
         {
             DataTable dt = new DataTable();
             string query = @"SELECT
@@ -50,7 +50,7 @@ namespace DVLD.DataAccessLayer
                             FROM
                                 TestAppointments
                             WHERE
-                                LocalDrivingLicenseApplicationID = @ldlaId
+                                LocalDrivingLicenseApplicationID = @_ldlaId
                                 AND TestTypeID = @TestTypeID";
 
             try
@@ -58,7 +58,7 @@ namespace DVLD.DataAccessLayer
                 using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@ldlaId", ldlaId);
+                    command.Parameters.AddWithValue("@_ldlaId", _ldlaId);
                     command.Parameters.AddWithValue("@TestTypeID", testTypeId);
                     connection.Open();
 
@@ -100,7 +100,7 @@ namespace DVLD.DataAccessLayer
             return null;
         }
 
-        public static bool ExistsPendingAppointment(int ldlaId, int testTypeId)
+        public static bool ExistsPendingAppointment(int _ldlaId, int testTypeId)
         {
             string query = @"SELECT 1
                             FROM TestAppointments
@@ -114,7 +114,7 @@ namespace DVLD.DataAccessLayer
                 using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", ldlaId);
+                    command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", _ldlaId);
                     command.Parameters.AddWithValue("@TestTypeID", testTypeId);
                     connection.Open();
 
@@ -183,7 +183,7 @@ namespace DVLD.DataAccessLayer
             return new TestAppointment(
                 id: Convert.ToInt32(reader["TestAppointmentID"]),
                 testTypeId: Convert.ToInt32(reader["TestTypeID"]),
-                ldlaId: Convert.ToInt32(reader["LocalDrivingLicenseApplicationID"]),
+                _ldlaId: Convert.ToInt32(reader["LocalDrivingLicenseApplicationID"]),
                 appointmentDate: Convert.ToDateTime(reader["AppointmentDate"]),
                 paidFees: Convert.ToDecimal(reader["PaidFees"]),
                 createdByUserId: Convert.ToInt32(reader["CreatedByUserID"]),

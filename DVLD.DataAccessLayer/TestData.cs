@@ -108,7 +108,7 @@ namespace DVLD.DataAccessLayer
             return null;
         }
 
-        public static int GetTestTrialsCount(int ldlaId, int testTypeId)
+        public static int GetTestTrialsCount(int _ldlaId, int testTypeId)
         {
             string query = @"SELECT 
                                 COUNT(*)
@@ -130,7 +130,7 @@ namespace DVLD.DataAccessLayer
                 using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", ldlaId);
+                    command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", _ldlaId);
                     command.Parameters.AddWithValue("@TestTypeID", testTypeId);
 
                     connection.Open();
@@ -149,7 +149,7 @@ namespace DVLD.DataAccessLayer
             return -1;
         }
 
-        public static bool HasTestRecord(int ldlaId, int testTypeId, bool isPassed)
+        public static bool HasTestRecord(int _ldlaId, int testTypeId, bool isPassed)
         {
             string query = @"SELECT 
 	                            1
@@ -175,7 +175,7 @@ namespace DVLD.DataAccessLayer
                 using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", ldlaId);
+                    command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", _ldlaId);
                     command.Parameters.AddWithValue("@TestTypeID", testTypeId);
                     command.Parameters.AddWithValue("@TestResult", isPassed ? 1 : 0);
 
