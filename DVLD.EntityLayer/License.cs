@@ -28,7 +28,7 @@ namespace DVLD.EntityLayer
 
         // Navigation
         public Application MainApplicationInfo { get; set; } = null;
-        public clsDriver DriverInfo { get; set; } = null;
+        public Driver DriverInfo { get; set; } = null;
         public LicenseClass LicenseClassInfo { get; set; } = null;
         public User CreatorUserInfo { get; set; } = null;
 

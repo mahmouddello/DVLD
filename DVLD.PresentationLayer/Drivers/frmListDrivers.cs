@@ -1,5 +1,7 @@
 ﻿using DVLD.BusinessLayer;
 using DVLD.PresentationLayer.GlobalClasses;
+using DVLD.PresentationLayer.Licenses;
+using DVLD.PresentationLayer.People;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -54,7 +56,7 @@ namespace DVLD.PresentationLayer.Drivers
 
         private void GetDataFromDB()
         {
-            drivers = clsDriverBusiness.GetAllDrivers();
+            drivers = DriverService.GetAllAsTable();
         }
 
         private void RefreshDGVData()
@@ -197,6 +199,31 @@ namespace DVLD.PresentationLayer.Drivers
 
             dgvDrivers.DataSource = dv;
             lblRecordsCount.Text = $"Records: #{dgvDrivers.Rows.Count}";
+        }
+
+        private void showPersonInfoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int personId = (int)dgvDrivers.CurrentRow.Cells["PersonID"].Value;
+
+            frmPersonDetails frm = new frmPersonDetails(personId);
+            frm.ShowDialog();
+
+            ReloadAndRefresh(); // In case of changes
+        }
+
+        private void issueInternationalLicenseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Utility.ShowWarningMessage(@"This feature isn't implemented yet!", "Warning");
+        }
+
+        private void shownPersonLicenseHistoryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int personId = (int)dgvDrivers.CurrentRow.Cells["PersonID"].Value;
+            
+            frmShowLicenseHistory frm = new frmShowLicenseHistory(personId); 
+            frm.ShowDialog();
+
+            ReloadAndRefresh(); // In case of changes
         }
     }
 }

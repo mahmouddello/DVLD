@@ -11,7 +11,7 @@ namespace DVLD.PresentationLayer.Licenses
     {
         private int _ldlaId;
         private LDLA _ldla;
-        private clsDriver _driver;
+        private Driver _driver;
 
         public frmIssueDrivingLicense(int ldlaId)
         {
@@ -45,14 +45,14 @@ namespace DVLD.PresentationLayer.Licenses
             );
         }
 
-        private clsDriver GetOrCreateDriverRecord(int personId)
+        private Driver GetOrCreateDriverRecord(int personId)
         {
-            _driver = clsDriverBusiness.FindByPersonId(personId);
+            _driver = DriverService.FindByPersonId(personId);
             if (_driver != null)
                 return _driver;
 
             // no _driver record, create a new one
-            _driver = new clsDriver
+            _driver = new Driver
             {
                 Id = -1,
                 PersonId = personId,
@@ -60,7 +60,9 @@ namespace DVLD.PresentationLayer.Licenses
                 CreatedAt = DateTime.Now
             };
 
-            if (!clsDriverBusiness.Save(_driver))
+            var driverService = new DriverService(_driver);
+
+            if (!driverService.Save())
                 return null;
 
             return _driver;
@@ -69,7 +71,7 @@ namespace DVLD.PresentationLayer.Licenses
         private void btnIssue_Click(object sender, EventArgs e)
         {
             _ldla = LDLAService.FindById(_ldlaId);
-            clsDriver _driver = GetOrCreateDriverRecord(_ldla.MainApplicationInfo.ApplicantPersonId);
+            Driver _driver = GetOrCreateDriverRecord(_ldla.MainApplicationInfo.ApplicantPersonId);
 
             if (_driver == null)
             {

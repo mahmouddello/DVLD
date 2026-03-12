@@ -15,7 +15,7 @@ namespace DVLD.PresentationLayer.Licenses.Controls
 {
     public partial class ctrlDriverLicenseHistory : UserControl
     {
-        private clsDriver _driver;
+        private Driver _driver;
         private DataTable localLicensesTable;
         private DataTable internationalLicensesTable;
 
@@ -59,7 +59,7 @@ namespace DVLD.PresentationLayer.Licenses.Controls
 
         public void LoadDataByPersonId(int personId)
         {
-            _driver = clsDriverBusiness.FindByPersonId(personId);
+            _driver = DriverService.FindByPersonId(personId);
 
             if (_driver == null)
             {

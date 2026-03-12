@@ -98,7 +98,7 @@ namespace DVLD.PresentationLayer.Licenses.Controls
         {
             Gender gender = ldla.MainApplicationInfo.ApplicantPersonInfo.Gender;
             DateTime dob = ldla.MainApplicationInfo.ApplicantPersonInfo.DateOfBirth;
-            var _driver = clsDriverBusiness.FindByPersonId(ldla.MainApplicationInfo.ApplicantPersonId);
+            var _driver = DriverService.FindByPersonId(ldla.MainApplicationInfo.ApplicantPersonId);
 
             lblClass.Text = ldla.LicenseClassInfo.Name;
             lblName.Text = ldla.MainApplicationInfo.ApplicantPersonInfo.FullName;
