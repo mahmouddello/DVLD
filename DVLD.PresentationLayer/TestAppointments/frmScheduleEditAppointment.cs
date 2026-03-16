@@ -41,50 +41,57 @@ namespace DVLD.PresentationLayer.Tests.TestAppointments
         private void frmScheduleEditAppointment_Load(object sender, EventArgs e)
         {
             if (_mode == Mode.AddNew)
-            {
-                _localDla = LDLAService.FindById(_localDlaId);
-                if (_localDla == null)
-                {
-                    Utility.ShowErrorMessage($"No Local DLA found with id: {_localDlaId}!");
-                    return;
-                }
-
-                _testType = TestTypeService.FindById(_testTypeId);
-                _hasFailedTest = TestService.HasFailedTest(_localDlaId, _testTypeId);
-
-                dtpAppointment.Value = DateTime.Today;
-                dtpAppointment.MinDate = DateTime.Today;
-            }
+                LoadNewAppointmentDefaults();
             else
-            {
-                _testAppointment = TestAppointmentService.FindById(_testAppointmentId);
-                if (_testAppointment == null)
-                {
-                    Utility.ShowErrorMessage($"Failed to find appointment with id: {_testAppointmentId}");
-                    return;
-                }
-
-                // loaded navigation properties inside the object
-                _localDla = _testAppointment.LdlaInfo;
-                _testType = _testAppointment.TestTypeInfo;
-
-                _hasFailedTest = TestService.HasFailedTest(_testAppointment.LdlaId, _testAppointment.TestTypeId);
-                dtpAppointment.Value = _testAppointment.AppointmentDate;
-                dtpAppointment.MinDate = DateTime.Now < _testAppointment.AppointmentDate
-                    ? DateTime.Now
-                    : _testAppointment.AppointmentDate;
-
-                if (_mode == Mode.Locked)
-                {
-                    lblAdditional.Text = "Person already has sat for this test, you can't modify this appointment!";
-                    btnSave.Enabled = false;
-                    dtpAppointment.Enabled = false;
-                }
-            }
+                LoadExistingAppointment();
 
             _retakeType = ApplicationTypeService.FindByType(enApplicationType.RetakeTest); // load once incase of usage
+
             PopulateForm();
             SetUIByTestType();
+        }
+
+        private void LoadExistingAppointment()
+        {
+            _testAppointment = TestAppointmentService.FindById(_testAppointmentId);
+            if (_testAppointment == null)
+            {
+                Utility.ShowErrorMessage($"Failed to find appointment with id: {_testAppointmentId}");
+                return;
+            }
+
+            // loaded navigation properties inside the object
+            _localDla = _testAppointment.LdlaInfo;
+            _testType = _testAppointment.TestTypeInfo;
+
+            _hasFailedTest = TestService.HasFailedTest(_testAppointment.LdlaId, _testAppointment.TestTypeId);
+            dtpAppointment.Value = _testAppointment.AppointmentDate;
+            dtpAppointment.MinDate = DateTime.Now < _testAppointment.AppointmentDate
+                ? DateTime.Now
+                : _testAppointment.AppointmentDate;
+
+            if (_mode == Mode.Locked)
+            {
+                lblAdditional.Text = "Person already has sat for this test, you can't modify this appointment!";
+                btnSave.Enabled = false;
+                dtpAppointment.Enabled = false;
+            }
+        }
+
+        private void LoadNewAppointmentDefaults()
+        {
+            _localDla = LDLAService.FindById(_localDlaId);
+            if (_localDla == null)
+            {
+                Utility.ShowErrorMessage($"No Local DLA found with id: {_localDlaId}!");
+                return;
+            }
+
+            _testType = TestTypeService.FindById(_testTypeId);
+            _hasFailedTest = TestService.HasFailedTest(_localDlaId, _testTypeId);
+
+            dtpAppointment.Value = DateTime.Today;
+            dtpAppointment.MinDate = DateTime.Today;
         }
 
         private void SetUIByTestType()
