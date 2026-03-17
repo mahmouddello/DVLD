@@ -85,7 +85,7 @@ namespace DVLD.DataAccessLayer
             return null;
         }
 
-        public static LDLA GetByMainApplicationId(int mainAppId)
+        public static LDLA GetByApplicationId(int mainAppId)
         {
             string query = "SELECT * FROM LocalDrivingLicenseApplications WHERE ApplicationID = @ApplicationID";
 
@@ -108,34 +108,6 @@ namespace DVLD.DataAccessLayer
             }
 
             return null;
-        }
-
-        public static int GetPassedTestCount(int id)
-        {
-            string query = @"SELECT COUNT(CASE WHEN t.TestResult = 1 THEN 1 END) AS PassedTests
-                            FROM LocalDrivingLicenseApplications ldla
-                            LEFT JOIN TestAppointments ta ON ta.LocalDrivingLicenseApplicationID = ldla.LocalDrivingLicenseApplicationID
-                            LEFT JOIN Tests t ON t.TestAppointmentID = ta.TestAppointmentID
-                            WHERE ldla.LocalDrivingLicenseApplicationID = @Id
-                            GROUP BY ldla.LocalDrivingLicenseApplicationID";
-
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
-                using (SqlCommand command = new SqlCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@Id", id);
-                    connection.Open();
-
-                    object result = command.ExecuteScalar();
-                    return result != null ? Convert.ToInt32(result) : 0;
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"Error in LDLAData.GetPassedTestCount: {ex.Message}");
-                return 0;
-            }
         }
 
         public static bool UpdateLicenseClass(int id, int licenseClassId)

@@ -40,7 +40,7 @@ namespace DVLD.PresentationLayer.Applications.Controls
             lblLdlaId.Text = ldla.Id.ToString();
             lblAppliedFor.Text = LicenseClassService.FindById(ldla.LicenseClassId)?.Name;
 
-            int passedTests = LDLAService.GetPassedTestCount(ldla.Id);
+            int passedTests = TestService.GetPassedTestCount(ldla.Id);
             lblPassedTests.Text = $"{passedTests}/3";
 
             lblMainApplicationId.Text = ldla.MainApplicationId.ToString();

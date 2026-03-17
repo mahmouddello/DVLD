@@ -18,6 +18,8 @@ namespace DVLD.BusinessLayer
 
         public static DataTable GetAllTestsAsTable() => TestData.GetAllAsTable();
 
+        public static int GetPassedTestCount(int ldlaId) => TestData.GetPassedTestCount(ldlaId);
+
         public static Test FindById(int testId)
         {
             if (testId <= 0) 

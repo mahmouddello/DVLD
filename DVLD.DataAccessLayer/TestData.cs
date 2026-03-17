@@ -149,6 +149,34 @@ namespace DVLD.DataAccessLayer
             return -1;
         }
 
+        public static int GetPassedTestCount(int ldlaId)
+        {
+            string query = @"SELECT COUNT(*) AS PassedTests
+                            FROM Tests t
+                            INNER JOIN TestAppointments ta 
+                                ON t.TestAppointmentID = ta.TestAppointmentID
+                            WHERE ta.LocalDrivingLicenseApplicationID = @LdlaId
+                            AND t.TestResult = 1";
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@LdlaId", ldlaId);
+                    connection.Open();
+
+                    object result = command.ExecuteScalar();
+                    return result != null ? Convert.ToInt32(result) : 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error in LDLAData.GetPassedTestCount: {ex.Message}");
+                return 0;
+            }
+        }
+
         public static bool HasTestRecord(int _ldlaId, int testTypeId, bool isPassed)
         {
             string query = @"SELECT 

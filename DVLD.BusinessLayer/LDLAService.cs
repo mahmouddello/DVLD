@@ -17,8 +17,6 @@ namespace DVLD.BusinessLayer
         // ── Static Lookups ────────────────────────────────
         public static DataTable GetAllAsTable() => LDLAData.GetAllAsTable();
 
-        public static int GetPassedTestCount(int id) => LDLAData.GetPassedTestCount(id);
-
         public static LDLA FindById(int id)
         {
             LDLA ldla = LDLAData.GetById(id);
@@ -30,7 +28,7 @@ namespace DVLD.BusinessLayer
 
         public static LDLA FindByMainApplicationId(int mainAppId)
         {
-            LDLA ldla = LDLAData.GetByMainApplicationId(mainAppId);
+            LDLA ldla = LDLAData.GetByApplicationId(mainAppId);
             if (ldla == null) return null;
 
             ResolveNavigationProperties(ldla);
