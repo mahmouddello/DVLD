@@ -40,11 +40,12 @@ namespace DVLD.DataAccessLayer
         public static DataTable GetAllAsTable()
         {
             DataTable dt = new DataTable();
+            string query = "SELECT * FROM LDLA_View ORDER BY LocalDrivingLicenseApplicationID DESC";
 
             try
             {
                 using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
-                using (SqlCommand command = new SqlCommand("SELECT * FROM LDLA_View", connection))
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     connection.Open();
                     using (SqlDataReader reader = command.ExecuteReader())

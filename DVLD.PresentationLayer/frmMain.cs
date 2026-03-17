@@ -87,5 +87,12 @@ namespace DVLD.PresentationLayer
             frmListLocalDLA frm = new frmListLocalDLA();
             frm.ShowDialog();
         }
+
+        private void retakeTestToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Redirect the user to the local DLA list, selects the user and proceed to book appointment
+            frmListLocalDLA frm = new frmListLocalDLA();
+            frm.ShowDialog();
+        }
     }
 }
