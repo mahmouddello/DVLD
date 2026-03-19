@@ -20,7 +20,7 @@ namespace DVLD.PresentationLayer.People
 
         private Person _person;
         private int _personId;
-        private string _originalNationalNo;
+
         private string _persistedImagePath = null; // saved image
         private string _selectedImageSourcePath = null; // new image (not saved yet)
         private bool _imageMarkedForDeletion;
@@ -98,7 +98,6 @@ namespace DVLD.PresentationLayer.People
             txtThirdName.Text = _person.ThirdName;
             txtLastName.Text = _person.LastName;
             txtNationalNo.Text = _person.NationalNo;
-            _originalNationalNo = _person.NationalNo; // save original national no to a local variable
             txtEmail.Text = _person.Email;
             txtPhone.Text = _person.Phone;
             txtAddress.Text = _person.Address;
@@ -109,37 +108,6 @@ namespace DVLD.PresentationLayer.People
                 rbMale.Checked = true;
             else
                 rbFemale.Checked = true;
-
-            if (!string.IsNullOrWhiteSpace(FullImagePath) && File.Exists(FullImagePath))
-            {
-                _persistedImagePath = _person.ImagePath; // save original guid.png
-                pbPerson.Image = Image.FromFile(FullImagePath); // load the image
-                llRemoveImage.Visible = true;
-            }
-            else
-                UpdateDefaultImage();
-        }
-
-        private void MapFormFields()
-        {
-
-            lblModeTitle.Text = "Edit Person Details";
-
-            txtFirstName.Text = _person.FirstName;
-            txtSecondName.Text = _person.SecondName;
-            txtThirdName.Text = _person.ThirdName;
-            txtLastName.Text = _person.LastName;
-            txtNationalNo.Text = _person.NationalNo;
-            txtEmail.Text = _person.Email;
-            txtPhone.Text = _person.Phone;
-            txtAddress.Text = _person.Address;
-            dtpDateOfBirth.Value = _person.DateOfBirth;
-
-            _originalNationalNo = _person.NationalNo;
-            cbCountry.SelectedValue = _person.Nationality.Id;
-
-            rbMale.Checked = _person.Gender == Gender.Male;
-            rbFemale.Checked = _person.Gender == Gender.Female;
 
             if (!string.IsNullOrWhiteSpace(FullImagePath) && File.Exists(FullImagePath))
             {
@@ -246,8 +214,9 @@ namespace DVLD.PresentationLayer.People
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            if (!this.ValidateChildren())
+            if (!ValidateChildren())
                 return;
+
             if (!ValidateRadioGroups())
                 return;
 
@@ -256,15 +225,17 @@ namespace DVLD.PresentationLayer.People
 
             PersonService service = new PersonService(_person);
 
-            if (service.Save())
+            if (!service.Save())
             {
-                Utility.ShowSuccessMessage($"Saved the person data successfully with id: {_person.Id}");
-                _mode = FormMode.Update;
-                lblModeTitle.Text = "Edit Person Details";
-                DataBack?.Invoke(this, _person.Id);
-            }
-            else
                 Utility.ShowErrorMessage("Failed to save person data to the database");
+                return;
+            }
+
+            Utility.ShowSuccessMessage($"Saved the person data successfully with id: {_person.Id}");
+            lblModeTitle.Text = "Edit Person Details";
+
+            _mode = FormMode.Update;
+            DataBack?.Invoke(this, _person.Id);
         }
 
         private void btnClose_Click(object sender, EventArgs e)
@@ -275,14 +246,18 @@ namespace DVLD.PresentationLayer.People
 
         private void OnlyLettersTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (char.IsControl(e.KeyChar)) return;
+            if (char.IsControl(e.KeyChar))
+                return;
+
             if (!char.IsLetter(e.KeyChar))
                 Utility.HandleWrongKey(e);
         }
 
         private void OnlyDigitsTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (char.IsControl(e.KeyChar)) return;
+            if (char.IsControl(e.KeyChar))
+                return;
+
             if (!char.IsDigit(e.KeyChar))
                 Utility.HandleWrongKey(e);
         }

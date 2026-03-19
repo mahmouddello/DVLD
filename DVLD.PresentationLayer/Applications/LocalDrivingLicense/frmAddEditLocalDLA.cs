@@ -11,14 +11,14 @@ namespace DVLD.PresentationLayer.Applications
 {
     public partial class frmAddEditLocalDLA : Form
     {
-        private int personId;
-        private int localDrivingLicenseId;
+        private int _personId;
+        private int _ldlaId;
+
         private enum Mode { AddNew = 0, Update = 1 }
         private Mode mode;
-
-        private enApplicationType applicationType = enApplicationType.NewLocalDrivingLicense;
-        private Application application;
-        private LDLA ldlaApplication;
+        
+        private Application _application;
+        private LDLA _ldlaApplication;
 
         public frmAddEditLocalDLA()
         {
@@ -26,81 +26,12 @@ namespace DVLD.PresentationLayer.Applications
             mode = Mode.AddNew;
         }
 
-        public frmAddEditLocalDLA(int _ldlaId)
+        public frmAddEditLocalDLA(int ldlaId)
         {
             InitializeComponent();
 
-            this.localDrivingLicenseId = _ldlaId;
+            _ldlaId = ldlaId;
             mode = Mode.Update;
-        }
-
-        private void LoadLicenseClassesToComboBox()
-        {
-            cbLicenseClass.Items.Add("None");
-            DataTable dt = LicenseClassService.GetAll();
-
-            foreach(DataRow row in dt.Rows)
-                cbLicenseClass.Items.Add(row["ClassName"]);
-
-            cbLicenseClass.SelectedIndex = 0;
-        }
-
-        private void ApplyPreSettings()
-        {
-            LoadLicenseClassesToComboBox();
-            cbLicenseClass.SelectedIndex = 0; // Default, None
-
-            if (mode == Mode.AddNew)
-            {
-                lblTitle.Text = "New Local Driving License Application";
-                lblApplicationDate.Text = DateTime.Now.ToShortDateString();
-                lblApplicationFees.Text = ApplicationTypeService.FindByType(enApplicationType.NewLocalDrivingLicense)?.Fees.ToString();
-                lblCreatedBy.Text = Globals.CurrentUser.Username;
-
-                this.application = new Application();
-                this.ldlaApplication = new LDLA();
-                return;
-            }
-        }
-
-        private void LoadApplicationInfo()
-        {
-            // buttons
-            btnNext.Enabled = true;
-            btnSave.Enabled = true;
-
-            ldlaApplication = LDLAService.FindById(this.localDrivingLicenseId);
-
-            if (ldlaApplication == null)
-            {
-                MessageBox.Show(
-                    $"This form will be closed because there's no local application with ID = {localDrivingLicenseId}",
-                    "Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error
-                );
-                this.Close();
-                return;
-            }
-
-            this.application = ldlaApplication.MainApplicationInfo;
-            personId = this.application.ApplicantPersonId;
-
-            ctrlPersonCardWithFilter1.ShowAddPerson = false;
-            ctrlPersonCardWithFilter1.FilterEnabled = false;
-            ctrlPersonCardWithFilter1.QueryText = $"{personId}";
-            ctrlPersonCardWithFilter1.ctrlPersonCard1.LoadPersonInfo(personId);
-
-            cbLicenseClass.SelectedIndex = ldlaApplication.LicenseClassId;
-            lblApplicationId.Text = this.application.Id.ToString();
-            lblApplicationFees.Text = this.application.PaidFees.ToString();
-            lblCreatedBy.Text = this.application.CreatorUserInfo.Username;
-            lblApplicationDate.Text = this.application.ApplicationDate.ToShortDateString();
-        }
-
-        private void btnClose_Click(object sender, EventArgs e)
-        {
-            this.Close();
         }
 
         private void LocalDrivingLicenseApplication_Load(object sender, EventArgs e)
@@ -111,9 +42,66 @@ namespace DVLD.PresentationLayer.Applications
                 LoadApplicationInfo();
         }
 
+        private void LoadLicenseClassesToComboBox()
+        {
+            cbLicenseClass.Items.Add("None");
+            DataTable dt = LicenseClassService.GetAll();
+
+            foreach(DataRow row in dt.Rows)
+                cbLicenseClass.Items.Add(row["ClassName"]);
+        }
+
+        private void ApplyPreSettings()
+        {
+            LoadLicenseClassesToComboBox();
+            cbLicenseClass.SelectedIndex = 0; // Default, None
+            lblApplicationFees.Text = ApplicationTypeService.FindByType(enApplicationType.NewLocalDrivingLicense)?
+                .Fees.ToString();
+
+            if (mode == Mode.AddNew)
+            {
+                lblTitle.Text = "New Local Driving License Application";
+                lblApplicationDate.Text = DateTime.Now.ToShortDateString();
+                lblCreatedBy.Text = Globals.CurrentUser.Username;
+
+                _application = new Application();
+                _ldlaApplication = new LDLA();
+                return;
+            }
+        }
+
+        private void LoadApplicationInfo()
+        {
+            // buttons
+            btnNext.Enabled = true;
+            btnSave.Enabled = true;
+
+            _ldlaApplication = LDLAService.FindById(_ldlaId);
+
+            if (_ldlaApplication == null)
+            {
+                Utility.ShowErrorMessage("Local License wasn't found, this form will be closed!");
+                this.Close();
+                return;
+            }
+
+            _application = _ldlaApplication.MainApplicationInfo;
+
+            ctrlPersonCardWithFilter1.ShowAddPerson = false;
+            ctrlPersonCardWithFilter1.FilterEnabled = false;
+            ctrlPersonCardWithFilter1.QueryText = $"{_application.ApplicantPersonId}";
+            ctrlPersonCardWithFilter1.ctrlPersonCard1.LoadPersonInfo(_personId);
+
+            cbLicenseClass.SelectedIndex = _ldlaApplication.LicenseClassId;
+            lblApplicationId.Text = _application.Id.ToString();
+            lblApplicationFees.Text = _application.PaidFees.ToString();
+            lblCreatedBy.Text = _application.CreatorUserInfo.Username;
+            lblApplicationDate.Text = _application.ApplicationDate.ToShortDateString();
+        }
+
         private void ctrlPersonCardWithFilter1_OnPersonSelected(int obj)
         {
-            personId = obj;
+            _personId = obj;
 
             // enable next button and application info form
             btnNext.Enabled = true;
@@ -135,27 +123,27 @@ namespace DVLD.PresentationLayer.Applications
         {
             if (mode == Mode.AddNew)
             {
-                this.application.Id = -1;
-                this.application.ApplicationDate = DateTime.Now;
-                this.application.LastStatusDate = DateTime.Now;
+                _application.Id = -1;
+                _application.ApplicationDate = DateTime.Now;
+                _application.LastStatusDate = DateTime.Now;
             }
             else
-                this.application.LastStatusDate = DateTime.Now; // Updating
+                _application.LastStatusDate = DateTime.Now; // Updating
 
-            this.application.ApplicantPersonId = personId;
-            this.application.ApplicationTypeId = Convert.ToInt32(applicationType);
-            this.application.Status = enApplicationStatus.New;
-            this.application.PaidFees = (decimal)ApplicationTypeService.FindByType(applicationType)?.Fees;
-            this.application.CreatedByUserId = GlobalClasses.Globals.CurrentUser.Id;
+            _application.ApplicantPersonId = _personId;
+            _application.ApplicationTypeId = Convert.ToInt32(applicationType);
+            _application.Status = enApplicationStatus.New;
+            _application.PaidFees = (decimal)ApplicationTypeService.FindByType(applicationType)?.Fees;
+            _application.CreatedByUserId = GlobalClasses.Globals.CurrentUser.Id;
         }
 
         private void MapLocalDrivingLicenseApplicationFields()
         {
             if (mode == Mode.AddNew)
-                ldlaApplication.Id = -1;
+                _ldlaApplication.Id = -1;
 
-            ldlaApplication.MainApplicationId = this.application.Id;
-            ldlaApplication.LicenseClassId = cbLicenseClass.SelectedIndex;
+            _ldlaApplication.MainApplicationId = _application.Id;
+            _ldlaApplication.LicenseClassId = cbLicenseClass.SelectedIndex;
         }
 
         private bool IsFormValid()
@@ -163,16 +151,14 @@ namespace DVLD.PresentationLayer.Applications
             if (ValidateChildren())
                 return true;
 
-            MessageBox.Show("Some fields are not valid!", "Error",
-                MessageBoxButtons.OK, MessageBoxIcon.Error);
-
+            Utility.ShowErrorMessage("Some fields are not valid!");
             return false;
         }
 
         private bool HasDuplicateApplication()
         {
             if (!ApplicationService.HasSameClassApplication(
-                    this.application.ApplicantPersonId,
+                    _application.ApplicantPersonId,
                     cbLicenseClass.SelectedIndex))
                 return false;
 
@@ -189,7 +175,7 @@ namespace DVLD.PresentationLayer.Applications
         {
             int selectedLicenseClassId = cbLicenseClass.SelectedIndex;
 
-            if (ApplicationService.MeetsMinimumAgeRequirement(selectedLicenseClassId, this.application.ApplicantPersonId))
+            if (ApplicationService.MeetsMinimumAgeRequirement(selectedLicenseClassId, _application.ApplicantPersonId))
                 return true;
 
             MessageBox.Show(
@@ -222,7 +208,7 @@ namespace DVLD.PresentationLayer.Applications
         private void SaveLocalApplication()
         {
             MapLocalDrivingLicenseApplicationFields();
-            var ldlaService = new LDLAService(ldlaApplication);
+            var ldlaService = new LDLAService(_ldlaApplication);
 
             if (ldlaService.Save())
                 Utility.ShowSuccessMessage($"Saved the local driving license application successfully!");
@@ -234,6 +220,8 @@ namespace DVLD.PresentationLayer.Applications
         {
             if (!IsFormValid())
                 return;
+
+
 
             MapApplicationFields();
 
@@ -261,6 +249,11 @@ namespace DVLD.PresentationLayer.Applications
                 e.Cancel = false;
                 errProvider.SetError(cbLicenseClass, string.Empty);
             }
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }
