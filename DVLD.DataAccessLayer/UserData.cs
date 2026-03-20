@@ -25,7 +25,7 @@ namespace DVLD.DataAccessLayer
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in PersonData.GetAllAsTable: {ex.Message}");
+                Debug.WriteLine($"Error in UserData.GetAllAsTable: {ex.Message}");
                 return new DataTable();
             }
 

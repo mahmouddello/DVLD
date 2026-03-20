@@ -65,11 +65,12 @@ namespace DVLD.PresentationLayer.Tests.TestAppointments
             _testType = _testAppointment.TestTypeInfo;
 
             _hasFailedTest = TestService.HasFailedTest(_testAppointment.LdlaId, _testAppointment.TestTypeId);
-            dtpAppointment.Value = _testAppointment.AppointmentDate;
             dtpAppointment.MinDate = DateTime.Now < _testAppointment.AppointmentDate
                 ? DateTime.Now
                 : _testAppointment.AppointmentDate;
+            dtpAppointment.Value = _testAppointment.AppointmentDate;
 
+            // 20 < 21 : minDate -> 20
             if (_mode == Mode.Locked)
             {
                 lblAdditional.Text = "Person already has sat for this test, you can't modify this appointment!";

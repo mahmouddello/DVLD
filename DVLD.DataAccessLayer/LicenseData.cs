@@ -173,7 +173,7 @@ namespace DVLD.DataAccessLayer
                 notes: reader.IsDBNull(notesIndex) ? null : reader.GetString(notesIndex),
                 paidFees: reader.GetDecimal(reader.GetOrdinal("PaidFees")),
                 isActive: reader.GetBoolean(reader.GetOrdinal("IsActive")),
-                issueReason: (enLicenseIssueReason)reader.GetInt32(reader.GetOrdinal("IssueReason")),
+                issueReason: (enLicenseIssueReason)Convert.ToInt32(reader.GetOrdinal("IssueReason")),
                 createdByUserId: reader.GetInt32(reader.GetOrdinal("CreatedByUserID"))
             );
         }

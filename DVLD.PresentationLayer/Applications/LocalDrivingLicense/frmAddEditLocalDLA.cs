@@ -90,7 +90,7 @@ namespace DVLD.PresentationLayer.Applications
             ctrlPersonCardWithFilter1.ShowAddPerson = false;
             ctrlPersonCardWithFilter1.FilterEnabled = false;
             ctrlPersonCardWithFilter1.QueryText = $"{_application.ApplicantPersonId}";
-            ctrlPersonCardWithFilter1.ctrlPersonCard1.LoadPersonInfo(_personId);
+            ctrlPersonCardWithFilter1.ctrlPersonCard1.LoadPersonInfo(_application.ApplicantPersonId);
 
             cbLicenseClass.SelectedIndex = _ldlaApplication.LicenseClassId;
             lblApplicationId.Text = _application.Id.ToString();
