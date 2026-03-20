@@ -10,8 +10,6 @@ namespace DVLD.PresentationLayer.Licenses
     public partial class frmIssueDrivingLicense : Form
     {
         private int _ldlaId;
-        private LDLA _ldla;
-        private Driver _driver;
 
         public frmIssueDrivingLicense(int ldlaId)
         {
@@ -22,90 +20,18 @@ namespace DVLD.PresentationLayer.Licenses
         private void frmIssueDrivingLicense_Load(object sender, EventArgs e)
         {
             this.ctrlApplicationDetails1.LoadApplicationInfo(_ldlaId);
-
-        }
-
-        private License CreateAndMapNewLicense()
-        {
-            string rawNotes = txtNotes.Text.Trim();
-            DateTime expirationDate = DateTime.Now.AddYears(_ldla.LicenseClassInfo.DefaultValidityLength);
-
-            return new License(
-                id: -1,
-                applicationId: _ldla.MainApplicationId,
-                driverId: _driver.Id,
-                licenseClassID: _ldla.LicenseClassId,
-                issueDate: DateTime.Now,
-                expirationDate: expirationDate,
-                notes: string.IsNullOrWhiteSpace(rawNotes) ? null : rawNotes,
-                paidFees: _ldla.LicenseClassInfo.Fees,
-                isActive: true,
-                issueReason: enLicenseIssueReason.FirstTime,
-                createdByUserId: GlobalClasses.Globals.CurrentUser.Id
-            );
-        }
-
-        private Driver GetOrCreateDriverRecord(int personId)
-        {
-            _driver = DriverService.FindByPersonId(personId);
-            if (_driver != null)
-                return _driver;
-
-            // no _driver record, create a new one
-            _driver = new Driver
-            {
-                Id = -1,
-                PersonId = personId,
-                CreatedByUserId = GlobalClasses.Globals.CurrentUser.Id,
-                CreatedAt = DateTime.Now
-            };
-
-            var driverService = new DriverService(_driver);
-
-            if (!driverService.Save())
-                return null;
-
-            return _driver;
         }
 
         private void btnIssue_Click(object sender, EventArgs e)
         {
-            _ldla = LDLAService.FindById(_ldlaId);
-            Driver _driver = GetOrCreateDriverRecord(_ldla.MainApplicationInfo.ApplicantPersonId);
+            License license = LicenseService.IssueDLFirstTime(_ldlaId, txtNotes.Text.Trim(), Globals.CurrentUser.Id);
 
-            if (_driver == null)
-            {
-                Utility.ShowErrorMessage("Driver record failed found or to add! Aborting...");
-                this.Close();
-                return;
-            }
-
-            // license issue procedure
-            License license = CreateAndMapNewLicense();
-            var licenseService = new LicenseService(license);
-
-            if (licenseService.Save())
-            {
+            if (license != null)
                 Utility.ShowSuccessMessage($"Issued the new license successfully with id: {license.Id}");
-                var appService = new ApplicationService(_ldla.MainApplicationInfo);
-
-                if (!(_ldla.MainApplicationInfo != null && appService.Complete()))
-                {
-                    Utility.ShowErrorMessage("Failed to update the status of the application!");
-                    this.Close();
-                    return;
-                }
-                else
-                {
-                    Utility.ShowSuccessMessage("Updated the application status as completed!");
-                    this.Close();
-                }
-            }
             else
-            {
-                Utility.ShowErrorMessage($"Failed to issue the new license for driver with id: {_driver.Id}");
-                this.Close();
-            }
+                Utility.ShowErrorMessage("Failed to issue the license");
+
+            this.Close();
         }
 
         private void btnClose_Click(object sender, EventArgs e)

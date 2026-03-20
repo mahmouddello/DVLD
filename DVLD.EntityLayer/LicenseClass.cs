@@ -2,6 +2,17 @@
 
 namespace DVLD.EntityLayer
 {
+    public enum enLicenseClass
+    {
+        C1_SmallMotorcycle = 1,
+        C2_HeavyMotorcycle = 2,
+        C3_Ordinary = 3,
+        C4_Commercial = 4,
+        C5_Agricultural = 5,
+        C6_SmallAndMediumBus = 6,
+        C7_TruckAndHeavyVehicle = 7,
+    }
+
     public class LicenseClass
     {
         public int Id { get; set; } = -1;

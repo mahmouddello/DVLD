@@ -13,16 +13,16 @@ namespace DVLD.EntityLayer
     public class License
     {
         public int Id { get; set; } = -1;
-        public int ApplicationId { get; private set; } = -1;
-        public int DriverId { get; private set; } = -1;
-        public int LicenseClassID { get; private set; } = -1;
-        public DateTime IssueDate { get; private set; } = DateTime.Now;
-        public DateTime ExpirationDate { get; private set; } = DateTime.Now;
-        public string Notes { get; private set; } = string.Empty;
-        public decimal PaidFees { get; private set; } = decimal.Zero;
-        public bool IsActive { get; private set; } = false;
-        public enLicenseIssueReason IssueReason { get; private set; } = enLicenseIssueReason.FirstTime;
-        public int CreatedByUserId { get; private set; } = -1;
+        public int ApplicationId { get; set; } = -1;
+        public int DriverId { get; set; } = -1;
+        public int LicenseClassID { get; set; } = -1;
+        public DateTime IssueDate { get; set; } = DateTime.Now;
+        public DateTime ExpirationDate { get; set; } = DateTime.Now;
+        public string Notes { get; set; } = string.Empty;
+        public decimal PaidFees { get; set; } = decimal.Zero;
+        public bool IsActive { get; set; } = false;
+        public enLicenseIssueReason IssueReason { get; set; } = enLicenseIssueReason.FirstTime;
+        public int CreatedByUserId { get; set; } = -1;
 
         public bool IsNew => Id == -1;
 
@@ -33,6 +33,22 @@ namespace DVLD.EntityLayer
         public License()
         {
 
+        }
+
+        public License(
+            int applicationId,
+            string notes,
+            int createdByUserId,
+            enLicenseIssueReason issueReason,
+            enLicenseClass licenseClass
+        )
+        {
+            ApplicationId = applicationId;
+            Notes = notes?.Trim() ?? string.Empty;
+            CreatedByUserId = createdByUserId;
+            IssueReason = issueReason;
+            LicenseClassID = Convert.ToInt32(licenseClass);
+            IssueDate = DateTime.Now;
         }
 
         public License

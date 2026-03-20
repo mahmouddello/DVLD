@@ -16,9 +16,11 @@ namespace DVLD.EntityLayer
         public User CreatorUserInfo { get; set; } = null;
 
         // default constructor
-        public Driver()
+        public Driver(int personId, int createdByUserId)
         {
-
+            PersonId = personId;
+            CreatedByUserId = createdByUserId;
+            CreatedAt = DateTime.Now;
         }
 
         // parametrized constructor
