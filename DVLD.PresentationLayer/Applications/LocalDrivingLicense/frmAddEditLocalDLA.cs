@@ -103,7 +103,7 @@ namespace DVLD.PresentationLayer.Applications
         {
             _personId = obj;
 
-            // enable next button and application info form
+            // enable next button and _application info form
             btnNext.Enabled = true;
             tpApplicationInfo.Enabled = true;
         }
@@ -131,9 +131,9 @@ namespace DVLD.PresentationLayer.Applications
                 _application.LastStatusDate = DateTime.Now; // Updating
 
             _application.ApplicantPersonId = _personId;
-            _application.ApplicationTypeId = Convert.ToInt32(applicationType);
+            _application.ApplicationTypeId = Convert.ToInt32(enApplicationType.NewLocalDrivingLicense);
             _application.Status = enApplicationStatus.New;
-            _application.PaidFees = (decimal)ApplicationTypeService.FindByType(applicationType)?.Fees;
+            _application.PaidFees = (decimal)ApplicationTypeService.FindByType(enApplicationType.NewLocalDrivingLicense)?.Fees;
             _application.CreatedByUserId = GlobalClasses.Globals.CurrentUser.Id;
         }
 
@@ -163,7 +163,7 @@ namespace DVLD.PresentationLayer.Applications
                 return false;
 
             MessageBox.Show(
-                @"Choose another license class, the selected person already has an active or completed application for the selected class.",
+                @"Choose another license class, the selected person already has an active or completed _application for the selected class.",
                 "Error",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Error);
@@ -189,19 +189,19 @@ namespace DVLD.PresentationLayer.Applications
 
         private bool SaveApplication()
         {
-            var appService = new ApplicationService(application);
+            var appService = new ApplicationService(_application);
 
             if (!appService.Save())
             {
-                Utility.ShowErrorMessage("Failed to save application!");
+                Utility.ShowErrorMessage("Failed to save _application!");
                 return false;
             }
 
-            Utility.ShowSuccessMessage($"Saved the application successfully with id {application.Id}");
-            application = ApplicationService.FindById(application.Id); // load the full object
+            Utility.ShowSuccessMessage($"Saved the _application successfully with id {_application.Id}");
+            _application = ApplicationService.FindById(_application.Id); // load the full object
 
-            lblApplicationId.Text = application.Id.ToString();
-            lblCreatedBy.Text = application.CreatorUserInfo.Username;
+            lblApplicationId.Text = _application.Id.ToString();
+            lblCreatedBy.Text = _application.CreatorUserInfo.Username;
             return true;
         }
 
@@ -211,9 +211,9 @@ namespace DVLD.PresentationLayer.Applications
             var ldlaService = new LDLAService(_ldlaApplication);
 
             if (ldlaService.Save())
-                Utility.ShowSuccessMessage($"Saved the local driving license application successfully!");
+                Utility.ShowSuccessMessage($"Saved the local driving license _application successfully!");
             else
-                Utility.ShowErrorMessage("Failed to save local application!");
+                Utility.ShowErrorMessage("Failed to save local _application!");
         }
 
         private void btnSave_Click(object sender, EventArgs e)
