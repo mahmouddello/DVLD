@@ -17,7 +17,7 @@ namespace DVLD.PresentationLayer.Applications.Controls
         public void ResetInfo()
         {
             lblInternationalLicenseApplicationId.Text = "???";
-            lblInternationalLicenseId.Text = "???";
+            lblId.Text = "???";
             lblLocalLicenseId.Text = "???";
             lblApplicationDate.Text = "???";
             lblIssueDate.Text = "???";

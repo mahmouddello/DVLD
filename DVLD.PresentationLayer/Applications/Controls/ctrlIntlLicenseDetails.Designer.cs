@@ -32,7 +32,7 @@
             this.lblCreatedBy = new System.Windows.Forms.Label();
             this.lblExpirationDate = new System.Windows.Forms.Label();
             this.lblLocalLicenseId = new System.Windows.Forms.Label();
-            this.lblInternationalLicenseId = new System.Windows.Forms.Label();
+            this.lblId = new System.Windows.Forms.Label();
             this.lblFees = new System.Windows.Forms.Label();
             this.lblIssueDate = new System.Windows.Forms.Label();
             this.lblApplicationDate = new System.Windows.Forms.Label();
@@ -54,7 +54,7 @@
             this.gbIntlLicenseInfo.Controls.Add(this.lblCreatedBy);
             this.gbIntlLicenseInfo.Controls.Add(this.lblExpirationDate);
             this.gbIntlLicenseInfo.Controls.Add(this.lblLocalLicenseId);
-            this.gbIntlLicenseInfo.Controls.Add(this.lblInternationalLicenseId);
+            this.gbIntlLicenseInfo.Controls.Add(this.lblId);
             this.gbIntlLicenseInfo.Controls.Add(this.lblFees);
             this.gbIntlLicenseInfo.Controls.Add(this.lblIssueDate);
             this.gbIntlLicenseInfo.Controls.Add(this.lblApplicationDate);
@@ -106,15 +106,15 @@
             this.lblLocalLicenseId.TabIndex = 16;
             this.lblLocalLicenseId.Text = "???";
             // 
-            // lblInternationalLicenseId
+            // lblId
             // 
-            this.lblInternationalLicenseId.AutoSize = true;
-            this.lblInternationalLicenseId.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblInternationalLicenseId.Location = new System.Drawing.Point(681, 39);
-            this.lblInternationalLicenseId.Name = "lblInternationalLicenseId";
-            this.lblInternationalLicenseId.Size = new System.Drawing.Size(48, 26);
-            this.lblInternationalLicenseId.TabIndex = 15;
-            this.lblInternationalLicenseId.Text = "???";
+            this.lblId.AutoSize = true;
+            this.lblId.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblId.Location = new System.Drawing.Point(681, 39);
+            this.lblId.Name = "lblId";
+            this.lblId.Size = new System.Drawing.Size(48, 26);
+            this.lblId.TabIndex = 15;
+            this.lblId.Text = "???";
             // 
             // lblFees
             // 
@@ -267,6 +267,6 @@
         private System.Windows.Forms.Label lblIssueDate;
         private System.Windows.Forms.Label lblApplicationDate;
         private System.Windows.Forms.Label lblInternationalLicenseApplicationId;
-        private System.Windows.Forms.Label lblInternationalLicenseId;
+        private System.Windows.Forms.Label lblId;
     }
 }

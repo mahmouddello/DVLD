@@ -36,6 +36,36 @@ namespace DVLD.PresentationLayer.Licenses.International_Licenses
             return (enLicenseClass)license.LicenseClassID == enLicenseClass.C3_Ordinary;
         }
 
+        private bool IsLicenseValidForInternational(License license)
+        {
+            // Check 1: Not Ordinary License
+            if (!IsOrdinaryLicense(license))
+            {
+                Utility.ShowWarningMessage(
+                   message: "Only \"Ordinary Driving License\" is accepted",
+                   title: "License isn't eligible"
+                );
+                ResetUIElements();
+                return false;
+            }
+
+            // Check 2: Verify if an active, non expired international license already exists for this local license
+            InternationalLicense internationalLicense = InternationalLicenseService.GetByLicenseId(license.Id);
+
+            bool existsAndActive = internationalLicense != null && internationalLicense.IsActive;
+            if (existsAndActive && !internationalLicense.IsExpired)
+            {
+                Utility.ShowWarningMessage(
+                     message: $"An International Licenese with id ({internationalLicense.Id}) exists and active",
+                     title: "International License Exists"
+                );
+                ResetUIElements();
+                return false;
+            }
+
+            return true;
+        }
+
         private void ctrlDriverLicenseInfoWithFilter1_OnLicenseSelected(int obj)
         {
             _licenseId = obj;
@@ -49,18 +79,8 @@ namespace DVLD.PresentationLayer.Licenses.International_Licenses
 
             License license = LicenseService.FindById(_licenseId);
 
-            // Check 1: Not Ordinary License
-            if (!IsOrdinaryLicense(license))
-            {
-                Utility.ShowWarningMessage(
-                   message: "Only \"Ordinary Driving License\" is accepted",
-                   title: "License isn't eligible"
-                );
-                ResetUIElements();
-                return;
-            }
-
-            // TODO: Check 2: Check if the license id, has an international license issued already
+            if (!IsLicenseValidForInternational(license))
+                return;          
 
             btnIssue.Enabled = true;
             ctrlIntlLicenseDetails1.Enabled = true;
@@ -69,7 +89,7 @@ namespace DVLD.PresentationLayer.Licenses.International_Licenses
 
         private void btnIssue_Click(object sender, EventArgs e)
         {
-
+            Utility.ShowWarningMessage("Not Implemented Yet!", "In Progress...");
         }
     }
 }
