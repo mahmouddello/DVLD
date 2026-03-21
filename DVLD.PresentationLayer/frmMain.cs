@@ -5,6 +5,7 @@ using DVLD.PresentationLayer.Applications.LocalDrivingLicense;
 using DVLD.PresentationLayer.ApplicationTypes;
 using DVLD.PresentationLayer.Drivers;
 using DVLD.PresentationLayer.GlobalClasses;
+using DVLD.PresentationLayer.Licenses.International_Licenses;
 using DVLD.PresentationLayer.People;
 using DVLD.PresentationLayer.Tests.TestTypes;
 using DVLD.PresentationLayer.Users;
@@ -92,6 +93,12 @@ namespace DVLD.PresentationLayer
         {
             // Redirect the user to the local DLA list, selects the user and proceed to book appointment
             frmListLocalDLA frm = new frmListLocalDLA();
+            frm.ShowDialog();
+        }
+
+        private void internationalLicenseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmInternationalLicenseApplication frm = new frmInternationalLicenseApplication();
             frm.ShowDialog();
         }
     }

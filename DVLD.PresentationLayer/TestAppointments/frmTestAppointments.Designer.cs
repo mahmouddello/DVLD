@@ -41,7 +41,7 @@
             this.lblRecords = new System.Windows.Forms.Label();
             this.btnBookAppointment = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.ctrlApplicationDetails1 = new DVLD.PresentationLayer.Applications.Controls.ctrlApplicationDetails();
+            this.ctrlApplicationDetails1 = new DVLD.PresentationLayer.Applications.Controls.ctrlLDLADetails();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAppointments)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -193,7 +193,7 @@
         #endregion
 
         private System.Windows.Forms.Label lblTestType;
-        private Applications.Controls.ctrlApplicationDetails ctrlApplicationDetails1;
+        private Applications.Controls.ctrlLDLADetails ctrlApplicationDetails1;
         private System.Windows.Forms.Label lblAppointments;
         private System.Windows.Forms.DataGridView dgvAppointments;
         private System.Windows.Forms.Button btnCloseForm;

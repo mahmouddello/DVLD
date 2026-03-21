@@ -7,11 +7,11 @@ using DVLD.PresentationLayer.Licenses;
 
 namespace DVLD.PresentationLayer.Applications.Controls
 {
-    public partial class ctrlApplicationDetails : UserControl
+    public partial class ctrlLDLADetails : UserControl
     {
         private LDLA ldla;
 
-        public ctrlApplicationDetails()
+        public ctrlLDLADetails()
         {
             InitializeComponent();
         }

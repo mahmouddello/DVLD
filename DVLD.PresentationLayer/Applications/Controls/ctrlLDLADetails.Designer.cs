@@ -1,6 +1,6 @@
 ﻿namespace DVLD.PresentationLayer.Applications.Controls
 {
-    partial class ctrlApplicationDetails
+    partial class ctrlLDLADetails
     {
         /// <summary> 
         /// Required designer variable.

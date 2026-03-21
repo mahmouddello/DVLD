@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.ctrlApplicationDetails1 = new DVLD.PresentationLayer.Applications.Controls.ctrlApplicationDetails();
+            this.ctrlApplicationDetails1 = new DVLD.PresentationLayer.Applications.Controls.ctrlLDLADetails();
             this.SuspendLayout();
             // 
             // ctrlApplicationDetails1
@@ -52,6 +52,6 @@
 
         #endregion
 
-        private Controls.ctrlApplicationDetails ctrlApplicationDetails1;
+        private Controls.ctrlLDLADetails ctrlApplicationDetails1;
     }
 }

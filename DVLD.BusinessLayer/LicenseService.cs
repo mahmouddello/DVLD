@@ -47,7 +47,6 @@ namespace DVLD.BusinessLayer
             );
         }
 
-
         public static License IssueDLFirstTime(int ldlaId, string rawNotes, int createdByUserId)
         {
             var localDla = LDLAService.FindById(ldlaId);
@@ -91,17 +90,21 @@ namespace DVLD.BusinessLayer
                 Info.DriverInfo = DriverService.FindById(Info.DriverId);
 
                 // 2. Create driver record if not exists
-                if (Info.DriverInfo == null)
+                Driver driver = DriverService.FindByPersonId(Info.MainApplicationInfo.ApplicantPersonId);
+
+                if (driver == null)
                 {
-                    Driver driver = new Driver(personId: Info.MainApplicationInfo.ApplicantPersonId, createdByUserId: Info.CreatedByUserId);
-                    var driverService = new DriverService(driver);
+                    driver = new Driver(personId: Info.MainApplicationInfo.ApplicantPersonId, createdByUserId: Info.CreatedByUserId);
+                    DriverService driverService = new DriverService(driver);
 
                     if (!driverService.Save())
                         return false;
 
-                    Info.DriverId = driver.Id;
-                    Info.DriverInfo = driverService.Info;
+                    driver = driverService.Info;
                 }
+
+                Info.DriverId = driver.Id;
+                Info.DriverInfo = driver;
 
                 // 3. Assing the rest properties
                 LicenseClass licenseClass = LicenseClassService.FindById(Info.LicenseClassID);

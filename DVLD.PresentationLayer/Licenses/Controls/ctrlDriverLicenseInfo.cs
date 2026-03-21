@@ -1,38 +1,35 @@
-﻿using DVLD.BusinessLayer;
+﻿using System;
+using System.IO;
+using System.Windows.Forms;
+using DVLD.PresentationLayer.Properties;
+using DVLD.BusinessLayer;
 using DVLD.EntityLayer;
 using DVLD.PresentationLayer.GlobalClasses;
-using DVLD.PresentationLayer.Properties;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace DVLD.PresentationLayer.Licenses.Controls
 {
     public partial class ctrlDriverLicenseInfo : UserControl
     {
         private LDLA ldla;
-        private EntityLayer.License license;
+        private License license;
+
+        // exposed properties
+        public int LicenseId => license?.Id ?? -1;
+        public License SelectedLicense => license ?? null;
 
         public ctrlDriverLicenseInfo()
         {
             InitializeComponent();
         }
 
-        public void LoadLicenseByLocalAppId(int _ldlaId)
+        public void LoadLicenseByLocalAppId(int ldlaId)
         {
             // 1. fetch the main application id through the local application
-            ldla = LDLAService.FindById(_ldlaId);
+            ldla = LDLAService.FindById(ldlaId);
 
             if (ldla == null)
             {
-                Utility.ShowErrorMessage("Failed to load the application that is associated with this license!");
+                Utility.ShowErrorMessage("Failed to load the application that is associated with this license");
                 return;
             }
 
@@ -41,7 +38,7 @@ namespace DVLD.PresentationLayer.Licenses.Controls
 
             if (license == null)
             {
-                Utility.ShowErrorMessage("Failed to find the license that is associated with this application!");
+                Utility.ShowErrorMessage("Failed to find the license that is associated with this application");
                 return;
             }
 
@@ -57,6 +54,7 @@ namespace DVLD.PresentationLayer.Licenses.Controls
             if (license == null)
             {
                 Utility.ShowErrorMessage("Failed to find the license with id: " + licenseId);
+                ResetFormInfo();
                 return;
             }
 
@@ -71,6 +69,24 @@ namespace DVLD.PresentationLayer.Licenses.Controls
 
             // 3. Display the info
             FillFormInfo();
+        }
+
+        private void ResetFormInfo()
+        {
+          
+            lblClass.Text = "???";
+            lblName.Text = "???";
+            lblLicenseID.Text = "???";
+            lblNationalNo.Text = "???";
+            lblGender.Text = "???";
+            lblIssueDate.Text = "???";
+            lblIssueReason.Text = "???";
+            lblNotes.Text = "???";
+            lblIsActive.Text = "???";
+            lblDateOfBirth.Text = "???";
+            lblExpirationDate.Text = "???";
+            lblDriverID.Text = "???";
+            lblIsDetained.Text = "???";
         }
 
         private string GetIssueReason(enLicenseIssueReason issueReason)

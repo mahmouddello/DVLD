@@ -32,7 +32,7 @@
             this.txtNotes = new System.Windows.Forms.TextBox();
             this.btnIssue = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
-            this.ctrlApplicationDetails1 = new DVLD.PresentationLayer.Applications.Controls.ctrlApplicationDetails();
+            this.ctrlApplicationDetails1 = new DVLD.PresentationLayer.Applications.Controls.ctrlLDLADetails();
             this.SuspendLayout();
             // 
             // label1
@@ -107,7 +107,7 @@
 
         #endregion
 
-        private Applications.Controls.ctrlApplicationDetails ctrlApplicationDetails1;
+        private Applications.Controls.ctrlLDLADetails ctrlApplicationDetails1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtNotes;
         private System.Windows.Forms.Button btnIssue;
