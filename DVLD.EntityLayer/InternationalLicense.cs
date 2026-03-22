@@ -20,6 +20,13 @@ namespace DVLD.EntityLayer
 
         // Helpers
         public bool IsExpired => DateTime.Now > ExpirationDate;
+        public bool IsNew => Id == -1;
+        public bool IsValid =>
+        ApplicationId > 0 &&
+        DriverId > 0 &&
+        LocalLicenseId > 0 &&
+        CreatedByUserId > 0 &&
+        ExpirationDate > IssueDate;
 
         public InternationalLicense()
         {

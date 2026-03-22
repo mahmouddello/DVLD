@@ -10,9 +10,57 @@ namespace DVLD.DataAccessLayer
 {
     public class InternationalLicenseData
     {
-        public static DataTable GetAllAsTable()
+        public static int Add(InternationalLicense entity)
         {
-            string query = @"SELECT * FROM InternationalLicenseApplications_View";
+            string query = @"INSERT INTO [dbo].[InternationalLicenses]
+                        ([ApplicationID]
+                        ,[DriverID]
+                        ,[IssuedUsingLocalLicenseID]
+                        ,[IssueDate]
+                        ,[ExpirationDate]
+                        ,[IsActive]
+                        ,[CreatedByUserID])
+                     VALUES
+                        (@ApplicationID
+                        ,@DriverID
+                        ,@IssuedUsingLocalLicenseID
+                        ,@IssueDate
+                        ,@ExpirationDate
+                        ,@IsActive
+                        ,@CreatedByUserID);
+                     SELECT SCOPE_IDENTITY();";
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@ApplicationID", entity.ApplicationId);
+                    command.Parameters.AddWithValue("@DriverID", entity.DriverId);
+                    command.Parameters.AddWithValue("@IssuedUsingLocalLicenseID", entity.LocalLicenseId);
+                    command.Parameters.AddWithValue("@IssueDate", entity.IssueDate);
+                    command.Parameters.AddWithValue("@ExpirationDate", entity.ExpirationDate);
+                    command.Parameters.AddWithValue("@IsActive", entity.IsActive);
+                    command.Parameters.AddWithValue("@CreatedByUserID", entity.CreatedByUserId);
+
+                    connection.Open();
+
+                    object result = command.ExecuteScalar();
+                    if (result != null && int.TryParse(result.ToString(), out int newId))
+                        return newId;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error in InternationalLicenseData.Add: {ex.Message}");
+            }
+
+            return -1;
+        }
+
+        public static DataTable GetAllAsTable(int driverId)
+        {
+            string query = @"SELECT * FROM InternationalLicenseApplications_View WHERE DriverID = @Id";
             DataTable table = new DataTable();
 
             try
@@ -20,6 +68,7 @@ namespace DVLD.DataAccessLayer
                 using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
+                    command.Parameters.AddWithValue("@Id", driverId);
                     connection.Open();
                     using (SqlDataReader reader = command.ExecuteReader())
                         table.Load(reader);
@@ -108,6 +157,31 @@ namespace DVLD.DataAccessLayer
             return null;
         }
 
+        public static bool ExistsActiveNonExpiredByLocalLicenseId(int licenseId)
+        {
+            string query = @"SELECT 1 FROM InternationalLicenses 
+                     WHERE IssuedUsingLocalLicenseID = @LicenseId 
+                     AND IsActive = 1
+                     AND ExpirationDate > GETDATE()";
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@LicenseId", licenseId);
+                    connection.Open();
+                    return command.ExecuteScalar() != null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error in InternationalLicenseData.ExistsActiveByLocalLicenseId: {ex.Message}");
+            }
+
+            return false;
+        }
+
         public static bool ExistsById(int internationaLicenseId)
         {
             string query = @"SELECT 1 FROM InternationalLicenses WHERE InternationalLicenseID = @LicenseId";
@@ -142,7 +216,7 @@ namespace DVLD.DataAccessLayer
                 {
                     command.Parameters.AddWithValue("@LicenseId", licenseId);
                     connection.Open();
-                    
+
                     return command.ExecuteScalar() != null;
                 }
             }

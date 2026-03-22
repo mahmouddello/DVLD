@@ -25,6 +25,7 @@ namespace DVLD.EntityLayer
         public int CreatedByUserId { get; set; } = -1;
 
         public bool IsNew => Id == -1;
+        public bool IsExpired => DateTime.Now > ExpirationDate;
 
         // Navigation
         public Application MainApplicationInfo { get; set; } = null;

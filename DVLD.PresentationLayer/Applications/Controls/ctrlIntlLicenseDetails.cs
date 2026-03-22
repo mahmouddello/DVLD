@@ -9,6 +9,23 @@ namespace DVLD.PresentationLayer.Applications.Controls
 {
     public partial class ctrlIntlLicenseDetails : UserControl
     {
+        public string IntlAppId 
+        {   get { return lblInternationalLicenseApplicationId.Text; }
+            set
+            {
+                if (!string.IsNullOrEmpty(value))
+                    lblInternationalLicenseApplicationId.Text = value;
+            }
+        }
+
+        public string IntLicenseId 
+        {   get { return lblId.Text; }
+            set
+            {
+                if (!string.IsNullOrEmpty(value))
+                    lblId.Text = value;
+            }
+        }
         public ctrlIntlLicenseDetails()
         {
             InitializeComponent();

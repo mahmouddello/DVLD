@@ -22,8 +22,15 @@ namespace DVLD.BusinessLayer
         {
             if (licenseId <= 0)
                 throw new Exception("Invalid license id!");
-            
-            return LicenseData.GetById(licenseId);
+
+            var license = LicenseData.GetById(licenseId);
+
+            if (license == null)
+                return null;
+
+            ResolveNavigationProperties(license);
+
+            return license;
         }
 
         public static License FindByApplicationId(int applicationId)
@@ -31,7 +38,14 @@ namespace DVLD.BusinessLayer
             if (applicationId <= 0)
                 throw new Exception("Invalid application id!");
 
-            return LicenseData.GetByMainApplicationId(applicationId);
+            var license = LicenseData.GetByMainApplicationId(applicationId);
+
+            if (license == null)
+                return null;
+
+            ResolveNavigationProperties(license);
+
+            return license;
         }
 
         public static int GetActiveLicenseForDriver(int driverId) => LicenseData.GetActiveLicenseCount(driverId);
@@ -121,6 +135,13 @@ namespace DVLD.BusinessLayer
             }
             
             return false; // issued license can't be edited
+        }
+
+        // ── Helpers ──────────────────────────────
+        private static void ResolveNavigationProperties(License license)
+        {
+            license.MainApplicationInfo = ApplicationService.FindById(license.ApplicationId);
+            license.DriverInfo = DriverService.FindById(license.DriverId);
         }
     }
 }

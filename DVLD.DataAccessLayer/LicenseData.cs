@@ -67,7 +67,8 @@ namespace DVLD.DataAccessLayer
                     connection.Open();
 
                     using (SqlDataReader reader = cmd.ExecuteReader())
-                        dt.Load(reader);
+                        if (reader.HasRows)
+                            dt.Load(reader);
                 }
             }
             catch (Exception ex)

@@ -38,18 +38,18 @@
             this.tcLicenses = new System.Windows.Forms.TabControl();
             this.tpLocal = new System.Windows.Forms.TabPage();
             this.dgvLocalLicenses = new System.Windows.Forms.DataGridView();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.showLicenseInfoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tpInternational = new System.Windows.Forms.TabPage();
             this.dgvIntLicenses = new System.Windows.Forms.DataGridView();
             this.gbHistoryMaster = new System.Windows.Forms.GroupBox();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.showLicenseInfoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tcLicenses.SuspendLayout();
             this.tpLocal.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLocalLicenses)).BeginInit();
+            this.contextMenuStrip1.SuspendLayout();
             this.tpInternational.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvIntLicenses)).BeginInit();
             this.gbHistoryMaster.SuspendLayout();
-            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tcLicenses
@@ -78,7 +78,6 @@
             // 
             this.dgvLocalLicenses.AllowUserToAddRows = false;
             this.dgvLocalLicenses.AllowUserToDeleteRows = false;
-            this.dgvLocalLicenses.AllowUserToOrderColumns = true;
             this.dgvLocalLicenses.AllowUserToResizeColumns = false;
             this.dgvLocalLicenses.AllowUserToResizeRows = false;
             this.dgvLocalLicenses.BackgroundColor = System.Drawing.Color.White;
@@ -102,6 +101,7 @@
             this.dgvLocalLicenses.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvLocalLicenses.Location = new System.Drawing.Point(3, 3);
             this.dgvLocalLicenses.Name = "dgvLocalLicenses";
+            this.dgvLocalLicenses.ReadOnly = true;
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -114,6 +114,21 @@
             this.dgvLocalLicenses.RowTemplate.Height = 28;
             this.dgvLocalLicenses.Size = new System.Drawing.Size(1141, 338);
             this.dgvLocalLicenses.TabIndex = 0;
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.showLicenseInfoToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(227, 36);
+            // 
+            // showLicenseInfoToolStripMenuItem
+            // 
+            this.showLicenseInfoToolStripMenuItem.Name = "showLicenseInfoToolStripMenuItem";
+            this.showLicenseInfoToolStripMenuItem.Size = new System.Drawing.Size(226, 32);
+            this.showLicenseInfoToolStripMenuItem.Text = "Show License Info";
+            this.showLicenseInfoToolStripMenuItem.Click += new System.EventHandler(this.showLicenseInfoToolStripMenuItem_Click);
             // 
             // tpInternational
             // 
@@ -129,10 +144,13 @@
             // 
             // dgvIntLicenses
             // 
+            this.dgvIntLicenses.AllowUserToAddRows = false;
+            this.dgvIntLicenses.AllowUserToDeleteRows = false;
+            this.dgvIntLicenses.AllowUserToResizeColumns = false;
             this.dgvIntLicenses.BackgroundColor = System.Drawing.Color.White;
             dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
             dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
@@ -141,7 +159,7 @@
             this.dgvIntLicenses.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
             dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
@@ -149,9 +167,10 @@
             this.dgvIntLicenses.DefaultCellStyle = dataGridViewCellStyle5;
             this.dgvIntLicenses.Location = new System.Drawing.Point(3, 3);
             this.dgvIntLicenses.Name = "dgvIntLicenses";
+            this.dgvIntLicenses.ReadOnly = true;
             dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
             dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
@@ -159,7 +178,7 @@
             this.dgvIntLicenses.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
             this.dgvIntLicenses.RowHeadersWidth = 62;
             this.dgvIntLicenses.RowTemplate.Height = 28;
-            this.dgvIntLicenses.Size = new System.Drawing.Size(1238, 338);
+            this.dgvIntLicenses.Size = new System.Drawing.Size(1141, 338);
             this.dgvIntLicenses.TabIndex = 1;
             // 
             // gbHistoryMaster
@@ -173,21 +192,6 @@
             this.gbHistoryMaster.TabStop = false;
             this.gbHistoryMaster.Text = "Driver Licenses";
             // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.showLicenseInfoToolStripMenuItem});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(241, 69);
-            // 
-            // showLicenseInfoToolStripMenuItem
-            // 
-            this.showLicenseInfoToolStripMenuItem.Name = "showLicenseInfoToolStripMenuItem";
-            this.showLicenseInfoToolStripMenuItem.Size = new System.Drawing.Size(240, 32);
-            this.showLicenseInfoToolStripMenuItem.Text = "Show License Info";
-            this.showLicenseInfoToolStripMenuItem.Click += new System.EventHandler(this.showLicenseInfoToolStripMenuItem_Click);
-            // 
             // ctrlDriverLicenseHistory
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -198,10 +202,10 @@
             this.tcLicenses.ResumeLayout(false);
             this.tpLocal.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvLocalLicenses)).EndInit();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.tpInternational.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvIntLicenses)).EndInit();
             this.gbHistoryMaster.ResumeLayout(false);
-            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

@@ -33,6 +33,7 @@
             this.btnClose = new System.Windows.Forms.Button();
             this.ctrlIntlLicenseDetails1 = new DVLD.PresentationLayer.Applications.Controls.ctrlIntlLicenseDetails();
             this.ctrlDriverLicenseInfoWithFilter1 = new DVLD.PresentationLayer.Licenses.Controls.ctrlDriverLicenseInfoWithFilter();
+            this.lnkLicenseHistory = new System.Windows.Forms.LinkLabel();
             this.SuspendLayout();
             // 
             // label1
@@ -74,6 +75,8 @@
             // 
             // ctrlIntlLicenseDetails1
             // 
+            this.ctrlIntlLicenseDetails1.IntlAppId = "???";
+            this.ctrlIntlLicenseDetails1.IntLicenseId = "???";
             this.ctrlIntlLicenseDetails1.Location = new System.Drawing.Point(20, 746);
             this.ctrlIntlLicenseDetails1.Name = "ctrlIntlLicenseDetails1";
             this.ctrlIntlLicenseDetails1.Size = new System.Drawing.Size(1025, 279);
@@ -90,11 +93,25 @@
             this.ctrlDriverLicenseInfoWithFilter1.TabIndex = 2;
             this.ctrlDriverLicenseInfoWithFilter1.OnLicenseSelected += new System.Action<int>(this.ctrlDriverLicenseInfoWithFilter1_OnLicenseSelected);
             // 
+            // lnkLicenseHistory
+            // 
+            this.lnkLicenseHistory.AutoSize = true;
+            this.lnkLicenseHistory.Enabled = false;
+            this.lnkLicenseHistory.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lnkLicenseHistory.Location = new System.Drawing.Point(15, 1073);
+            this.lnkLicenseHistory.Name = "lnkLicenseHistory";
+            this.lnkLicenseHistory.Size = new System.Drawing.Size(200, 25);
+            this.lnkLicenseHistory.TabIndex = 20;
+            this.lnkLicenseHistory.TabStop = true;
+            this.lnkLicenseHistory.Text = "Show License History";
+            this.lnkLicenseHistory.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkLicenseHistory_LinkClicked);
+            // 
             // frmInternationalLicenseApplication
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1041, 1125);
+            this.Controls.Add(this.lnkLicenseHistory);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.btnIssue);
             this.Controls.Add(this.ctrlIntlLicenseDetails1);
@@ -107,6 +124,7 @@
             this.Text = "Issue International License";
             this.Load += new System.EventHandler(this.frmInternationalLicenseApplication_Load);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -116,5 +134,6 @@
         private Controls.ctrlDriverLicenseInfoWithFilter ctrlDriverLicenseInfoWithFilter1;
         private System.Windows.Forms.Button btnIssue;
         private System.Windows.Forms.Button btnClose;
+        private System.Windows.Forms.LinkLabel lnkLicenseHistory;
     }
 }
