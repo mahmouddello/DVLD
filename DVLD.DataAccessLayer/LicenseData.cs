@@ -160,6 +160,31 @@ namespace DVLD.DataAccessLayer
             return -1;
         }
 
+        public static bool UpdateLicenseStatus(int licenseId, bool status)
+        {
+            string query = @"UPDATE Licenses SET IsActive = @Status WHERE LicenseID = @Id";
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Id", licenseId);
+                    command.Parameters.AddWithValue("@Status", status ? 1 : 0);
+
+                    connection.Open();
+
+                    return command.ExecuteNonQuery() > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error in LicenseData.UpdateLicenseStatus: {ex.Message}");
+            }
+
+            return false;
+        }
+
         private static License MapToEntity(SqlDataReader reader)
         {
             var notesIndex = reader.GetOrdinal("Notes");
@@ -186,7 +211,13 @@ namespace DVLD.DataAccessLayer
             command.Parameters.AddWithValue("@LicenseClass", license.LicenseClassID);
             command.Parameters.AddWithValue("@IssueDate", license.IssueDate);
             command.Parameters.AddWithValue("@ExpirationDate", license.ExpirationDate);
-            command.Parameters.AddWithValue("@Notes", (object)license.Notes ?? DBNull.Value);
+
+            var notesParam = new SqlParameter("@Notes", SqlDbType.NVarChar);
+            notesParam.Value = string.IsNullOrWhiteSpace(license.Notes)
+                ? (object)DBNull.Value
+                : license.Notes;
+            command.Parameters.Add(notesParam);
+
             command.Parameters.AddWithValue("@PaidFees", license.PaidFees);
             command.Parameters.AddWithValue("@IsActive", license.IsActive);
             command.Parameters.AddWithValue("@IssueReason", (int)license.IssueReason);

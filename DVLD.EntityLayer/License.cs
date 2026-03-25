@@ -26,10 +26,18 @@ namespace DVLD.EntityLayer
 
         public bool IsNew => Id == -1;
         public bool IsExpired => DateTime.Now > ExpirationDate;
+        public bool IsValid =>
+        ApplicationId > 0 &&
+        DriverId > 0 &&
+        LicenseClassID > 0 &&
+        CreatedByUserId > 0 &&
+        IsActive &&
+        ExpirationDate > IssueDate;
 
         // Navigation
         public Application MainApplicationInfo { get; set; } = null;
         public Driver DriverInfo { get; set; } = null;
+        public LicenseClass LicenseClassInfo { get; set; } = null;
 
         public License()
         {

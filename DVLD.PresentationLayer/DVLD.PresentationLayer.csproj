@@ -108,6 +108,12 @@
     <Compile Include="Applications\LocalDrivingLicense\frmAddEditLocalDLA.Designer.cs">
       <DependentUpon>frmAddEditLocalDLA.cs</DependentUpon>
     </Compile>
+    <Compile Include="Applications\LocalDrivingLicense\frmRenewLocalLicense.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Applications\LocalDrivingLicense\frmRenewLocalLicense.Designer.cs">
+      <DependentUpon>frmRenewLocalLicense.cs</DependentUpon>
+    </Compile>
     <Compile Include="Applications\LocalDrivingLicense\frmShowLocalDLADetails.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -313,6 +319,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Applications\LocalDrivingLicense\frmAddEditLocalDLA.resx">
       <DependentUpon>frmAddEditLocalDLA.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Applications\LocalDrivingLicense\frmRenewLocalLicense.resx">
+      <DependentUpon>frmRenewLocalLicense.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Applications\LocalDrivingLicense\frmShowLocalDLADetails.resx">
       <DependentUpon>frmShowLocalDLADetails.cs</DependentUpon>

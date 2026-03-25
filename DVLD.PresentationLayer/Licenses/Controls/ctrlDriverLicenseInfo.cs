@@ -58,16 +58,7 @@ namespace DVLD.PresentationLayer.Licenses.Controls
                 return;
             }
 
-            // 2. fetch the ldla that is associated with the license id
-            ldla = LDLAService.FindByMainApplicationId(license.ApplicationId);
-
-            if (ldla == null)
-            {
-                Utility.ShowErrorMessage("Failed to load the application that is associated with this license!");
-                return;
-            }
-
-            // 3. Display the info
+            // 2. Display the info
             FillFormInfo();
         }
 
@@ -112,23 +103,21 @@ namespace DVLD.PresentationLayer.Licenses.Controls
 
         private void FillFormInfo()
         {
-            Gender gender = ldla.MainApplicationInfo.ApplicantPersonInfo.Gender;
-            DateTime dob = ldla.MainApplicationInfo.ApplicantPersonInfo.DateOfBirth;
-            var _driver = DriverService.FindByPersonId(ldla.MainApplicationInfo.ApplicantPersonId);
+            var person = license.MainApplicationInfo.ApplicantPersonInfo;
 
-            lblClass.Text = ldla.LicenseClassInfo.Name;
-            lblName.Text = ldla.MainApplicationInfo.ApplicantPersonInfo.FullName;
+            lblClass.Text = license.LicenseClassInfo.Name;
+            lblName.Text = person.FullName;
             lblLicenseID.Text = license.Id.ToString();
-            lblNationalNo.Text = ldla.MainApplicationInfo.ApplicantPersonInfo.NationalNo;
-            lblGender.Text = gender.ToString();
+            lblNationalNo.Text = person.NationalNo;
+            lblGender.Text = person.Gender.ToString();
             lblIssueDate.Text = license.IssueDate.ToShortDateString();
             lblIssueReason.Text = GetIssueReason(license.IssueReason);
             lblNotes.Text = license.Notes ?? "-"; // if it's not null, left value, null: right value '-'
 
-            lblIsActive.Text = license.IsActive ? "Yes" : "No";
-            lblDateOfBirth.Text = dob.ToShortDateString();
+            lblIsActive.Text = license.IsActive ? "Active" : "Inactive";
+            lblDateOfBirth.Text = person.DateOfBirth.ToShortDateString();
             lblExpirationDate.Text = license.ExpirationDate.ToShortDateString();
-            lblDriverID.Text = _driver.Id.ToString();
+            lblDriverID.Text = license.DriverId.ToString();
             // implement is detained
 
             LoadPersonImage();
@@ -136,7 +125,7 @@ namespace DVLD.PresentationLayer.Licenses.Controls
 
         private void LoadPersonImage()
         {
-            var person = ldla.MainApplicationInfo.ApplicantPersonInfo;
+            var person = license.MainApplicationInfo.ApplicantPersonInfo;
             string fullImagePath = Path.Combine(Globals.ImagesRootDirectory, person.ImagePath);
 
             if (!string.IsNullOrWhiteSpace(fullImagePath) && File.Exists(fullImagePath))

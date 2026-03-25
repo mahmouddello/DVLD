@@ -108,5 +108,11 @@ namespace DVLD.PresentationLayer
             frmManageIntlLicenses frm = new frmManageIntlLicenses();
             frm.ShowDialog();
         }
+
+        private void renewDrivingLicenseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmRenewLocalLicense form = new frmRenewLocalLicense();
+            form.ShowDialog();
+        }
     }
 }
