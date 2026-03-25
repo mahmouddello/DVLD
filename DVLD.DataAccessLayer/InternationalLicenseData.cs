@@ -58,7 +58,7 @@ namespace DVLD.DataAccessLayer
             return -1;
         }
 
-        public static DataTable GetAllAsTable(int driverId)
+        public static DataTable GetAllAsTableForDriver(int driverId)
         {
             string query = @"SELECT * FROM InternationalLicenseApplications_View WHERE DriverID = @Id";
             DataTable table = new DataTable();
@@ -69,6 +69,29 @@ namespace DVLD.DataAccessLayer
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@Id", driverId);
+                    connection.Open();
+                    using (SqlDataReader reader = command.ExecuteReader())
+                        table.Load(reader);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error in InternationalLicenseData.GetAllAsTable: {ex.Message}");
+            }
+
+            return table;
+        }
+
+        public static DataTable GetAllAsTable()
+        {
+            string query = @"SELECT * FROM InternationalLicenseApplications_View";
+            DataTable table = new DataTable();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
                     connection.Open();
                     using (SqlDataReader reader = command.ExecuteReader())
                         table.Load(reader);

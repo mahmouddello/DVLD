@@ -1,6 +1,5 @@
-﻿using System;
-using System.Windows.Forms;
-using DVLD.PresentationLayer.Applications;
+﻿using DVLD.PresentationLayer.Applications;
+using DVLD.PresentationLayer.Applications.International_Licenses;
 using DVLD.PresentationLayer.Applications.LocalDrivingLicense;
 using DVLD.PresentationLayer.ApplicationTypes;
 using DVLD.PresentationLayer.Drivers;
@@ -9,6 +8,8 @@ using DVLD.PresentationLayer.Licenses.International_Licenses;
 using DVLD.PresentationLayer.People;
 using DVLD.PresentationLayer.Tests.TestTypes;
 using DVLD.PresentationLayer.Users;
+using System;
+using System.Windows.Forms;
 
 namespace DVLD.PresentationLayer
 {
@@ -99,6 +100,12 @@ namespace DVLD.PresentationLayer
         private void internationalLicenseToolStripMenuItem_Click(object sender, EventArgs e)
         {
             frmInternationalLicenseApplication frm = new frmInternationalLicenseApplication();
+            frm.ShowDialog();
+        }
+
+        private void internationalLicenseApplicationsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmManageIntlLicenses frm = new frmManageIntlLicenses();
             frm.ShowDialog();
         }
     }

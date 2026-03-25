@@ -90,6 +90,12 @@
     <Compile Include="Applications\Controls\ctrlLDLADetails.Designer.cs">
       <DependentUpon>ctrlLDLADetails.cs</DependentUpon>
     </Compile>
+    <Compile Include="Applications\International Licenses\frmManageIntlLicenses.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Applications\International Licenses\frmManageIntlLicenses.Designer.cs">
+      <DependentUpon>frmManageIntlLicenses.cs</DependentUpon>
+    </Compile>
     <Compile Include="Applications\LocalDrivingLicense\frmListLocalDLA.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -152,6 +158,18 @@
     </Compile>
     <Compile Include="Applications\International Licenses\frmInternationalLicenseApplication.Designer.cs">
       <DependentUpon>frmInternationalLicenseApplication.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Licenses\Controls\ctrlInternationalLicenseInfo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Licenses\Controls\ctrlInternationalLicenseInfo.Designer.cs">
+      <DependentUpon>ctrlInternationalLicenseInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Licenses\International License\frmInternationalLicenseDetails.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Licenses\International License\frmInternationalLicenseDetails.Designer.cs">
+      <DependentUpon>frmInternationalLicenseDetails.cs</DependentUpon>
     </Compile>
     <Compile Include="Licenses\Local Licenses\frmIssueDrivingLicense.cs">
       <SubType>Form</SubType>
@@ -287,6 +305,9 @@
     <EmbeddedResource Include="Applications\Controls\ctrlLDLADetails.resx">
       <DependentUpon>ctrlLDLADetails.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Applications\International Licenses\frmManageIntlLicenses.resx">
+      <DependentUpon>frmManageIntlLicenses.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Applications\LocalDrivingLicense\frmListLocalDLA.resx">
       <DependentUpon>frmListLocalDLA.cs</DependentUpon>
     </EmbeddedResource>
@@ -316,6 +337,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Applications\International Licenses\frmInternationalLicenseApplication.resx">
       <DependentUpon>frmInternationalLicenseApplication.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Licenses\Controls\ctrlInternationalLicenseInfo.resx">
+      <DependentUpon>ctrlInternationalLicenseInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Licenses\International License\frmInternationalLicenseDetails.resx">
+      <DependentUpon>frmInternationalLicenseDetails.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Licenses\Local Licenses\frmIssueDrivingLicense.resx">
       <DependentUpon>frmIssueDrivingLicense.cs</DependentUpon>
@@ -575,5 +602,12 @@
   <ItemGroup>
     <None Include="Resources\document1.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\globe128.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\globe32.png" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

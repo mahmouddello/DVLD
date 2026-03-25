@@ -169,8 +169,14 @@
   <data name="dvld-wallpaper2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\dvld-wallpaper2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="globe128" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\globe128.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="webpage-list" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\webpage-list.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="document1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\document1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="local-license" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\local-license.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -178,8 +184,8 @@
   <data name="user-logout" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\user-logout.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="person-info" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\person-info.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="cancel-application" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cancel-application.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="contact-list" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\contact-list.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -208,8 +214,8 @@
   <data name="people-list512" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\people-list512.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="cancel-application" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\cancel-application.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="dvld-wallpaper4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dvld-wallpaper4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="driverMale" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\driverMale.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -241,8 +247,8 @@
   <data name="users-list" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\users-list.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="dvld-wallpaper4" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\dvld-wallpaper4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="person-info" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\person-info.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="vision-test" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\vision-test.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -277,7 +283,7 @@
   <data name="searchPersonIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\searchPersonIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="document1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\document1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="globe32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\globe32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

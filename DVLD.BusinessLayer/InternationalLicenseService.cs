@@ -15,7 +15,9 @@ namespace DVLD.BusinessLayer
         }
 
         // ── Static Methods ────────────────────────────────
-        public static DataTable GetAllAsTable(int driverId) => InternationalLicenseData.GetAllAsTable(driverId); 
+        public static DataTable GetAllAsTable() => InternationalLicenseData.GetAllAsTable();
+
+        public static DataTable GetAllAsTableForDriver(int driverId) => InternationalLicenseData.GetAllAsTableForDriver(driverId); 
 
         public static InternationalLicense FindById(int id)
         {

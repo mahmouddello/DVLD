@@ -31,7 +31,7 @@ namespace DVLD.PresentationLayer.Licenses.Controls
 
         private DataTable GetInternationalLicense(int driverId)
         {
-            return InternationalLicenseService.GetAllAsTable(driverId);
+            return InternationalLicenseService.GetAllAsTableForDriver(driverId);
         }
 
         private void ApplyLocalDGVSettings()

@@ -85,6 +85,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.ctrlPersonCardWithFilter1);
             this.Name = "frmShowLicenseHistory";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "frmShowLicenseHistory";
             this.Load += new System.EventHandler(this.frmShowLicenseHistory_Load);
             this.ResumeLayout(false);
