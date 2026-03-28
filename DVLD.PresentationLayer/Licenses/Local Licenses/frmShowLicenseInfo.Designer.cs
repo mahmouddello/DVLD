@@ -36,7 +36,7 @@
             // 
             this.ctrlDriverLicenseInfo1.Location = new System.Drawing.Point(12, 158);
             this.ctrlDriverLicenseInfo1.Name = "ctrlDriverLicenseInfo1";
-            this.ctrlDriverLicenseInfo1.Size = new System.Drawing.Size(1038, 503);
+            this.ctrlDriverLicenseInfo1.Size = new System.Drawing.Size(1257, 521);
             this.ctrlDriverLicenseInfo1.TabIndex = 0;
             // 
             // label1
@@ -45,7 +45,7 @@
             this.label1.ForeColor = System.Drawing.Color.Black;
             this.label1.Location = new System.Drawing.Point(12, 82);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(1038, 55);
+            this.label1.Size = new System.Drawing.Size(1244, 55);
             this.label1.TabIndex = 14;
             this.label1.Text = "Driver License Info";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -54,7 +54,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1062, 702);
+            this.ClientSize = new System.Drawing.Size(1268, 683);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.ctrlDriverLicenseInfo1);
             this.Name = "frmShowLicenseInfo";

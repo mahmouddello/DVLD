@@ -120,6 +120,12 @@
     <Compile Include="Applications\LocalDrivingLicense\frmShowLocalDLADetails.Designer.cs">
       <DependentUpon>frmShowLocalDLADetails.cs</DependentUpon>
     </Compile>
+    <Compile Include="Applications\Replacement\frmReplacementApplication.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Applications\Replacement\frmReplacementApplication.Designer.cs">
+      <DependentUpon>frmReplacementApplication.cs</DependentUpon>
+    </Compile>
     <Compile Include="Drivers\frmListDrivers.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -325,6 +331,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Applications\LocalDrivingLicense\frmShowLocalDLADetails.resx">
       <DependentUpon>frmShowLocalDLADetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Applications\Replacement\frmReplacementApplication.resx">
+      <DependentUpon>frmReplacementApplication.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Drivers\frmListDrivers.resx">
       <DependentUpon>frmListDrivers.cs</DependentUpon>

@@ -207,6 +207,78 @@ namespace DVLD.BusinessLayer
             return newLicense;
         }
 
+        public License Replace(enLicenseIssueReason replacementReason, int createdByUserId)
+        {
+            // Business Logic Checks
+            if (Info.IsExpired)
+                throw new ConstraintException("Replacement Failed: License is expired, you must apply for renewal");
+
+            if (!Info.IsActive)
+                throw new ConstraintException("Liceense can't be replaced becuase it's Inactive");
+
+            if (!Info.IsValid)
+                throw new ConstraintException("License Information isn't valid to process");
+
+            bool reasonNotAcceptable = replacementReason != enLicenseIssueReason.ReplacementForDamaged
+                                    && replacementReason != enLicenseIssueReason.ReplacementForLost;
+
+            if (reasonNotAcceptable)
+                throw new ConstraintException("Replacement reason information is invalid");
+
+
+            // We fetch application type and license incase their fees did change 
+            ApplicationType applicationType;
+             if (replacementReason == enLicenseIssueReason.ReplacementForDamaged)
+                applicationType = ApplicationTypeService.FindByType(enApplicationType.ReplaceDamagedDrivingLicense);
+            else
+                applicationType = ApplicationTypeService.FindByType(enApplicationType.ReplaceLostDrivingLicense);
+            LicenseClass licenseClass = LicenseClassService.FindById(Info.LicenseClassID);
+
+            // Replace Process
+
+            // 1. Create a new application, set the type accroding to the replacement reason
+            Application application = new Application(
+                id: -1,
+                applicantPersonId: Info.DriverInfo.PersonId,
+                applicationTypeId: (int)replacementReason,
+                createdByUserId: createdByUserId,
+                applicationDate: DateTime.Now,
+                status: enApplicationStatus.Completed,
+                lastStatusDate: DateTime.Now,
+                paidFees: applicationType.Fees
+            );
+
+            ApplicationService applicationService = new ApplicationService(application);
+            if (!applicationService.Save())
+                throw new NoNullAllowedException("Failed to create an application to replace the license");
+
+            // 2. Create a license record, save it
+
+            License newLicense = new License(
+                applicationId: application.Id,
+                notes: Info.Notes,
+                createdByUserId: createdByUserId,
+                issueReason: replacementReason,
+                licenseClass: (enLicenseClass)Info.LicenseClassID
+            );
+
+            LicenseService newLicenseService = new LicenseService(newLicense);
+            if (!newLicenseService.Save())
+            {
+                ApplicationService.Delete(application.Id); // Delete the application to avoid orphaned records
+                throw new NoNullAllowedException("Failed to renew the license");
+            }
+
+            // Application and License Created, Assign fields
+            newLicense.ApplicationId = application.Id;
+            newLicense.LicenseClassID = Info.LicenseClassID;
+            newLicense.DriverId = Info.DriverId;
+            ResolveNavigationProperties(newLicense);
+
+            Deactivate(); // deactivates the old license
+            return newLicense;
+        }
+
         // ── Helpers ──────────────────────────────
         private static void ResolveNavigationProperties(License license)
         {

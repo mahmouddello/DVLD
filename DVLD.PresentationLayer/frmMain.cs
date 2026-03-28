@@ -1,6 +1,7 @@
 ﻿using DVLD.PresentationLayer.Applications;
 using DVLD.PresentationLayer.Applications.International_Licenses;
 using DVLD.PresentationLayer.Applications.LocalDrivingLicense;
+using DVLD.PresentationLayer.Applications.Replacement;
 using DVLD.PresentationLayer.ApplicationTypes;
 using DVLD.PresentationLayer.Drivers;
 using DVLD.PresentationLayer.GlobalClasses;
@@ -113,6 +114,12 @@ namespace DVLD.PresentationLayer
         {
             frmRenewLocalLicense form = new frmRenewLocalLicense();
             form.ShowDialog();
+        }
+
+        private void replacementOfLostOrDamagedLicenseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmReplacementApplication frm = new frmReplacementApplication();
+            frm.ShowDialog();
         }
     }
 }

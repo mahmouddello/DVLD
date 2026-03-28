@@ -29,23 +29,15 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.ctrlDriverLicenseInfo1 = new DVLD.PresentationLayer.Licenses.Controls.ctrlDriverLicenseInfo();
             this.gbFilter = new System.Windows.Forms.GroupBox();
             this.btnSearch = new System.Windows.Forms.Button();
             this.txtLicenseId = new System.Windows.Forms.TextBox();
             this.lblLicenseId = new System.Windows.Forms.Label();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.ctrlDriverLicenseInfo1 = new DVLD.PresentationLayer.Licenses.Controls.ctrlDriverLicenseInfo();
             this.gbFilter.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
-            // 
-            // ctrlDriverLicenseInfo1
-            // 
-            this.ctrlDriverLicenseInfo1.BackColor = System.Drawing.Color.Transparent;
-            this.ctrlDriverLicenseInfo1.Location = new System.Drawing.Point(3, 119);
-            this.ctrlDriverLicenseInfo1.Name = "ctrlDriverLicenseInfo1";
-            this.ctrlDriverLicenseInfo1.Size = new System.Drawing.Size(1017, 503);
-            this.ctrlDriverLicenseInfo1.TabIndex = 0;
             // 
             // gbFilter
             // 
@@ -92,6 +84,14 @@
             // 
             this.errorProvider1.ContainerControl = this;
             // 
+            // ctrlDriverLicenseInfo1
+            // 
+            this.ctrlDriverLicenseInfo1.BackColor = System.Drawing.Color.Transparent;
+            this.ctrlDriverLicenseInfo1.Location = new System.Drawing.Point(3, 119);
+            this.ctrlDriverLicenseInfo1.Name = "ctrlDriverLicenseInfo1";
+            this.ctrlDriverLicenseInfo1.Size = new System.Drawing.Size(1253, 516);
+            this.ctrlDriverLicenseInfo1.TabIndex = 0;
+            // 
             // ctrlDriverLicenseInfoWithFilter
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -100,7 +100,7 @@
             this.Controls.Add(this.gbFilter);
             this.Controls.Add(this.ctrlDriverLicenseInfo1);
             this.Name = "ctrlDriverLicenseInfoWithFilter";
-            this.Size = new System.Drawing.Size(1017, 625);
+            this.Size = new System.Drawing.Size(1260, 639);
             this.gbFilter.ResumeLayout(false);
             this.gbFilter.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
