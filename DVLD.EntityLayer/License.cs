@@ -26,6 +26,7 @@ namespace DVLD.EntityLayer
 
         public bool IsNew => Id == -1;
         public bool IsExpired => DateTime.Now > ExpirationDate;
+        public bool IsDetained { get; set; }
         public bool IsValid =>
         ApplicationId > 0 &&
         DriverId > 0 &&

@@ -109,12 +109,11 @@
         }
 
         #endregion
-
-        private ctrlDriverLicenseInfo ctrlDriverLicenseInfo1;
         private System.Windows.Forms.GroupBox gbFilter;
         private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.TextBox txtLicenseId;
         private System.Windows.Forms.Label lblLicenseId;
         private System.Windows.Forms.ErrorProvider errorProvider1;
+        public ctrlDriverLicenseInfo ctrlDriverLicenseInfo1;
     }
 }

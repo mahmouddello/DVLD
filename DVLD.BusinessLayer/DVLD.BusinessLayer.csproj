@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="ApplicationService.cs" />
     <Compile Include="ApplicationTypeService.cs" />
+    <Compile Include="DetainLicenseService.cs" />
     <Compile Include="DriverService.cs" />
     <Compile Include="InternationalLicenseService.cs" />
     <Compile Include="LicenseService.cs" />

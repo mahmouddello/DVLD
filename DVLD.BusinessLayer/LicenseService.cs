@@ -279,12 +279,89 @@ namespace DVLD.BusinessLayer
             return newLicense;
         }
 
+        public bool Detain(decimal fineFees, int createdByUserId, ref int detainId)
+        {
+            // Business Logic Checks
+            if (Info.IsDetained)
+                throw new ConstraintException("Detain Failed: License is already detained");
+
+            if (Info.IsExpired)
+                throw new ConstraintException("Detain Failed: License is expired, you must apply for renewal");
+
+            if (!Info.IsActive)
+                throw new ConstraintException("Liceense can't be detained becuase it's Inactive");
+
+            if (!Info.IsValid)
+                throw new ConstraintException("License Information isn't valid to process");
+
+            detainId = DetainLicenseService.DetainLicense(Info, fineFees, createdByUserId);
+
+            if (detainId == -1)
+                return false;
+
+            Info.IsDetained = true;
+            return true;
+        }
+
+        public bool Release(decimal applicationFees, int createdByUserId, ref DetainLicense detainRecord)
+        {
+            // Business Logic Checks
+            if (!Info.IsValid)
+                throw new ConstraintException("License Information isn't valid to process");
+
+            if (!Info.IsDetained)
+                throw new ConstraintException("Release Failed: License is not detained at the moment");
+
+            if (!Info.IsActive)
+                throw new ConstraintException("Release Failed: You can't release an inactive license");
+
+            if (Info.IsExpired)
+                throw new ConstraintException("Release Failed: License is expired, you must apply for renewal");
+
+            // 1. Create an application of type release and save it
+            Application application = new Application(
+                id: -1,
+                applicantPersonId: Info.DriverInfo.PersonId,
+                applicationTypeId: (int)enApplicationType.ReleaseDetainedLicense,
+                createdByUserId: createdByUserId,
+                applicationDate: DateTime.Now,
+                status: enApplicationStatus.Completed,
+                lastStatusDate: DateTime.Now,
+                paidFees: applicationFees
+            );
+
+            ApplicationService applicationService = new ApplicationService(application);
+            if (!applicationService.Save())
+                throw new NoNullAllowedException("Failed to create an application to release the license");
+
+            // 2. Create a detain service with detain record, update it's info
+
+            DetainLicense recordCopy = new DetainLicense(detainRecord); // copy to avoid manipulating object data if fails
+            recordCopy.IsReleased = true;
+            recordCopy.ReleasedDate = DateTime.Now;
+            recordCopy.ReleasedByUserId = createdByUserId;
+            recordCopy.ReleaseApplicationId = application.Id;
+
+            DetainLicenseService detainLicenseService = new DetainLicenseService(recordCopy);
+            if (!detainLicenseService.Save())
+            {
+                ApplicationService.Delete(application.Id); // delete to avoid orphaned records
+                throw new NoNullAllowedException("Failed to release the license from detain");
+            }
+
+            detainRecord = recordCopy; // assign after success
+            Info = FindById(Info.Id); // refresh license object status
+
+            return !Info.IsDetained;
+        }
+
         // ── Helpers ──────────────────────────────
         private static void ResolveNavigationProperties(License license)
         {
             license.MainApplicationInfo = ApplicationService.FindById(license.ApplicationId);
             license.DriverInfo = DriverService.FindById(license.DriverId);
             license.LicenseClassInfo = LicenseClassService.FindById(license.LicenseClassID);
+            license.IsDetained = DetainLicenseService.ExistsByLicenseId(license.Id);
         }
 
     }

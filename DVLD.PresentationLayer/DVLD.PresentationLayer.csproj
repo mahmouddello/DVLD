@@ -177,6 +177,24 @@
     <Compile Include="Licenses\Controls\ctrlInternationalLicenseInfo.Designer.cs">
       <DependentUpon>ctrlInternationalLicenseInfo.cs</DependentUpon>
     </Compile>
+    <Compile Include="Licenses\Detain License\frmDetainLicense.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Licenses\Detain License\frmDetainLicense.Designer.cs">
+      <DependentUpon>frmDetainLicense.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Licenses\Detain License\frmManageDetains.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Licenses\Detain License\frmManageDetains.Designer.cs">
+      <DependentUpon>frmManageDetains.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Licenses\Detain License\frmReleaseDetainedLicense.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Licenses\Detain License\frmReleaseDetainedLicense.Designer.cs">
+      <DependentUpon>frmReleaseDetainedLicense.cs</DependentUpon>
+    </Compile>
     <Compile Include="Licenses\International License\frmInternationalLicenseDetails.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -358,6 +376,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Licenses\Controls\ctrlInternationalLicenseInfo.resx">
       <DependentUpon>ctrlInternationalLicenseInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Licenses\Detain License\frmDetainLicense.resx">
+      <DependentUpon>frmDetainLicense.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Licenses\Detain License\frmManageDetains.resx">
+      <DependentUpon>frmManageDetains.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Licenses\Detain License\frmReleaseDetainedLicense.resx">
+      <DependentUpon>frmReleaseDetainedLicense.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Licenses\International License\frmInternationalLicenseDetails.resx">
       <DependentUpon>frmInternationalLicenseDetails.cs</DependentUpon>
@@ -626,6 +653,29 @@
   <ItemGroup>
     <None Include="Resources\globe32.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\detain128.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\detain512.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\detain256.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\unlocked32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\locked32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\close32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\unlocked64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\detain64.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

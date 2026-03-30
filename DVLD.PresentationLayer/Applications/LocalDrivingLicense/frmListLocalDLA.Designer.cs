@@ -60,6 +60,7 @@
             // 
             // cbStatus
             // 
+            this.cbStatus.AllowDrop = true;
             this.cbStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbStatus.FormattingEnabled = true;
@@ -83,6 +84,7 @@
             // 
             // cbFilter
             // 
+            this.cbFilter.AllowDrop = true;
             this.cbFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbFilter.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbFilter.FormattingEnabled = true;
@@ -171,7 +173,7 @@
             this.showLicenseInfoToolStripMenuItem,
             this.showPersonLicenseHistoryToolStripMenuItem});
             this.cmsLDLA.Name = "cmsLDLA";
-            this.cmsLDLA.Size = new System.Drawing.Size(387, 613);
+            this.cmsLDLA.Size = new System.Drawing.Size(387, 580);
             this.cmsLDLA.Opening += new System.ComponentModel.CancelEventHandler(this.cmsLDLA_Opening);
             // 
             // showApplicationDetailsToolStripMenuItem
@@ -302,7 +304,7 @@
             this.pictureBox1.TabIndex = 12;
             this.pictureBox1.TabStop = false;
             // 
-            // frmListLocalDrivingLicenseApplications
+            // frmListLocalDLA
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -318,7 +320,7 @@
             this.Controls.Add(this.dgvLDLA);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.MaximizeBox = false;
-            this.Name = "frmListLocalDrivingLicenseApplications";
+            this.Name = "frmListLocalDLA";
             this.Text = "Local Driving License Applications";
             this.Load += new System.EventHandler(this.frmListLocalDrivingLicenseApplications_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvLDLA)).EndInit();

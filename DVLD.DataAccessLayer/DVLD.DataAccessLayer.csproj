@@ -56,6 +56,7 @@
   <ItemGroup>
     <Compile Include="ApplicationTypeData.cs" />
     <Compile Include="ApplicationData.cs" />
+    <Compile Include="DetainLicenseData.cs" />
     <Compile Include="DriverData.cs" />
     <Compile Include="InternationalLicenseData.cs" />
     <Compile Include="LicenseData.cs" />

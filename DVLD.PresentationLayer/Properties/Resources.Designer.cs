@@ -123,6 +123,16 @@ namespace DVLD.PresentationLayer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap close32 {
+            get {
+                object obj = ResourceManager.GetObject("close32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap contact_list {
             get {
                 object obj = ResourceManager.GetObject("contact-list", resourceCulture);
@@ -156,6 +166,46 @@ namespace DVLD.PresentationLayer.Properties {
         public static System.Drawing.Bitmap delete_application {
             get {
                 object obj = ResourceManager.GetObject("delete-application", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap detain128 {
+            get {
+                object obj = ResourceManager.GetObject("detain128", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap detain256 {
+            get {
+                object obj = ResourceManager.GetObject("detain256", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap detain512 {
+            get {
+                object obj = ResourceManager.GetObject("detain512", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap detain64 {
+            get {
+                object obj = ResourceManager.GetObject("detain64", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -353,6 +403,16 @@ namespace DVLD.PresentationLayer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap locked32 {
+            get {
+                object obj = ResourceManager.GetObject("locked32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap manage_applications {
             get {
                 object obj = ResourceManager.GetObject("manage-applications", resourceCulture);
@@ -526,6 +586,26 @@ namespace DVLD.PresentationLayer.Properties {
         public static System.Drawing.Bitmap test64 {
             get {
                 object obj = ResourceManager.GetObject("test64", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap unlocked32 {
+            get {
+                object obj = ResourceManager.GetObject("unlocked32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap unlocked64 {
+            get {
+                object obj = ResourceManager.GetObject("unlocked64", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -118,7 +118,7 @@ namespace DVLD.PresentationLayer.Licenses.Controls
             lblDateOfBirth.Text = person.DateOfBirth.ToShortDateString();
             lblExpirationDate.Text = license.ExpirationDate.ToShortDateString();
             lblDriverID.Text = license.DriverId.ToString();
-            // implement is detained
+            lblIsDetained.Text = license.IsDetained ? "Yes" : "No";
 
             LoadPersonImage();
         }

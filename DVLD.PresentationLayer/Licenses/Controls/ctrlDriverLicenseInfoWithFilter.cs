@@ -31,8 +31,8 @@ namespace DVLD.PresentationLayer.Licenses.Controls
         }
         public string FilterText 
         {
-            get { return _filterText; }
-            set { _filterText = value ?? string.Empty; }
+            get { return txtLicenseId.Text.Trim(); }
+            set { txtLicenseId.Text = value; }
         }
 
         public int LicenseId => ctrlDriverLicenseInfo1.LicenseId;

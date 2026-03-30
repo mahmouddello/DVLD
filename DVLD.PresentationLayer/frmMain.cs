@@ -5,6 +5,7 @@ using DVLD.PresentationLayer.Applications.Replacement;
 using DVLD.PresentationLayer.ApplicationTypes;
 using DVLD.PresentationLayer.Drivers;
 using DVLD.PresentationLayer.GlobalClasses;
+using DVLD.PresentationLayer.Licenses.Detain_License;
 using DVLD.PresentationLayer.Licenses.International_Licenses;
 using DVLD.PresentationLayer.People;
 using DVLD.PresentationLayer.Tests.TestTypes;
@@ -120,6 +121,24 @@ namespace DVLD.PresentationLayer
         {
             frmReplacementApplication frm = new frmReplacementApplication();
             frm.ShowDialog();
+        }
+
+        private void detainLicenseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmDetainLicense form = new frmDetainLicense();
+            form.ShowDialog();
+        }
+
+        private void manageDetainedLicensesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmManageDetains form = new frmManageDetains();
+            form.ShowDialog();
+        }
+
+        private void releaseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmReleaseDetainedLicense form = new frmReleaseDetainedLicense();
+            form.ShowDialog();
         }
     }
 }
