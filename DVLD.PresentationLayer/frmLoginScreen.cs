@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using Microsoft.Win32;
 using DVLD.BusinessLayer;
 using DVLD.EntityLayer;
 using DVLD.PresentationLayer.GlobalClasses;
@@ -15,10 +10,94 @@ namespace DVLD.PresentationLayer
 {
     public partial class frmLoginScreen : Form
     {
+        private static readonly string KEY_PATH = @"HKEY_CURRENT_USER\Software\DVLD";
+        private string _username, _password;
+        private bool _remeberMe;
 
         public frmLoginScreen()
         {
             InitializeComponent();
+        }
+
+        private void frmLoginScreen_Load(object sender, EventArgs e)
+        {
+            LoadSavedCredentials();
+
+            if (_remeberMe)
+            {
+                txtUsername.Text = _username;
+                txtPassword.Text = _password;
+                chkRememberMe.Checked = true;
+            }
+        }
+
+        private void LoadSavedCredentials()
+        {
+            try
+            {
+                _username = Registry.GetValue(KEY_PATH, "username", null) as string;
+                _password = Registry.GetValue(KEY_PATH, "password", null) as string;
+
+                string strA = Registry.GetValue(KEY_PATH, "rememberMe", null) as string;
+                _remeberMe = strA == "1";
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error at frmLoginScreen.GetStoredCredentials: {ex.Message}");
+            }
+        }
+
+        private bool SaveCredentials(string username, string password, bool rememberMe)
+        {
+            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+                return false;
+
+            try
+            {
+                Registry.SetValue(KEY_PATH, "username", username, RegistryValueKind.String);
+                Registry.SetValue(KEY_PATH, "password", password, RegistryValueKind.String);
+                Registry.SetValue(KEY_PATH, "rememberMe", rememberMe? "1" : "0", RegistryValueKind.String);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error at frmLoginScreen.StoreCredentialsInRegistry: {ex.Message}");
+                return false;
+            }
+        }
+
+        private bool DeleteCredentials(params string[] values)
+        {
+            try
+            {
+                using (RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Software\DVLD", writable: true))
+                {
+                    if (key == null) return false;
+
+                    foreach (string valueName in values)
+                        key.DeleteValue(valueName, throwOnMissingValue: false);
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in frmLoginScreen.DeleteCredentials: {ex.Message}");
+                return false;
+            }
+        }
+
+        private void SetRememberMe(bool flag)
+        {
+            try
+            {
+                Registry.SetValue(KEY_PATH, "rememberMe", flag ? "1" : "0", RegistryValueKind.String);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error at frmLoginScreen.ChangeRemeberMeState: {ex.Message}");
+            }
         }
 
         private void RequiredField_Validating(object sender, CancelEventArgs e)
@@ -43,56 +122,39 @@ namespace DVLD.PresentationLayer
             }
         }
 
-        private void MapDefaultValues()
-        {
-            // Set the values of the saved username, password, and remember me state
-            if (chkRememberMe.Checked)
-            {
-                Properties.Settings.Default.RemeberMe = true;
-                Properties.Settings.Default.Username = txtUsername.Text;
-                Properties.Settings.Default.Password = txtPassword.Text; // ⚠ see note below
-            }
-            else
-            {
-                Properties.Settings.Default.RemeberMe = false;
-                Properties.Settings.Default.Username = "";
-                Properties.Settings.Default.Password = "";
-            }
-
-            Properties.Settings.Default.Save();
-        }
-
         private void btnLogin_Click(object sender, EventArgs e)
         {
             if (!ValidateChildren())
                 return;
 
-            string username = txtUsername.Text.Trim();
-            string password = txtPassword.Text.Trim();
+            _username = txtUsername.Text.Trim();
+            _password = txtPassword.Text.Trim();
 
-            User user = UserService.Login(username, password);
+            User user = UserService.Login(_username, _password);
 
             if (user == null)
             {
-                MessageBox.Show("Invalid credntials!", "Login Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Utility.ShowErrorMessage("Login failed: Invalid credntials!");
+                return;
             }
-            else
-            {
-                this.DialogResult = DialogResult.OK;  // Signal success
-                Globals.CurrentUser = user;
-                MapDefaultValues();
-                this.Close();  // Now safe to close
-            }
+
+            HandleSuccessfulLogin(user);
         }
 
-        private void frmLoginScreen_Load(object sender, EventArgs e)
+        private void HandleSuccessfulLogin(User user)
         {
-            if (Properties.Settings.Default.RemeberMe)
+            if (chkRememberMe.Checked)
+                SaveCredentials(_username, _password, true);
+            else
             {
-                txtUsername.Text = Properties.Settings.Default.Username;
-                txtPassword.Text = Properties.Settings.Default.Password;
-                chkRememberMe.Checked = true;
+                DeleteCredentials("username", "password");
+                SetRememberMe(false);
             }
+
+            Globals.CurrentUser = user;
+
+            this.DialogResult = DialogResult.OK;
+            this.Close();
         }
     }
 }
