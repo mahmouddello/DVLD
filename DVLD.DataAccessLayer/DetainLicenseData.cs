@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
-using System.Diagnostics;
 using DVLD.EntityLayer;
+using DVLD.Infrastructure;
 
 namespace DVLD.DataAccessLayer
 {
@@ -14,6 +14,7 @@ namespace DVLD.DataAccessLayer
                             (@licenseId, @detainDate, @fineFees, @CreatedByUserId,
                             @IsReleased, @ReleaseDate, @ReleasedByUserId, @ReleaseApplicationId);
                             SELECT SCOPE_IDENTITY();";
+
             try
             {
                 using (SqlConnection conn = new SqlConnection(DataAccessSettings.ConnectionString))
@@ -29,7 +30,11 @@ namespace DVLD.DataAccessLayer
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error is DetainLicenseData.GetAllAsTable: {ex.Message}");
+                Logger.Log(
+                    $"Failed to add DetainLicense. LicenseID={detainLicense.LicenseId}, FineFees={detainLicense.FineFees}",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(Add));
             }
 
             return -1;
@@ -50,9 +55,13 @@ namespace DVLD.DataAccessLayer
                         table.Load(reader);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                Debug.WriteLine($"Error is DetainLicenseData.GetAllAsTable: {ex.Message}");
+                Logger.Log(
+                    "Failed to retrieve DetainedRecords list.",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(GetAllAsTable));
             }
 
             return table;
@@ -75,10 +84,13 @@ namespace DVLD.DataAccessLayer
                             return MapToEntity(reader);
                 }
             }
-
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error is DetainLicenseData.GetById: {ex.Message}");
+                Logger.Log(
+                    $"Failed to retrieve DetainLicense. DetainID={id}",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(GetById));
             }
 
             return null;
@@ -101,10 +113,13 @@ namespace DVLD.DataAccessLayer
                             return MapToEntity(reader);
                 }
             }
-
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error is DetainLicenseData.GetByLicenseId: {ex.Message}");
+                Logger.Log(
+                    $"Failed to retrieve active DetainLicense. LicenseID={id}",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(GetByLicenseId));
             }
 
             return null;
@@ -112,7 +127,7 @@ namespace DVLD.DataAccessLayer
 
         public static bool ExistsById(int id)
         {
-            string query = "SELECT * FROM DetainedLicenses WHERE DetainID = @Id";
+            string query = "SELECT 1 FROM DetainedLicenses WHERE DetainID = @Id";
 
             try
             {
@@ -125,16 +140,18 @@ namespace DVLD.DataAccessLayer
                     return cmd.ExecuteScalar() != null;
                 }
             }
-
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error is DetainLicenseData.ExistsById: {ex.Message}");
+                Logger.Log(
+                    $"Failed to check DetainLicense existence. DetainID={id}",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(ExistsById));
             }
 
             return false;
         }
 
-        // This method can indicate if a license is detained and not released
         public static bool ExistsByLicenseId(int id)
         {
             string query = @"SELECT * FROM DetainedLicenses WHERE LicenseID = @Id AND IsReleased = 0";
@@ -150,10 +167,13 @@ namespace DVLD.DataAccessLayer
                     return cmd.ExecuteScalar() != null;
                 }
             }
-
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error is DetainLicenseData.ExistsByLicenseId: {ex.Message}");
+                Logger.Log(
+                    $"Failed to check active DetainLicense by LicenseID={id}",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(ExistsByLicenseId));
             }
 
             return false;
@@ -167,6 +187,7 @@ namespace DVLD.DataAccessLayer
                             ReleasedByUserID = @ReleasedByUserID,
                             ReleaseApplicationID = @ReleaseApplicationID
                            WHERE DetainID = @DetainID";
+
             try
             {
                 using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
@@ -184,31 +205,14 @@ namespace DVLD.DataAccessLayer
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error is DetainLicenseData.UpdateReleaseInfo: {ex.Message}");
+                Logger.Log(
+                    $"Failed to update release info. DetainID={record.Id}",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(UpdateReleaseInfo));
             }
 
             return false;
-        }
-
-        // ---- Helpers ----
-        private static T GetValue<T>(SqlDataReader reader, string column, T defaultValue = default)
-        {
-            return reader[column] == DBNull.Value ? defaultValue : (T)Convert.ChangeType(reader[column], typeof(T));
-        }
-
-        private static DetainLicense MapToEntity(SqlDataReader reader)
-        {
-            return new DetainLicense(
-                id: GetValue<int>(reader, "DetainID"),
-                licenseId: GetValue<int>(reader, "LicenseID"),
-                detainDate: GetValue<DateTime>(reader, "DetainDate"),
-                fineFees: GetValue<decimal>(reader, "FineFees"),
-                createdByUserId: GetValue<int>(reader, "CreatedByUserID"),
-                isReleased: GetValue<bool>(reader, "IsReleased"),
-                releasedDate: GetValue<DateTime>(reader, "ReleaseDate"),      // returns DateTime.MinValue if null
-                releasedByUserId: GetValue<int>(reader, "ReleasedByUserID", -1),   // returns -1 if null
-                releaseApplicationId: GetValue<int>(reader, "ReleaseApplicationID", -1)
-            );
         }
 
         private static void AddSharedParams(SqlCommand cmd, DetainLicense detainLicense)
@@ -223,6 +227,24 @@ namespace DVLD.DataAccessLayer
             cmd.Parameters.AddWithValue("@ReleaseApplicationId", detainLicense.ReleaseApplicationId == -1 ? (object)DBNull.Value : detainLicense.ReleaseApplicationId);
         }
 
+        private static T GetValue<T>(SqlDataReader reader, string column, T defaultValue = default)
+        {
+            return reader[column] == DBNull.Value ? defaultValue : (T)Convert.ChangeType(reader[column], typeof(T));
+        }
 
+        private static DetainLicense MapToEntity(SqlDataReader reader)
+        {
+            return new DetainLicense(
+                id: GetValue<int>(reader, "DetainID"),
+                licenseId: GetValue<int>(reader, "LicenseID"),
+                detainDate: GetValue<DateTime>(reader, "DetainDate"),
+                fineFees: GetValue<decimal>(reader, "FineFees"),
+                createdByUserId: GetValue<int>(reader, "CreatedByUserID"),
+                isReleased: GetValue<bool>(reader, "IsReleased"),
+                releasedDate: GetValue<DateTime>(reader, "ReleaseDate"),
+                releasedByUserId: GetValue<int>(reader, "ReleasedByUserID", -1),
+                releaseApplicationId: GetValue<int>(reader, "ReleaseApplicationID", -1)
+            );
+        }
     }
 }

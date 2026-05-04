@@ -1,10 +1,12 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Windows.Forms;
+using System.Diagnostics;
 using Microsoft.Win32;
 using DVLD.BusinessLayer;
 using DVLD.EntityLayer;
 using DVLD.PresentationLayer.GlobalClasses;
+using DVLD.Infrastructure;
 
 namespace DVLD.PresentationLayer
 {
@@ -43,7 +45,7 @@ namespace DVLD.PresentationLayer
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error at frmLoginScreen.GetStoredCredentials: {ex.Message}");
+                Logger.Log("Failed to load saved credentials", EventLogEntryType.Error, ex, nameof(LoadSavedCredentials));
             }
         }
 
@@ -56,13 +58,13 @@ namespace DVLD.PresentationLayer
             {
                 Registry.SetValue(KEY_PATH, "username", username, RegistryValueKind.String);
                 Registry.SetValue(KEY_PATH, "password", password, RegistryValueKind.String);
-                Registry.SetValue(KEY_PATH, "rememberMe", rememberMe? "1" : "0", RegistryValueKind.String);
+                Registry.SetValue(KEY_PATH, "rememberMe", rememberMe ? "1" : "0", RegistryValueKind.String);
 
                 return true;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error at frmLoginScreen.StoreCredentialsInRegistry: {ex.Message}");
+                Logger.Log("Failed to save credentials in the registry", EventLogEntryType.Error, ex, nameof(SaveCredentials));
                 return false;
             }
         }
@@ -83,7 +85,7 @@ namespace DVLD.PresentationLayer
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error in frmLoginScreen.DeleteCredentials: {ex.Message}");
+                Logger.Log("Failed to delete the saved credntials", EventLogEntryType.Error, ex, nameof(DeleteCredentials));
                 return false;
             }
         }
@@ -96,7 +98,7 @@ namespace DVLD.PresentationLayer
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error at frmLoginScreen.ChangeRemeberMeState: {ex.Message}");
+                Logger.Log("Failed to change remember me state", EventLogEntryType.Error, ex, nameof(SetRememberMe));
             }
         }
 
@@ -143,6 +145,11 @@ namespace DVLD.PresentationLayer
 
         private void HandleSuccessfulLogin(User user)
         {
+            Logger.Log($"User '{user.Username}' logged in successfully",
+               EventLogEntryType.Information,
+               null,
+               nameof(HandleSuccessfulLogin));
+
             if (chkRememberMe.Checked)
                 SaveCredentials(_username, _password, true);
             else

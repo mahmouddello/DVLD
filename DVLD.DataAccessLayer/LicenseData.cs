@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
-using System.Diagnostics;
 using DVLD.EntityLayer;
-using License = DVLD.EntityLayer.License;
-
+using DVLD.Infrastructure;
 
 namespace DVLD.DataAccessLayer
 {
@@ -21,6 +19,7 @@ namespace DVLD.DataAccessLayer
                          @ExpirationDate, @Notes, @PaidFees, @IsActive, 
                          @IssueReason, @CreatedByUserID);
                         SELECT SCOPE_IDENTITY();";
+
             try
             {
                 using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
@@ -36,7 +35,11 @@ namespace DVLD.DataAccessLayer
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in LicenseData.Add: {ex.Message}");
+                Logger.Log(
+                    $"Failed to add License. DriverID={license.DriverId}, ApplicationID={license.ApplicationId}, ClassID={license.LicenseClassID}",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(Add));
             }
 
             return -1;
@@ -46,17 +49,16 @@ namespace DVLD.DataAccessLayer
         {
             DataTable dt = new DataTable();
             string query = @"SELECT 
-	                            L.LicenseID,
-	                            L.ApplicationID,
-	                            LC.ClassName,
-	                            L.IssueDate,
-	                            L.ExpirationDate,
-	                            L.IsActive
-                            FROM 
-	                            Licenses AS L
-                            INNER JOIN 
-	                            LicenseClasses AS LC ON L.LicenseClass = LC.LicenseClassID
-                            WHERE L.DriverID = @DriverID";
+                                L.LicenseID,
+                                L.ApplicationID,
+                                LC.ClassName,
+                                L.IssueDate,
+                                L.ExpirationDate,
+                                L.IsActive
+                             FROM Licenses AS L
+                             INNER JOIN LicenseClasses AS LC 
+                                ON L.LicenseClass = LC.LicenseClassID
+                             WHERE L.DriverID = @DriverID";
 
             try
             {
@@ -73,7 +75,11 @@ namespace DVLD.DataAccessLayer
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in LicenseData.GetAllLicensesAsTable: {ex.Message}");
+                Logger.Log(
+                    $"Failed to retrieve licenses list. DriverID={driverId}",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(GetAllLicensesAsTable));
             }
 
             return dt;
@@ -98,7 +104,11 @@ namespace DVLD.DataAccessLayer
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in LicenseData.GetById: {ex.Message}");
+                Logger.Log(
+                    $"Failed to retrieve License. LicenseID={licenseId}",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(GetById));
             }
 
             return null;
@@ -123,7 +133,11 @@ namespace DVLD.DataAccessLayer
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in LicenseData.GetByMainApplicationID: {ex.Message}");
+                Logger.Log(
+                    $"Failed to retrieve License by ApplicationID={applicationId}",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(GetByMainApplicationId));
             }
 
             return null;
@@ -131,14 +145,11 @@ namespace DVLD.DataAccessLayer
 
         public static int GetActiveLicenseCount(int driverId)
         {
-            string query = @"SELECT 
-		                        COUNT (IsActive)
-	                        FROM
-		                        Licenses
-	                        WHERE 
-		                        DriverID = @DriverID
-		                        AND
-		                        IsActive = 1";
+            string query = @"SELECT COUNT(*) 
+                             FROM Licenses
+                             WHERE DriverID = @DriverID
+                             AND IsActive = 1";
+
             try
             {
                 using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
@@ -148,13 +159,16 @@ namespace DVLD.DataAccessLayer
                     connection.Open();
 
                     object result = cmd.ExecuteScalar();
-
                     return result != null ? Convert.ToInt32(result) : 0;
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in LicenseData.GetActiveLicenseCount: {ex.Message}");
+                Logger.Log(
+                    $"Failed to count active licenses. DriverID={driverId}",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(GetActiveLicenseCount));
             }
 
             return -1;
@@ -162,7 +176,9 @@ namespace DVLD.DataAccessLayer
 
         public static bool UpdateLicenseStatus(int licenseId, bool status)
         {
-            string query = @"UPDATE Licenses SET IsActive = @Status WHERE LicenseID = @Id";
+            string query = @"UPDATE Licenses 
+                             SET IsActive = @Status 
+                             WHERE LicenseID = @Id";
 
             try
             {
@@ -179,7 +195,11 @@ namespace DVLD.DataAccessLayer
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in LicenseData.UpdateLicenseStatus: {ex.Message}");
+                Logger.Log(
+                    $"Failed to update license status. LicenseID={licenseId}, Status={status}",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(UpdateLicenseStatus));
             }
 
             return false;
@@ -212,10 +232,13 @@ namespace DVLD.DataAccessLayer
             command.Parameters.AddWithValue("@IssueDate", license.IssueDate);
             command.Parameters.AddWithValue("@ExpirationDate", license.ExpirationDate);
 
-            var notesParam = new SqlParameter("@Notes", SqlDbType.NVarChar);
-            notesParam.Value = string.IsNullOrWhiteSpace(license.Notes)
-                ? (object)DBNull.Value
-                : license.Notes;
+            var notesParam = new SqlParameter("@Notes", SqlDbType.NVarChar)
+            {
+                Value = string.IsNullOrWhiteSpace(license.Notes)
+                    ? (object)DBNull.Value
+                    : license.Notes
+            };
+
             command.Parameters.Add(notesParam);
 
             command.Parameters.AddWithValue("@PaidFees", license.PaidFees);
@@ -223,6 +246,5 @@ namespace DVLD.DataAccessLayer
             command.Parameters.AddWithValue("@IssueReason", (int)license.IssueReason);
             command.Parameters.AddWithValue("@CreatedByUserID", license.CreatedByUserId);
         }
-
     }
 }

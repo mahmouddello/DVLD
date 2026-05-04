@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
-using System.Diagnostics;
+using DVLD.Infrastructure;
 using DVLD.EntityLayer;
 
 namespace DVLD.DataAccessLayer
@@ -13,6 +13,7 @@ namespace DVLD.DataAccessLayer
             string query = @"INSERT INTO Tests VALUES 
                             (@TestAppointmentID, @TestResult, @Notes, @CreatedByUserID);
                             SELECT SCOPE_IDENTITY();";
+
             try
             {
                 using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
@@ -22,13 +23,17 @@ namespace DVLD.DataAccessLayer
                     connection.Open();
 
                     object result = command.ExecuteScalar();
-
-                    return result != null ? Convert.ToInt32(result) : -1;
+                    if (result != null && result != DBNull.Value)
+                        return Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in TestData.Add: {ex.Message}");
+                Logger.Log(
+                    $"Failed to add Test. TestAppointmentID={test.TestAppointmentId}, Result={test.Result}, CreatedByUserID={test.CreatedByUserId}",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(Add));
             }
 
             return -1;
@@ -45,14 +50,18 @@ namespace DVLD.DataAccessLayer
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     connection.Open();
+
                     using (SqlDataReader reader = command.ExecuteReader())
                         dt.Load(reader);
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in TestData.GetAllAsTable: {ex.Message}");
-                return new DataTable();
+                Logger.Log(
+                    "Failed to retrieve Tests list.",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(GetAllAsTable));
             }
 
             return dt;
@@ -77,7 +86,11 @@ namespace DVLD.DataAccessLayer
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in TestData.GetById: {ex.Message}");
+                Logger.Log(
+                    $"Failed to retrieve Test. TestID={testId}",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(GetById));
             }
 
             return null;
@@ -102,48 +115,49 @@ namespace DVLD.DataAccessLayer
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in TestData.GetTestByAppointmentId: {ex.Message}");
+                Logger.Log(
+                    $"Failed to retrieve Test by AppointmentID={appointmentId}",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(GetTestByAppointmentId));
             }
 
             return null;
         }
 
-        public static int GetTestTrialsCount(int _ldlaId, int testTypeId)
+        public static int GetTestTrialsCount(int ldlaId, int testTypeId)
         {
-            string query = @"SELECT 
-                                COUNT(*)
-                            FROM 
-                                Tests
+            string query = @"SELECT COUNT(*)
+                            FROM Tests
                             WHERE TestAppointmentID IN 
                             (
-                                SELECT 
-                                        TestAppointmentID
-                                    FROM 
-                                        TestAppointments
-                                WHERE
-                                    LocalDrivingLicenseApplicationID = @LocalDrivingLicenseApplicationID
-                                    AND
-                                    TestTypeID = @TestTypeID
+                                SELECT TestAppointmentID
+                                FROM TestAppointments
+                                WHERE LocalDrivingLicenseApplicationID = @LocalDrivingLicenseApplicationID
+                                  AND TestTypeID = @TestTypeID
                             )";
+
             try
             {
                 using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", _ldlaId);
+                    command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", ldlaId);
                     command.Parameters.AddWithValue("@TestTypeID", testTypeId);
 
                     connection.Open();
 
-
                     object result = command.ExecuteScalar();
-
-                    return result == null ? -1 : Convert.ToInt32(result);
+                    return result != null ? Convert.ToInt32(result) : -1;
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in TestData.GetTestTrainsCount: {ex.Message}");
+                Logger.Log(
+                    $"Failed to count test trials. LDLAID={ldlaId}, TestTypeID={testTypeId}",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(GetTestTrialsCount));
             }
 
             return -1;
@@ -156,7 +170,7 @@ namespace DVLD.DataAccessLayer
                             INNER JOIN TestAppointments ta 
                                 ON t.TestAppointmentID = ta.TestAppointmentID
                             WHERE ta.LocalDrivingLicenseApplicationID = @LdlaId
-                            AND t.TestResult = 1";
+                              AND t.TestResult = 1";
 
             try
             {
@@ -172,50 +186,52 @@ namespace DVLD.DataAccessLayer
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in LDLAData.GetPassedTestCount: {ex.Message}");
-                return 0;
+                Logger.Log(
+                    $"Failed to count passed tests. LDLAID={ldlaId}",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(GetPassedTestCount));
             }
+
+            return 0;
         }
 
-        public static bool HasTestRecord(int _ldlaId, int testTypeId, bool isPassed)
+        public static bool HasTestRecord(int ldlaId, int testTypeId, bool isPassed)
         {
-            string query = @"SELECT 
-	                            1
-                            FROM 
-	                            Tests
+            string query = @"SELECT 1
+                            FROM Tests
                             WHERE TestAppointmentID IN 
                             (
-	                            SELECT 
-			                            TestAppointmentID
-		                            FROM 
-			                            TestAppointments
-	                            WHERE
-		                            LocalDrivingLicenseApplicationID = @LocalDrivingLicenseApplicationID
-		                            AND
-		                            TestTypeID = @TestTypeID
-		                            AND
-		                            IsLocked = 1
-                            ) AND 
-	                            TestResult = @TestResult;";
+                                SELECT TestAppointmentID
+                                FROM TestAppointments
+                                WHERE LocalDrivingLicenseApplicationID = @LocalDrivingLicenseApplicationID
+                                  AND TestTypeID = @TestTypeID
+                                  AND IsLocked = 1
+                            )
+                            AND TestResult = @TestResult;";
+
             try
             {
-
                 using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", _ldlaId);
+                    command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", ldlaId);
                     command.Parameters.AddWithValue("@TestTypeID", testTypeId);
                     command.Parameters.AddWithValue("@TestResult", isPassed ? 1 : 0);
 
                     connection.Open();
-                    object result = command.ExecuteScalar();
 
-                    return Convert.ToBoolean(result);
+                    object result = command.ExecuteScalar();
+                    return result != null;
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in TestData.HasTestRecord: {ex.Message}");
+                Logger.Log(
+                    $"Failed to check test record. LDLAID={ldlaId}, TestTypeID={testTypeId}, IsPassed={isPassed}",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(HasTestRecord));
             }
 
             return false;
@@ -237,12 +253,11 @@ namespace DVLD.DataAccessLayer
             command.Parameters.AddWithValue("@TestAppointmentID", test.TestAppointmentId);
             command.Parameters.AddWithValue("@TestResult", (int)test.Result);
             command.Parameters.AddWithValue("@CreatedByUserID", test.CreatedByUserId);
-            var param = command.Parameters.Add("@Notes", SqlDbType.NVarChar);
 
-            if (string.IsNullOrWhiteSpace(test.Notes))
-                param.Value = DBNull.Value;
-            else
-                param.Value = test.Notes;
+            var param = command.Parameters.Add("@Notes", SqlDbType.NVarChar);
+            param.Value = string.IsNullOrWhiteSpace(test.Notes)
+                ? (object)DBNull.Value
+                : test.Notes;
         }
     }
 }

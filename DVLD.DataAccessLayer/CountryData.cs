@@ -1,9 +1,8 @@
-﻿using DVLD.EntityLayer;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.SqlClient;
-using System.Diagnostics;
+using DVLD.EntityLayer;
+using DVLD.Infrastructure;
 
 namespace DVLD.DataAccessLayer
 {
@@ -14,19 +13,32 @@ namespace DVLD.DataAccessLayer
             string query = @"SELECT * FROM Countries";
             List<Country> countries = new List<Country>();
 
-            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
-            using (SqlCommand command = new SqlCommand(query, connection))
+            try
             {
-                connection.Open();
-
-                using (SqlDataReader reader = command.ExecuteReader())
+                using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    while (reader.Read())
-                        countries.Add(MapToEntity(reader));
-                }
-            }
+                    connection.Open();
 
-            return countries;
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                            countries.Add(MapToEntity(reader));
+                    }
+                }
+
+                return countries;
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(
+                    "Failed to retrieve Countries list.",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(GetAllCountries));
+
+                return new List<Country>();
+            }
         }
 
         public static Country GetById(int countryId)
@@ -47,33 +59,64 @@ namespace DVLD.DataAccessLayer
                             return MapToEntity(reader);
                     }
                 }
+
+                Logger.Log(
+                    $"Country not found. CountryID={countryId}",
+                    System.Diagnostics.EventLogEntryType.Warning,
+                    null,
+                    nameof(GetById));
+
+                return null;
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in CountryData.GetById: {ex.Message}");
-            }
+                Logger.Log(
+                    $"Failed to retrieve Country. CountryID={countryId}",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(GetById));
 
-            return null;
+                return null;
+            }
         }
 
         public static Country GetByName(string countryName)
         {
             string query = @"SELECT * FROM Countries WHERE CountryName = @CountryName";
 
-            using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
-            using (SqlCommand command = new SqlCommand(query, connection))
+            try
             {
-                command.Parameters.AddWithValue("@CountryName", countryName);
-                connection.Open();
-
-                using (SqlDataReader reader = command.ExecuteReader())
+                using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    if (reader.Read())
-                        return MapToEntity(reader);
-                }
-            }
+                    command.Parameters.AddWithValue("@CountryName", countryName);
+                    connection.Open();
 
-            return null;
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                            return MapToEntity(reader);
+                    }
+                }
+
+                Logger.Log(
+                    $"Country not found. CountryName={countryName}",
+                    System.Diagnostics.EventLogEntryType.Warning,
+                    null,
+                    nameof(GetByName));
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(
+                    $"Failed to retrieve Country. CountryName={countryName}",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(GetByName));
+
+                return null;
+            }
         }
 
         public static bool ExistsById(int id)
@@ -87,12 +130,29 @@ namespace DVLD.DataAccessLayer
                 {
                     command.Parameters.AddWithValue("@Id", id);
                     connection.Open();
-                    return command.ExecuteScalar() != null;
+
+                    bool exists = command.ExecuteScalar() != null;
+
+                    if (!exists)
+                    {
+                        Logger.Log(
+                            $"Country does not exist. CountryID={id}",
+                            System.Diagnostics.EventLogEntryType.Warning,
+                            null,
+                            nameof(ExistsById));
+                    }
+
+                    return exists;
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in CountryData.ExistsById: {ex.Message}");
+                Logger.Log(
+                    $"Failed to check Country existence. CountryID={id}",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(ExistsById));
+
                 return false;
             }
         }
@@ -108,12 +168,29 @@ namespace DVLD.DataAccessLayer
                 {
                     command.Parameters.AddWithValue("@Name", name);
                     connection.Open();
-                    return command.ExecuteScalar() != null;
+
+                    bool exists = command.ExecuteScalar() != null;
+
+                    if (!exists)
+                    {
+                        Logger.Log(
+                            $"Country does not exist. CountryName={name}",
+                            System.Diagnostics.EventLogEntryType.Warning,
+                            null,
+                            nameof(ExistsByName));
+                    }
+
+                    return exists;
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in CountryData.ExistsByName: {ex.Message}");
+                Logger.Log(
+                    $"Failed to check Country existence. CountryName={name}",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(ExistsByName));
+
                 return false;
             }
         }

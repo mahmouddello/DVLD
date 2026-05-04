@@ -3,6 +3,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using DVLD.EntityLayer;
+using DVLD.Infrastructure;
 
 namespace DVLD.DataAccessLayer
 {
@@ -25,7 +26,12 @@ namespace DVLD.DataAccessLayer
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in ApplicationTypeData.GetAllAsTable: {ex.Message}");
+                Logger.Log(
+                   "Failed to retrieve ApplicationTypes list.",
+                   EventLogEntryType.Error,
+                   ex,
+                   nameof(GetAllAsTable)
+                );
                 return new DataTable();
             }
 
@@ -51,7 +57,12 @@ namespace DVLD.DataAccessLayer
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in ApplicationTypeData.GetByType: {ex.Message}");
+                Logger.Log(
+                    $"Failed to retrieve ApplicationType. Type={appType}",
+                    EventLogEntryType.Error,
+                    ex,
+                    nameof(GetByType)
+                );
             }
 
             return null;
@@ -59,7 +70,7 @@ namespace DVLD.DataAccessLayer
 
         public static ApplicationType GetById(int appTypeId)
         {
-            return GetByType((enApplicationType)appTypeId); 
+            return GetByType((enApplicationType)appTypeId);
         }
 
         public static bool Update(ApplicationType appType)
@@ -78,12 +89,29 @@ namespace DVLD.DataAccessLayer
                     AddSharedParameters(command, appType);
                     connection.Open();
 
-                    return command.ExecuteNonQuery() > 0;
+                    int rows = command.ExecuteNonQuery();
+
+                    if (rows == 0)
+                    {
+                        Logger.Log(
+                            $"Update failed: no rows affected. ApplicationTypeID={(int)appType.Type}",
+                            EventLogEntryType.Warning,
+                            null,
+                            nameof(Update));
+
+                        return false;
+                    }
+
+                    return true;
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in ApplicationTypeData.Update: {ex.Message}");
+                Logger.Log(
+                    $"Failed to update ApplicationType. ApplicationTypeID={(int)appType.Type}, Title={appType.Title}",
+                    EventLogEntryType.Error,
+                    ex,
+                    nameof(Update));
                 return false;
             }
         }

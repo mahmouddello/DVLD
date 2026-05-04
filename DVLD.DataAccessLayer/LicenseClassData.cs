@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
-using System.Diagnostics;
 using DVLD.EntityLayer;
+using DVLD.Infrastructure;
 
 namespace DVLD.DataAccessLayer
 {
@@ -20,13 +20,19 @@ namespace DVLD.DataAccessLayer
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     connection.Open();
+
                     using (SqlDataReader reader = command.ExecuteReader())
                         dt.Load(reader);
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in LicenseClassData.GetAllAsTable: {ex.Message}");
+                Logger.Log(
+                    "Failed to retrieve LicenseClasses list.",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(GetAllAsTable));
+
                 return new DataTable();
             }
 
@@ -52,7 +58,11 @@ namespace DVLD.DataAccessLayer
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in LicenseClassData.GetById: {ex.Message}");
+                Logger.Log(
+                    $"Failed to retrieve LicenseClass. LicenseClassID={licenseClassId}",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(GetById));
             }
 
             return null;

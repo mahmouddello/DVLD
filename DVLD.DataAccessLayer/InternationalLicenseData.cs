@@ -1,10 +1,8 @@
 ﻿using DVLD.EntityLayer;
 using System;
-using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
-using System.Diagnostics;
-using System.Reflection.Emit;
+using DVLD.Infrastructure;
 
 namespace DVLD.DataAccessLayer
 {
@@ -52,7 +50,11 @@ namespace DVLD.DataAccessLayer
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in InternationalLicenseData.Add: {ex.Message}");
+                Logger.Log(
+                    $"Failed to add InternationalLicense. ApplicationID={entity.ApplicationId}, DriverID={entity.DriverId}",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(Add));
             }
 
             return -1;
@@ -70,13 +72,18 @@ namespace DVLD.DataAccessLayer
                 {
                     command.Parameters.AddWithValue("@Id", driverId);
                     connection.Open();
+
                     using (SqlDataReader reader = command.ExecuteReader())
                         table.Load(reader);
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in InternationalLicenseData.GetAllAsTable: {ex.Message}");
+                Logger.Log(
+                    $"Failed to retrieve InternationalLicenses for DriverID={driverId}",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(GetAllAsTableForDriver));
             }
 
             return table;
@@ -93,13 +100,18 @@ namespace DVLD.DataAccessLayer
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     connection.Open();
+
                     using (SqlDataReader reader = command.ExecuteReader())
                         table.Load(reader);
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in InternationalLicenseData.GetAllAsTable: {ex.Message}");
+                Logger.Log(
+                    "Failed to retrieve InternationalLicenses list.",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(GetAllAsTable));
             }
 
             return table;
@@ -124,7 +136,11 @@ namespace DVLD.DataAccessLayer
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in InternationalLicenseData.GetById: {ex.Message}");
+                Logger.Log(
+                    $"Failed to retrieve InternationalLicense. ID={id}",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(GetById));
             }
 
             return null;
@@ -149,7 +165,11 @@ namespace DVLD.DataAccessLayer
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in InternationalLicenseData.GetById: {ex.Message}");
+                Logger.Log(
+                    $"Failed to retrieve InternationalLicense by LocalLicenseID={licenseId}",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(GetByLicenseId));
             }
 
             return null;
@@ -174,7 +194,11 @@ namespace DVLD.DataAccessLayer
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in InternationalLicenseData.GetById: {ex.Message}");
+                Logger.Log(
+                    $"Failed to retrieve InternationalLicense by ApplicationID={applicationId}",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(GetByApplicationId));
             }
 
             return null;
@@ -183,9 +207,9 @@ namespace DVLD.DataAccessLayer
         public static bool ExistsActiveNonExpiredByLocalLicenseId(int licenseId)
         {
             string query = @"SELECT 1 FROM InternationalLicenses 
-                     WHERE IssuedUsingLocalLicenseID = @LicenseId 
-                     AND IsActive = 1
-                     AND ExpirationDate > GETDATE()";
+                             WHERE IssuedUsingLocalLicenseID = @LicenseId 
+                             AND IsActive = 1
+                             AND ExpirationDate > GETDATE()";
 
             try
             {
@@ -194,18 +218,23 @@ namespace DVLD.DataAccessLayer
                 {
                     command.Parameters.AddWithValue("@LicenseId", licenseId);
                     connection.Open();
+
                     return command.ExecuteScalar() != null;
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in InternationalLicenseData.ExistsActiveByLocalLicenseId: {ex.Message}");
+                Logger.Log(
+                    $"Failed to check active InternationalLicense. LocalLicenseID={licenseId}",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(ExistsActiveNonExpiredByLocalLicenseId));
             }
 
             return false;
         }
 
-        public static bool ExistsById(int internationaLicenseId)
+        public static bool ExistsById(int internationalLicenseId)
         {
             string query = @"SELECT 1 FROM InternationalLicenses WHERE InternationalLicenseID = @LicenseId";
 
@@ -214,7 +243,7 @@ namespace DVLD.DataAccessLayer
                 using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@LicenseId", internationaLicenseId);
+                    command.Parameters.AddWithValue("@LicenseId", internationalLicenseId);
                     connection.Open();
 
                     return command.ExecuteScalar() != null;
@@ -222,7 +251,11 @@ namespace DVLD.DataAccessLayer
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in InternationalLicenseData.ExsistByLocalLicenseId: {ex.Message}");
+                Logger.Log(
+                    $"Failed to check InternationalLicense existence. ID={internationalLicenseId}",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(ExistsById));
             }
 
             return false;
@@ -245,7 +278,11 @@ namespace DVLD.DataAccessLayer
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in InternationalLicenseData.ExsistByLocalLicenseId: {ex.Message}");
+                Logger.Log(
+                    $"Failed to check InternationalLicense by LocalLicenseID={licenseId}",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(ExistsByLocalLicenseId));
             }
 
             return false;
@@ -268,7 +305,11 @@ namespace DVLD.DataAccessLayer
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in InternationalLicenseData.ExsistByLocalLicenseId: {ex.Message}");
+                Logger.Log(
+                    $"Failed to check InternationalLicense by ApplicationID={applicationId}",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(ExistsByApplicationId));
             }
 
             return false;

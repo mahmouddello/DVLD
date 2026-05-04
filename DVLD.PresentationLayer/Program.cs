@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Diagnostics;
 using System.Windows.Forms;
+using DVLD.Infrastructure;
+using DVLD.PresentationLayer.GlobalClasses;
 using dotenv.net;
 
 
@@ -45,12 +45,9 @@ namespace DVLD.PresentationLayer
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    $"Failed to load .env file: {ex.Message}",
-                    "Configuration Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error
-                );
+                Utility.ShowErrorMessage("An error occured when loading .env file, check log for full information");
+                Logger.Log("Failed to load .env file in DVLD", EventLogEntryType.Error, ex, nameof(LoadDotEnv));
+
                 Application.Exit();
             }
         }

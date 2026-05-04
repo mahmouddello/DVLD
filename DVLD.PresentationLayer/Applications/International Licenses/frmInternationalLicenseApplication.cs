@@ -92,7 +92,7 @@ namespace DVLD.PresentationLayer.Licenses.International_Licenses
 
         private void btnIssue_Click(object sender, EventArgs e)
         {
-            int intlLicenseValidityLength = Properties.Settings.Default.IntrLicenseValidityLength;
+            int intlLicenseValidityLength = Globals.IntrLicenseValidityLength;
             var intlLicense = ILS.IssueInternationalLicense(_license, Globals.CurrentUser.Id, intlLicenseValidityLength);
 
             if (intlLicense != null)

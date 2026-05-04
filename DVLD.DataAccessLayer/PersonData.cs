@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Diagnostics;
 using DVLD.EntityLayer;
+using DVLD.Infrastructure;
 
 namespace DVLD.DataAccessLayer
 {
@@ -19,14 +18,18 @@ namespace DVLD.DataAccessLayer
                 using (SqlCommand command = new SqlCommand("SELECT * FROM PeopleDetails_View", connection))
                 {
                     connection.Open();
+
                     using (SqlDataReader reader = command.ExecuteReader())
                         dt.Load(reader);
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in PersonData.GetAllAsTable: {ex.Message}");
-                return new DataTable();
+                Logger.Log(
+                    "Failed to retrieve People list from PeopleDetails_View.",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(GetAllAsTable));
             }
 
             return dt;
@@ -57,7 +60,11 @@ namespace DVLD.DataAccessLayer
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in PersonData.Add: {ex.Message}");
+                Logger.Log(
+                    $"Failed to add Person. NationalNo={person.NationalNo}, Name={person.FirstName} {person.LastName}",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(Add));
             }
 
             return -1;
@@ -76,15 +83,17 @@ namespace DVLD.DataAccessLayer
                     connection.Open();
 
                     using (SqlDataReader reader = command.ExecuteReader())
-                    {
                         if (reader.Read())
                             return MapToEntity(reader);
-                    }
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in PersonData.GetById: {ex.Message}");
+                Logger.Log(
+                    $"Failed to retrieve Person. PersonID={id}",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(GetById));
             }
 
             return null;
@@ -103,15 +112,17 @@ namespace DVLD.DataAccessLayer
                     connection.Open();
 
                     using (SqlDataReader reader = command.ExecuteReader())
-                    {
                         if (reader.Read())
                             return MapToEntity(reader);
-                    }
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in PersonData.GetByNationalNo: {ex.Message}");
+                Logger.Log(
+                    $"Failed to retrieve Person. NationalNo={nationalNo}",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(GetByNationalNo));
             }
 
             return null;
@@ -128,14 +139,20 @@ namespace DVLD.DataAccessLayer
                 {
                     command.Parameters.AddWithValue("@Id", id);
                     connection.Open();
+
                     return command.ExecuteScalar() != null;
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in PersonData.ExistsById: {ex.Message}");
-                return false;
+                Logger.Log(
+                    $"Failed to check Person existence. PersonID={id}",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(ExistsById));
             }
+
+            return false;
         }
 
         public static bool ExistsByNationalNo(string nationalNo)
@@ -149,14 +166,20 @@ namespace DVLD.DataAccessLayer
                 {
                     command.Parameters.AddWithValue("@NationalNo", nationalNo);
                     connection.Open();
+
                     return command.ExecuteScalar() != null;
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in PersonData.ExistsByNationalNo: {ex.Message}");
-                return false;
+                Logger.Log(
+                    $"Failed to check Person existence. NationalNo={nationalNo}",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(ExistsByNationalNo));
             }
+
+            return false;
         }
 
         public static bool Update(Person person)
@@ -190,9 +213,14 @@ namespace DVLD.DataAccessLayer
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in PersonData.Update: {ex.Message}");
-                return false;
+                Logger.Log(
+                    $"Failed to update Person. PersonID={person.Id}, NationalNo={person.NationalNo}",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(Update));
             }
+
+            return false;
         }
 
         public static bool Delete(int id)
@@ -212,9 +240,14 @@ namespace DVLD.DataAccessLayer
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in PersonData.Delete: {ex.Message}");
-                return false;
+                Logger.Log(
+                    $"Failed to delete Person. PersonID={id}",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(Delete));
             }
+
+            return false;
         }
 
         private static void AddParameters(SqlCommand command, Person person)

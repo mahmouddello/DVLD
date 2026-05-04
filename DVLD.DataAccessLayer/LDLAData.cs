@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
-using System.Diagnostics;
 using DVLD.EntityLayer;
+using DVLD.Infrastructure;
 
 namespace DVLD.DataAccessLayer
 {
@@ -22,6 +22,7 @@ namespace DVLD.DataAccessLayer
                 {
                     command.Parameters.AddWithValue("@ApplicationId", mainAppId);
                     command.Parameters.AddWithValue("@LicenseClassId", licenseClassId);
+
                     connection.Open();
 
                     object result = command.ExecuteScalar();
@@ -31,7 +32,11 @@ namespace DVLD.DataAccessLayer
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in LDLAData.Add: {ex.Message}");
+                Logger.Log(
+                    $"Failed to add LDLA record. ApplicationID={mainAppId}, LicenseClassID={licenseClassId}",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(Add));
             }
 
             return -1;
@@ -48,13 +53,19 @@ namespace DVLD.DataAccessLayer
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     connection.Open();
+
                     using (SqlDataReader reader = command.ExecuteReader())
                         dt.Load(reader);
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in LDLAData.GetAllAsTable: {ex.Message}");
+                Logger.Log(
+                    "Failed to retrieve LDLA list.",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(GetAllAsTable));
+
                 return new DataTable();
             }
 
@@ -80,7 +91,11 @@ namespace DVLD.DataAccessLayer
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in LDLAData.GetById: {ex.Message}");
+                Logger.Log(
+                    $"Failed to retrieve LDLA record. LDLA_ID={id}",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(GetById));
             }
 
             return null;
@@ -105,7 +120,11 @@ namespace DVLD.DataAccessLayer
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in LDLAData.GetByMainApplicationId: {ex.Message}");
+                Logger.Log(
+                    $"Failed to retrieve LDLA by ApplicationID={mainAppId}",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(GetByApplicationId));
             }
 
             return null;
@@ -124,6 +143,7 @@ namespace DVLD.DataAccessLayer
                 {
                     command.Parameters.AddWithValue("@Id", id);
                     command.Parameters.AddWithValue("@LicenseClassId", licenseClassId);
+
                     connection.Open();
 
                     return command.ExecuteNonQuery() > 0;
@@ -131,9 +151,14 @@ namespace DVLD.DataAccessLayer
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in LDLAData.UpdateLicenseClass: {ex.Message}");
-                return false;
+                Logger.Log(
+                    $"Failed to update LDLA LicenseClass. LDLA_ID={id}, LicenseClassID={licenseClassId}",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(UpdateLicenseClass));
             }
+
+            return false;
         }
 
         public static bool Delete(int id)
@@ -147,14 +172,20 @@ namespace DVLD.DataAccessLayer
                 {
                     command.Parameters.AddWithValue("@Id", id);
                     connection.Open();
+
                     return command.ExecuteNonQuery() > 0;
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in LDLAData.Delete: {ex.Message}");
-                return false;
+                Logger.Log(
+                    $"Failed to delete LDLA record. LDLA_ID={id}",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(Delete));
             }
+
+            return false;
         }
 
         public static bool ExistsActiveApplicationForClass(int personId, int licenseClassId)
@@ -174,15 +205,21 @@ namespace DVLD.DataAccessLayer
                 {
                     command.Parameters.AddWithValue("@PersonId", personId);
                     command.Parameters.AddWithValue("@LicenseClassId", licenseClassId);
+
                     connection.Open();
                     return command.ExecuteScalar() != null;
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in LDLAData.ExistsActiveApplicationForClass: {ex.Message}");
-                return false;
+                Logger.Log(
+                    $"Failed to check active LDLA existence. PersonID={personId}, LicenseClassID={licenseClassId}",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(ExistsActiveApplicationForClass));
             }
+
+            return false;
         }
 
         private static LDLA MapToEntity(SqlDataReader reader)

@@ -19,13 +19,17 @@ namespace DVLD.DataAccessLayer
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     connection.Open();
+
                     using (SqlDataReader reader = command.ExecuteReader())
                         dt.Load(reader);
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in TestTypeData.GetAllAsTable: {ex.Message}");
+                Debug.WriteLine(
+                    $"[TestTypeData.GetAllAsTable] Failed to retrieve TestTypes table. Error: {ex.Message}"
+                );
+
                 return new DataTable();
             }
 
@@ -51,7 +55,9 @@ namespace DVLD.DataAccessLayer
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in TestTypeData.GetById: {ex.Message}");
+                Debug.WriteLine(
+                    $"[TestTypeData.GetById] Failed. TestTypeId={testTypeId}. Error: {ex.Message}"
+                );
             }
 
             return null;
@@ -63,23 +69,36 @@ namespace DVLD.DataAccessLayer
                                  TestTypeTitle       = @Title,
                                  TestTypeDescription = @Description,
                                  TestTypeFees        = @Fees
-                             WHERE
-                                 TestTypeID = @TestTypeID";
+                             WHERE TestTypeID = @TestTypeID";
+
             try
             {
                 using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    AddSharedParameters(command, testType);
                     command.Parameters.AddWithValue("@TestTypeID", testType.Id);
+                    AddSharedParameters(command, testType);
+
                     connection.Open();
 
-                    return command.ExecuteNonQuery() > 0;
+                    bool success = command.ExecuteNonQuery() > 0;
+
+                    if (!success)
+                    {
+                        Debug.WriteLine(
+                            $"[TestTypeData.Update] No rows affected. TestTypeId={testType.Id}"
+                        );
+                    }
+
+                    return success;
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in TestTypeData.Update: {ex.Message}");
+                Debug.WriteLine(
+                    $"[TestTypeData.Update] Failed. TestTypeId={testType.Id}, Title={testType.Title}. Error: {ex.Message}"
+                );
+
                 return false;
             }
         }
@@ -87,11 +106,11 @@ namespace DVLD.DataAccessLayer
         private static TestType MapToEntity(SqlDataReader reader)
         {
             return new TestType(
-               type: (enTestType)reader["TestTypeID"],
-               title: (string)reader["TestTypeTitle"],
-               description: (string)reader["TestTypeDescription"],
-               fees: (decimal)reader["TestTypeFees"]
-           );
+                type: (enTestType)reader["TestTypeID"],
+                title: (string)reader["TestTypeTitle"],
+                description: (string)reader["TestTypeDescription"],
+                fees: (decimal)reader["TestTypeFees"]
+            );
         }
 
         private static void AddSharedParameters(SqlCommand command, TestType testType)

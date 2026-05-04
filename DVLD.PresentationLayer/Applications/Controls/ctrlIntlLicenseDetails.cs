@@ -52,7 +52,7 @@ namespace DVLD.PresentationLayer.Applications.Controls
             decimal fees = ApplicationTypeService.FindByType(enApplicationType.NewInternationalLicense).Fees;
             lblFees.Text = fees.ToString();
 
-            DateTime expirationDate = DateTime.Now.AddYears(Properties.Settings.Default.IntrLicenseValidityLength);
+            DateTime expirationDate = DateTime.Now.AddYears(Globals.IntrLicenseValidityLength);
             lblExpirationDate.Text = expirationDate.ToShortDateString();
             lblCreatedBy.Text = Globals.CurrentUser.Username;
         }

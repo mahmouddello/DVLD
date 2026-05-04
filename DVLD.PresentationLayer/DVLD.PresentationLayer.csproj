@@ -475,6 +475,10 @@
       <Project>{57820856-75a5-4df6-8deb-21c6079c6a70}</Project>
       <Name>DVLD.EntityLayer</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DVLD.Infrastructure\DVLD.Infrastructure.csproj">
+      <Project>{890e2c94-2b7c-4af0-99f8-986002c4569d}</Project>
+      <Name>DVLD.Infrastructure</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\peopleGroup.png" />

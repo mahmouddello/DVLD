@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
-using System.Diagnostics;
 using DVLD.EntityLayer;
+using DVLD.Infrastructure;
 
 namespace DVLD.DataAccessLayer
 {
@@ -11,8 +11,9 @@ namespace DVLD.DataAccessLayer
         public static int Add(Driver driver)
         {
             string query = @"INSERT INTO Drivers (PersonID, CreatedByUserID, CreatedDate)
-                                 VALUES (@PersonID, @CreatedByUserID, @CreatedDate);
-                              SELECT SCOPE_IDENTITY();";
+                             VALUES (@PersonID, @CreatedByUserID, @CreatedDate);
+                             SELECT SCOPE_IDENTITY();";
+
             try
             {
                 using (SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString))
@@ -32,7 +33,11 @@ namespace DVLD.DataAccessLayer
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in DriverData.Add: {ex.Message}");
+                Logger.Log(
+                    $"Failed to add Driver. PersonID={driver.PersonId}",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(Add));
             }
 
             return -1;
@@ -49,6 +54,7 @@ namespace DVLD.DataAccessLayer
                 using (SqlCommand cmd = new SqlCommand(query, connection))
                 {
                     connection.Open();
+
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         if (reader.HasRows)
@@ -58,7 +64,11 @@ namespace DVLD.DataAccessLayer
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in DriverData.GetAllAsTable: {ex.Message}");
+                Logger.Log(
+                    "Failed to retrieve Drivers list.",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(GetAllAsTable));
             }
 
             return dataTable;
@@ -85,7 +95,11 @@ namespace DVLD.DataAccessLayer
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in DriverData.GetAllAsTable: {ex.Message}");
+                Logger.Log(
+                    $"Failed to retrieve Driver. DriverID={driverId}",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(GetById));
             }
 
             return null;
@@ -112,7 +126,11 @@ namespace DVLD.DataAccessLayer
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in DriverData.GetAllAsTable: {ex.Message}");
+                Logger.Log(
+                    $"Failed to retrieve Driver by PersonID={personID}",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(GetByPersonID));
             }
 
             return null;
@@ -135,7 +153,11 @@ namespace DVLD.DataAccessLayer
             }
             catch (SqlException ex)
             {
-                Debug.WriteLine(ex.Message);
+                Logger.Log(
+                    $"Failed to delete Driver. DriverID={driverId}",
+                    System.Diagnostics.EventLogEntryType.Error,
+                    ex,
+                    nameof(DeleteById));
             }
 
             return false;
@@ -150,6 +172,5 @@ namespace DVLD.DataAccessLayer
                 createdAt: Convert.ToDateTime(reader["CreatedDate"])
             );
         }
-
     }
 }

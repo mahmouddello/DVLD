@@ -2,6 +2,7 @@
 using System.Data.SqlClient;
 using System.Diagnostics;
 using DVLD.EntityLayer;
+using DVLD.Infrastructure;
 
 namespace DVLD.DataAccessLayer
 {
@@ -48,7 +49,7 @@ namespace DVLD.DataAccessLayer
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in ApplicationData.Add: {ex.Message}");
+                Logger.Log("Error occurd when adding a new person record", EventLogEntryType.Error, ex, nameof(Add));
             }
 
             return -1;
@@ -113,7 +114,12 @@ namespace DVLD.DataAccessLayer
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in ApplicationData.Update: {ex.Message}");
+                Logger.Log(
+                $"Failed to update Application. ApplicationID={application.Id}",
+                EventLogEntryType.Error,
+                ex,
+                nameof(Update));
+
                 return false;
             }
         }
@@ -140,7 +146,11 @@ namespace DVLD.DataAccessLayer
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in ApplicationData.UpdateStatus: {ex.Message}");
+                Logger.Log(
+                $"Failed to update Application status. ApplicationID={applicationId}, NewStatus={(int)status}",
+                EventLogEntryType.Error,
+                ex,
+                nameof(UpdateStatus));
                 return false;
             }
         }
@@ -157,12 +167,30 @@ namespace DVLD.DataAccessLayer
                     command.Parameters.AddWithValue("@Id", id);
                     connection.Open();
 
-                    return command.ExecuteNonQuery() > 0;
+                    int rowsAffected = command.ExecuteNonQuery();
+
+                    if (rowsAffected == 0)
+                    {
+                        Logger.Log(
+                            $"Delete operation affected 0 rows. ApplicationID={id} may not exist.",
+                            EventLogEntryType.Warning,
+                            null,
+                            nameof(Delete));
+
+                        return false;
+                    }
+
+
+                    return true;
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error in ApplicationData.Delete: {ex.Message}");
+                Logger.Log(
+                $"Failed to delete Application. ApplicationID={id}",
+                EventLogEntryType.Error,
+                ex,
+                nameof(Delete));
                 return false;
             }
         }
