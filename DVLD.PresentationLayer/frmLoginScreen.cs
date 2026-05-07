@@ -38,7 +38,6 @@ namespace DVLD.PresentationLayer
             try
             {
                 _username = Registry.GetValue(KEY_PATH, "username", null) as string;
-                _password = Registry.GetValue(KEY_PATH, "password", null) as string;
 
                 string strA = Registry.GetValue(KEY_PATH, "rememberMe", null) as string;
                 _remeberMe = strA == "1";
@@ -49,15 +48,14 @@ namespace DVLD.PresentationLayer
             }
         }
 
-        private bool SaveCredentials(string username, string password, bool rememberMe)
+        private bool SaveCredentials(string username, bool rememberMe)
         {
-            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+            if (string.IsNullOrWhiteSpace(username))
                 return false;
 
             try
             {
                 Registry.SetValue(KEY_PATH, "username", username, RegistryValueKind.String);
-                Registry.SetValue(KEY_PATH, "password", password, RegistryValueKind.String);
                 Registry.SetValue(KEY_PATH, "rememberMe", rememberMe ? "1" : "0", RegistryValueKind.String);
 
                 return true;
@@ -151,10 +149,10 @@ namespace DVLD.PresentationLayer
                nameof(HandleSuccessfulLogin));
 
             if (chkRememberMe.Checked)
-                SaveCredentials(_username, _password, true);
+                SaveCredentials(_username, true);
             else
             {
-                DeleteCredentials("username", "password");
+                DeleteCredentials("username");
                 SetRememberMe(false);
             }
 
