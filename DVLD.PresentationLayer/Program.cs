@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Windows.Forms;
-using DVLD.Infrastructure;
-using DVLD.PresentationLayer.GlobalClasses;
-using dotenv.net;
-
 
 namespace DVLD.PresentationLayer
 {
@@ -16,9 +11,6 @@ namespace DVLD.PresentationLayer
         [STAThread]
         static void Main()
         {
-            // load .env once at application startup
-            LoadDotEnv();
-
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
@@ -31,26 +23,5 @@ namespace DVLD.PresentationLayer
                 Application.Run(new frmMain());
             }
         }
-
-        private static void LoadDotEnv()
-        {
-            try
-            {
-                string envPath = "../../../.env";
-                var options = new DotEnvOptions(
-                    envFilePaths: new[] { envPath },
-                    overwriteExistingVars: true
-                );
-                DotEnv.Load(options);
-            }
-            catch (Exception ex)
-            {
-                Utility.ShowErrorMessage("An error occured when loading .env file, check log for full information");
-                Logger.Log("Failed to load .env file in DVLD", EventLogEntryType.Error, ex, nameof(LoadDotEnv));
-
-                Application.Exit();
-            }
-        }
-
     }
 }
